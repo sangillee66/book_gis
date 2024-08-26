@@ -55,9 +55,9 @@ execute:
 
 format:
   html:
-    theme: cosmo
-  pdf:
-    documentclass: scrreprt
+    theme: [cosmo, custom.scss]
+    css: styles.css
+    toc: true
 
 editor: visual
 
