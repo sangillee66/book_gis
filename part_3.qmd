@@ -1,0 +1,16 @@
+---
+title: "공간데이터모델과 GIS 데이터베이스"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+---

@@ -1,0 +1,17 @@
+---
+title: "중첩 분석"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+lightbox: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+---

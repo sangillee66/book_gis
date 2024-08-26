@@ -1,0 +1,16 @@
+---
+title: "GIS 데이터의 원천과 입력"
+author: Sang-Il Lee
+date-modified: last-modified
+number-sections: true
+format: 
+  html: 
+    toc: true
+code-link: true
+code-copy: true
+execute: 
+  warning: false
+  error: false
+  freeze: auto
+editor: visual
+---

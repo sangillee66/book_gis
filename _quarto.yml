@@ -4,15 +4,54 @@ project:
 
 book:
   title: "GIS"
-  author: "Norah Jones"
-  date: "2024. 8. 26."
+  author: "Sang-Il Lee"
+  date: last-modified
+  bread-crumbs: false
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
+    - part: part_1.qmd
+      chapters: 
+        - first_concepts.qmd
+        - first_applications.qmd
+    - part: part_2.qmd
+      chapters: 
+        - second_sources.qmd
+        - second_input.qmd
+    - part: part_3.qmd
+      chapters: 
+        - third_sdm.qmd
+        - third_database.qmd
+    - part: part_4.qmd
+      chapters: 
+        - vector_generalization.qmd
+        - vector_measurement.qmd
+        - vector_layer_creation.qmd
+        - vector_proximity.qmd
+        - vector_selection.qmd
+        - vector_reclassification.qmd
+        - vector_overlay.qmd
+    - part: part_5.qmd
+      chapters: 
+        - raster_intro.qmd
+        - raster_generalization.qmd
+        - raster_measurement.qmd
+        - raster_recalculation.qmd
+        - raster_reclassification.qmd
+        - raster_proximity.qmd
+        - raster_overlay.qmd        
+    - part: part_6.qmd
+      chapters: 
+        - sm_intro.qmd
+        - sm_terrain.qmd
+        - sm_network.qmd
     - references.qmd
 
 bibliography: references.bib
+
+lightbox: true
+
+execute:
+  freeze: auto
 
 format:
   html:
