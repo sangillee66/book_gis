@@ -1,0 +1,17 @@
+{
+  "hash": "12b75f7a6b483c358ffa51181b4a1faf",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"GIS의 개념\"\nauthor: Sang-Il Lee\ndate-modified: last-modified\nnumber-sections: true\nformat: \n  html: \n    toc: true\ncode-link: true\ncode-copy: true\nlightbox: true\nexecute: \n  warning: false\n  error: false\n  freeze: auto\neditor: visual\neditor_options: \n  chunk_output_type: console\n---\n\n\n## GIS의 근원\n\n## GIS의 정의\n\n## GIS의 의미\n\n### GIS의 G\n\nGIS의 G는 GIS가 특별한 종류의 데이터를 다룬다는 것을 의미한다. 그 특별한 데이터는 지리적(geographic) 혹은 공간적(spatial) 혹은 지리공간적(geospatial) 데이터이다. 지리적 데이터는 비지리적 데이터와 달리 세 가지 요소를 반드시 갖추고 있어야 한다. 그 세가지는 위치(location), 속성(attributes), 공간관계(spatial relationships)이다.\n\n필수 패키지를 불러온다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\n```\n:::\n\n\n필수 셰이프 파일을 불러온다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsigungu1 <- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0030.shp\", options = \"ENCODING=CP949\")\nsido_polyline <- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIDO_Polyline_2023_2Q_GEN_0030.shp\", options = \"ENCODING=CP949\")\nbbox_ulleung <- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/BBOX_Ulleung_2023_2Q_GEN_0030.shp\", options = \"ENCODING=CP949\")\nbbox_seohae <- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/BBOX_Seohae3_2023_2Q_GEN_0030.shp\", options = \"ENCODING=CP949\")\nseoul_gu <- st_read(\n  \"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp\", options = \"ENCODING=CP949\"\n  ) \nseoul_sido <- st_read(\n  \"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp\", options = \"ENCODING=CP949\"\n  )\n```\n:::\n\n\n관악구가 표시된 시군구 지도를 제작한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ngwanak_gu <- sigungu1 |> \n  filter(SGG1_NM == \"관악구\")\nmy_map <- tm_shape(sigungu1) + tm_polygons() +\n  tm_shape(gwanak_gu) + tm_polygons(col = \"#e41a1c\") +\n  tm_shape(sido_polyline) + tm_lines(col = \"black\", lwd = 1.5) +\n  tm_shape(bbox_ulleung) + tm_lines() +\n  tm_shape(bbox_seohae) + tm_lines() +\n  tm_layout(inner.margins = c(0.02, 0.03, 0.02, 0.04)) +\n  tm_scale_bar(breaks = seq(0, 200, 50), color.dark = \"gray60\", position = c(0.48, 0.01))\nmy_map\n```\n\n::: {.cell-output-display}\n![시군구 지도 상의 관악구의 위치](first_concepts_files/figure-html/fig-gwanak-1-1.png){#fig-gwanak-1 width=672}\n:::\n:::\n\n::: {.cell}\n\n:::\n\n\n관악구가 표시된 서울시 지도를 제작한다.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ngwanak_gu <- seoul_gu |> \n  filter(SGG1_NM == \"관악구\")\nmy_map <- tm_shape(seoul_gu) + tm_polygons() +\n  tm_shape(gwanak_gu) + tm_borders(col = \"#e41a1c\", lwd = 3) + \n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map \n```\n\n::: {.cell-output-display}\n![서울시 지도 상의 관악구의 위치](first_concepts_files/figure-html/fig-gwanak-2-1.png){#fig-gwanak-2 width=672}\n:::\n:::\n\n::: {.cell}\n\n:::\n\n\n### GIS의 I\n\n### GIS의 S\n\n## GIS의 구성요소\n\n## GIS의 역사\n\n## GIS와 지리\n",
+    "supporting": [
+      "first_concepts_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
