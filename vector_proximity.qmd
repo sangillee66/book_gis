@@ -26,6 +26,7 @@ editor_options:
 library(tidyverse)
 library(sf)
 library(tmap)
+library(readxl)
 ```
 
 서울시의 관련 데이터를 불러온다.
@@ -45,8 +46,8 @@ seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
 seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
 seoul_subst <- seoul_subst |> 
-  st_transform(crs = st_crs(seoul)) |> 
-  st_intersection(seoul)
+  st_transform(crs = st_crs(seoul_gu)) |> 
+  st_intersection(seoul_gu)
 ```
 
 역으로부터 반경 500미터 이내 지역을 선택한다.
@@ -196,7 +197,7 @@ starbucks_seoul_real <- st_transform(starbucks_seoul_real, crs = st_crs(seoul_si
 ```{r}
 starbucks_seoul_thiessen <- starbucks_seoul_real |> 
   st_union() |> 
-  st_voronoi(st_as_sfc(st_bbox(seoul.sido))) |> 
+  st_voronoi(st_as_sfc(st_bbox(seoul_sido))) |> 
   st_cast() |> 
   st_intersection(seoul_sido)
 qtm(starbucks_seoul_thiessen)
