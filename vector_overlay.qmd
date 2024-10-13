@@ -18,7 +18,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## 중첩분석 
+## 중첩분석
 
 필수적인 데이터를 패키지를 불러온다.
 
@@ -42,7 +42,7 @@ seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 
 ### 포인트-인-폴리곤
 
-공간적 선택과 마찬가지로 관악구 내의 스타벅스만 선택하여 새로운 포인트 레이어를 생성한다.
+공간적 선택과 마찬가지로 관악구 내의 스타벅스만 선택하여 새로운 포인트 레이어를 생성한다. 우선 관악구를 선택하여 새로운 레이어를 만든다.
 
 ```{r}
 gwanak_gu <- seoul_gu |> 
@@ -50,6 +50,15 @@ gwanak_gu <- seoul_gu |>
     SGG1_NM == "관악구"
   )
 ```
+
+스타벅스 데이터를 불러온다.
+
+```{r}
+starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", options = "ENCODING=CP949")
+starbucks_seoul_real <- st_transform(starbucks_seoul_real, crs = st_crs(seoul_sido))
+```
+
+관악구에 포함되는 스타벅스 매장만 골라낸다.
 
 ```{r}
 starbucks_gwanak <- starbucks_seoul_real |> 
