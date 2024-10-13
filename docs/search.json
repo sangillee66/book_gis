@@ -139,5 +139,93 @@
       "벡터-기반 GIS 오퍼레이션",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>일반화</span>"
     ]
+  },
+  {
+    "objectID": "vector_measurement.html",
+    "href": "vector_measurement.html",
+    "title": "\n8  측정\n",
+    "section": "",
+    "text": "8.1 폴리곤의 면적과 주변길이\n필수적인 패키지를 불러온다.\nlibrary(sf)\nlibrary(tmap)\nlibrary(tidyverse)\n서울시의 구와 동 단위 데이터를 예제로 사용한다.\nseoul_gu &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp\")\nseoul_dong &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp\")\n면적을 계산한다.\nst_area(seoul_gu)\nst_area(seoul_dong)\n주변길이(perimeter)를 계산한다.\nst_length(st_cast(seoul_gu, \"MULTILINESTRING\"))\nst_area(seoul_dong)",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>측정</span>"
+    ]
+  },
+  {
+    "objectID": "vector_measurement.html#폴리곤의-형태",
+    "href": "vector_measurement.html#폴리곤의-형태",
+    "title": "\n8  측정\n",
+    "section": "\n8.2 폴리곤의 형태",
+    "text": "8.2 폴리곤의 형태\n콤펙트비(compactness ratio)를 다음의 수식에 의거해 계산한다.\n\\[\nS_1=A/(P^2/4\\pi)=4\\pi A/P^2\n\\]\n\\[\nS_2=(2\\pi \\sqrt{A/\\pi})/P=2\\sqrt{\\pi A}/P=3.545\\sqrt{A}/P\n\\]\n함수를 작성한다.\n\nsnu_poly_shape_index &lt;- function(poly.shp){\n  A &lt;- st_area(poly.shp)\n  P &lt;- st_length(st_cast(poly.shp, \"MULTILINESTRING\"))\n  S.1 &lt;- 4*pi*A/P^2\n  S.2 &lt;- sqrt(S.1)\n  poly.shp$S1 &lt;- as.numeric(S.1)\n  poly.shp$S2 &lt;- as.numeric(S.2)\n  poly.shp\n}\n\n서울시 구의 콤펙트비를 계산한다.\n\nseoul_gu &lt;- snu_poly_shape_index(seoul_gu)\nseoul_gu |&gt; slice_max(S1) \n\nSimple feature collection with 1 feature and 11 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 961989.7 ymin: 1952338 xmax: 966325.5 ymax: 1958028\nProjected CRS: KGD2002 / Unified CS\n  SGG1_CD SD_CD      SD_NM SG1_CD     SG1_NM SGG1_NM          SGG1_FNM\n1   11070    11 서울특별시     11 서울특별시  중랑구 서울특별시 중랑구\n       Eng_NM Chn_NM        S1        S2                       geometry\n1 Jungnang-gu 中浪區 0.6725585 0.8200967 POLYGON ((964125.5 1952433,...\n\nseoul_gu |&gt; slice_min(S1)\n\nSimple feature collection with 1 feature and 11 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 939273.8 ymin: 1941770 xmax: 947237.7 ymax: 1946700\nProjected CRS: KGD2002 / Unified CS\n  SGG1_CD SD_CD      SD_NM SG1_CD     SG1_NM SGG1_NM          SGG1_FNM  Eng_NM\n1   11170    11 서울특별시     11 서울특별시  구로구 서울특별시 구로구 Guro-gu\n  Chn_NM        S1        S2                       geometry\n1 九老區 0.2072557 0.4552534 POLYGON ((940771.4 1942203,...\n\n\n서울시 동의 콤펙트비를 계산한다.\n\nseoul_dong &lt;- snu_poly_shape_index(seoul_dong)\nseoul_dong |&gt; slice_max(S1) \n\nSimple feature collection with 1 feature and 17 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 964999.1 ymin: 1944822 xmax: 966120.8 ymax: 1945928\nProjected CRS: KGD2002 / Unified CS\n    EMD_ID SD_CD      SD_NM SG1_CD     SG1_NM SG2_CD     SG2_NM SGG1_CD SGG1_NM\n1 11240610    11 서울특별시     11 서울특별시     11 서울특별시   11240  송파구\n  SGG2_CD SGG2_NM EMD_NM_y                   EMD_FNM            Eng_NM  Chn_NM\n1   11240  송파구  송파1동 서울특별시 송파구 송파1동 Songpa 1(il)-dong 松坡1洞\n         S1        S2                       geometry\n1 0.8282855 0.9101019 POLYGON ((965536.1 1944822,...\n\nseoul_dong |&gt; slice_min(S1)\n\nSimple feature collection with 1 feature and 17 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 959962.2 ymin: 1949952 xmax: 962352.3 ymax: 1951280\nProjected CRS: KGD2002 / Unified CS\n    EMD_ID SD_CD      SD_NM SG1_CD     SG1_NM SG2_CD     SG2_NM SGG1_CD SGG1_NM\n1 11040690    11 서울특별시     11 서울특별시     11 서울특별시   11040  성동구\n  SGG2_CD SGG2_NM EMD_NM_y                  EMD_FNM         Eng_NM Chn_NM\n1   11040  성동구   송정동 서울특별시 성동구 송정동 Songjeong-dong 松亭洞\n         S1        S2                       geometry\n1 0.2043469 0.4520475 POLYGON ((961792.8 1949976,...\n\n\n서울시 구의 콤펙트비 지도를 제작한다.\n\nmin.val &lt;- seoul_gu |&gt; pull(S1) |&gt; min() |&gt; format(digits = 3)\nmax.val &lt;- seoul_gu |&gt; pull(S1) |&gt; max() |&gt; format(digits = 3)\nmy_map &lt;- tm_shape(seoul_gu) + \n  tm_polygons(\n    col = \"S1\", \n    palette = \"BuPu\", \n    style = \"fixed\", \n    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),\n    labels = c(paste0(\"&lt; 0.3\", \" (Min. \", min.val, \")\"), \"0.3 ~ 0.4\", \"0.4 ~ 0.5\", \"0.5 ~ 0.6\", paste0(\"&gt;= 0.6\", \" (Max. \", max.val, \")\")),     title = \"Compactness\", legend.show = TRUE) +\n  tm_legend(legend.position = c(0.81, 0.03)) + \n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.13)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map \n\n\n\n\n\n\n\n서울시 동의 콤펙트비 지도를 제작한다.\n\nmin.val &lt;- seoul_dong |&gt; pull(S1) |&gt; min() |&gt; format(digits = 3)\nmax.val &lt;- seoul_dong |&gt; pull(S1) |&gt; max() |&gt; format(digits = 3)\nmy_map &lt;- tm_shape(seoul_dong) + \n  tm_polygons(\n    col = \"S1\", \n    palette = \"BuPu\", \n    style = \"fixed\", \n    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),\n    labels = c(paste0(\"&lt; 0.3\", \" (Min. \", min.val, \")\"), \"0.3 ~ 0.4\", \"0.4 ~ 0.5\", \"0.5 ~ 0.6\", paste0(\"&gt;= 0.6\", \" (Max. \", max.val, \")\")),     title = \"Compactness\", legend.show = TRUE) +\n  tm_shape(seoul_gu) + tm_borders(col = \"gray20\", lwd = 2) +\n  tm_legend(legend.position = c(0.81, 0.03)) + \n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.13)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>측정</span>"
+    ]
+  },
+  {
+    "objectID": "vector_layer_creation.html",
+    "href": "vector_layer_creation.html",
+    "title": "\n9  벡터 레이어 생성\n",
+    "section": "",
+    "text": "9.1 경위도 좌표값을 이용한 지오코딩(Geocoding)\n서울 열린데이터 광장에서 구한 지하철역의 경위도 좌표값을 바탕으로 포인트 레이터를 생성한다.\n필수 패키지를 불러온다.\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(readxl)\n서울시의 관련 데이터를 불러온다.\nseoul_gu &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp\")\nseoul_dong &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp\")\nseoul &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp\")\nseoul_subst_coords &lt;- read_excel(\"D:/My R/GIS/서울시 역사마스터 정보.xlsx\") \nseoul_subst &lt;- st_as_sf(seoul_subst_coords, coords = c(\"위도\", \"경도\"), crs = 4326)\nseoul_subst &lt;- seoul_subst |&gt; \n  st_transform(crs = st_crs(seoul)) |&gt; \n  st_intersection(seoul)\n지도를 제작한다.\ntm_shape(seoul_gu) + tm_polygons(col = \"gray95\") +\n  tm_shape(seoul_subst) + tm_symbols(col = \"black\", size = 0.2) +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>벡터 레이어 생성</span>"
+    ]
+  },
+  {
+    "objectID": "vector_layer_creation.html#주소를-이용한-지오코딩",
+    "href": "vector_layer_creation.html#주소를-이용한-지오코딩",
+    "title": "\n9  벡터 레이어 생성\n",
+    "section": "\n9.2 주소를 이용한 지오코딩",
+    "text": "9.2 주소를 이용한 지오코딩\n스타벅스의 실제 위치에 대한 파일을 불러들인다. 이것은 위와 동일한 방식으로 경위도 좌표값에 기반하여 생성된 것이다.\n\nstarbucks_seoul_real &lt;- st_read(\"D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp\")\nqtm(starbucks_seoul_real)\n\n\n\n\n\n\n\n다음의 스타벅스의 주소를 기반으로 지오코딩하여 얻은 파일을 불러들인다. ggmap 패키지의 오픈 API를 이용하여 지오코딩한 것이다.\n\nstarbucks_seoul_geocoding &lt;- st_read(\"D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp\")\nqtm(starbucks_seoul_geocoding)\n\n\n\n\n\n\n\n지도를 제작한다.\n\nmy_map &lt;- tm_shape(seoul_gu) + tm_polygons(col = \"gray95\") +\n  tm_shape(starbucks_seoul_real) + tm_dots(col = \"red\", size = 0.2, alpha = 1) +\n  tm_shape(starbucks_seoul_geocoding) + tm_dots(col = \"black\", size = 0.2, alpha = 0.3) +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>벡터 레이어 생성</span>"
+    ]
+  },
+  {
+    "objectID": "vector_layer_creation.html#센트로이드",
+    "href": "vector_layer_creation.html#센트로이드",
+    "title": "\n9  벡터 레이어 생성\n",
+    "section": "\n9.3 센트로이드",
+    "text": "9.3 센트로이드\n\n9.3.1 컨벡스헐(convex hull)\n\nseoul_gu_ch &lt;- st_convex_hull(seoul_gu)\nmy_map &lt;- tm_shape(seoul_gu) + tm_polygons() +\n  tm_shape(seoul_gu_ch) + tm_borders(col = \"red\") +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n9.3.2 최소포괄직사각형(minimum bounding rectangle)\n서울시 전체에 대한 MBR은 다음과 같이 구할 수 있다.\n\nseoul_mbr &lt;- st_as_sfc(st_bbox(seoul_gu))\nqtm(seoul_mbr) + qtm(seoul_gu)\n\n\n\n\n\n\n\n그런데 구 각각에 대해 MBR을 만드는 것은 쉽지 않다.\n\nbbox_wrap &lt;- function(x) st_as_sfc(st_bbox(x))\nseoul_gu_mbr &lt;- seoul_gu |&gt; \n  group_by(SGG1_CD) |&gt; \n  nest() |&gt; \n  ungroup() |&gt; \n  mutate(\n    bbox = map(data, bbox_wrap)\n  ) |&gt; \n  mutate(\n    geometry = st_as_sfc(do.call(rbind, bbox), crs = st_crs(seoul_gu))\n  ) |&gt; \n  select(-data, -bbox) |&gt; \n  st_as_sf()\nqtm(seoul_gu_mbr) + qtm(seoul_gu)\n\n\n\n\n\n\n\n이제 지도를 제작한다.\n\nmy_map &lt;- tm_shape(seoul_gu) + tm_polygons() +\n  tm_shape(seoul_gu_mbr) + tm_borders(col = \"red\") +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>벡터 레이어 생성</span>"
+    ]
+  },
+  {
+    "objectID": "vector_layer_creation.html#평균중심점mc",
+    "href": "vector_layer_creation.html#평균중심점mc",
+    "title": "\n9  벡터 레이어 생성\n",
+    "section": "\n9.4 평균중심점(MC)",
+    "text": "9.4 평균중심점(MC)",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>벡터 레이어 생성</span>"
+    ]
+  },
+  {
+    "objectID": "vector_layer_creation.html#최소포괄직사각형중심점cmbr",
+    "href": "vector_layer_creation.html#최소포괄직사각형중심점cmbr",
+    "title": "\n9  벡터 레이어 생성\n",
+    "section": "\n9.5 최소포괄직사각형중심점(CMBR)",
+    "text": "9.5 최소포괄직사각형중심점(CMBR)\n\nseoul_gu_mbr_center &lt;- st_centroid(seoul_gu_mbr)\nmy_map &lt;- tm_shape(seoul_gu) + tm_polygons() +\n  tm_shape(seoul_gu_mbr) + tm_borders(col = \"red\", lty = 2) +\n  tm_shape(seoul_gu_mbr_center) + tm_dots(col = \"black\", size = 0.2) +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>벡터 레이어 생성</span>"
+    ]
+  },
+  {
+    "objectID": "vector_layer_creation.html#질량중심점cm",
+    "href": "vector_layer_creation.html#질량중심점cm",
+    "title": "\n9  벡터 레이어 생성\n",
+    "section": "\n9.6 질량중심점(CM)",
+    "text": "9.6 질량중심점(CM)\n서울시 구의 질량중심점을 표현한다.\n\nseoul_gu_cm &lt;- st_centroid(seoul_gu)\nmy_map &lt;- tm_shape(seoul_gu) + tm_polygons() +\n  tm_shape(seoul_gu_cm) + tm_dots(col = \"black\", size = 0.2) +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n서울시 동의 질량중심점을 표현한다.\n\nseoul_dong_cm &lt;- st_centroid(seoul_dong)\nmy_map &lt;- tm_shape(seoul_dong) + tm_polygons() +\n  tm_shape(seoul_dong_cm) + tm_dots(col = \"black\", size = 0.2) +\n  tm_shape(seoul_gu) + tm_borders(col = \"black\", lwd = 1) +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n그런데 일부 질량중심점이 폴리곤의 외부에 위치할 수 있다. 이 문제는 다음과 같이 교정할 수 있다.\n\nseoul_dong_cm_on &lt;- st_point_on_surface(seoul_dong)\nmy_map &lt;- tm_shape(seoul_dong) + tm_polygons() +\n  tm_shape(seoul_dong_cm_on) + tm_dots(col = \"black\", size = 0.2) +\n  tm_shape(seoul_gu) + tm_borders(col = \"black\", lwd = 1) +\n  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>벡터 레이어 생성</span>"
+    ]
   }
 ]
