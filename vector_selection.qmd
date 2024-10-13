@@ -70,12 +70,13 @@ qtm(starbucks_closest_station)
 
 ```{r}
 my.map <- tm_shape(seoul_gu) + tm_polygons(lwd = 2, col = "gray95") +
-  tm_shape(starbucks_seoul_real) + tm_dots(size = 0.2, col = "gray70") +
+  tm_shape(starbucks_seoul_real) + tm_dots(size = 0.2, col = "gray50") +
   tm_shape(seoul_subst) + tm_dots(size = 0.2, col = "#377eb8") +
   tm_shape(starbucks_closest_station_unique) + tm_dots(size = 0.2, col = "#e41a1c") +
   tm_legend(legend.position = c(0.81, 0.03)) +
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
-  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Starbucks (680)"), title = "") 
+  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Starbucks (680)"), title = "") +
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 my.map
 ```
 
@@ -83,13 +84,13 @@ my.map
 #| echo: false
 #| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons(lwd = 2, col = "gray95") +
-  tm_shape(starbucks_seoul_real) + tm_dots(size = 0.3, col = "gray70") +
+  tm_shape(starbucks_seoul_real) + tm_dots(size = 0.3, col = "gray50") +
   tm_shape(seoul_subst) + tm_dots(size = 0.3, col = "#377eb8") +
   tm_shape(starbucks_closest_station_unique) + tm_dots(size = 0.3, col = "#e41a1c") +
   tm_legend(legend.title.size = 1.25, legend.text.size = 1.25, legend.position = c(0.80, 0.05)) +
-  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray70"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Starbucks (680)"), title = "") + 
+  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Starbucks (680)"), title = "") + 
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
-  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01)) + 
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
@@ -250,7 +251,9 @@ seoul_dong_3 <- seoul_dong[which(lengths(st_covered_by(seoul_dong, nambu_cir_100
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
   tm_shape(seoul_dong_1) + tm_polygons(col = "gray50", border.col = "gray30") +
   tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 3) +
-  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
 
@@ -260,9 +263,8 @@ my_map
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
   tm_shape(seoul_dong_1) + tm_polygons(col = "gray50", border.col = "gray30") +
   tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 5) +
-  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
-my_map +
-    tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -277,7 +279,9 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
   tm_shape(seoul_dong_2) + tm_polygons(col = "gray50", border.col = "gray30") +
   tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 3) +
-  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
 
@@ -287,9 +291,8 @@ my_map
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
   tm_shape(seoul_dong_2) + tm_polygons(col = "gray50", border.col = "gray30") +
   tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 5) +
-  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
-my_map +
-    tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -304,7 +307,9 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
   tm_shape(seoul_dong_3) + tm_polygons(col = "gray50", border.col = "gray30") +
   tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 3) +
-  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
 
@@ -314,9 +319,8 @@ my_map
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
   tm_shape(seoul_dong_3) + tm_polygons(col = "gray50", border.col = "gray30") +
   tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 5) +
-  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
-my_map +
-    tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20") +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
