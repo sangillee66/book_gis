@@ -35,9 +35,9 @@ library(readxl)
 
 ```{r}
 #| results: hide
-seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
-seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
-seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
 seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
 seoul_subst <- seoul_subst |> 
@@ -76,14 +76,13 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```{r}
 #| results: hide
 starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp")
-qtm(starbucks_seoul_real)
 ```
 
 다음의 스타벅스의 주소를 기반으로 지오코딩하여 얻은 파일을 불러들인다. `ggmap` 패키지의 오픈 API를 이용하여 지오코딩한 것이다.
 
 ```{r}
 #| results: hide
-starbucks_seoul_geocoding <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp")
+starbucks_seoul_geocoding <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", options = "ENCODING=CP949")
 qtm(starbucks_seoul_geocoding)
 ```
 

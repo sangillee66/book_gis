@@ -14,4 +14,315 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 공간적 관계에 기반한 공간적 선택
+
+필수적인 패키지를 불러온다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(readxl)
+```
+
+서울의 관련 데이터를 불러온다.
+
+```{r}
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
+seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
+```
+
+### 포인트-투-포인트
+
+지하철역에 가장 가까이에 위치한 스타벅스를 선택한다. 우선 지하철역 데이터를 불러온다.
+
+```{r}
+seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
+seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
+seoul_subst <- seoul_subst |> 
+  st_transform(crs = st_crs(seoul_sido)) |> 
+  st_intersection(seoul_sido)
+```
+
+스타벅스 데이터를 불러온다.
+
+```{r}
+starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", options = "ENCODING=CP949")
+starbucks_seoul_real <- st_transform(starbucks_seoul_real, crs = st_crs(seoul_sido))
+```
+
+공간적 관계에 기반한 공간적 선택을 실행한다.
+
+```{r}
+starbucks_closest_station_index <- st_nearest_feature(seoul_subst, starbucks_seoul_real) 
+starbucks_closest_station <- starbucks_seoul_real[starbucks_closest_station_index, ]
+starbucks_closest_station_unique <- starbucks_closest_station[!duplicated(starbucks_closest_station$Sotre_nm), ]
+qtm(starbucks_closest_station)
+```
+
+지도를 생성한다.
+
+```{r}
+my.map <- tm_shape(seoul_gu) + tm_polygons(lwd = 2, col = "gray95") +
+  tm_shape(starbucks_seoul_real) + tm_dots(size = 0.2, col = "gray70") +
+  tm_shape(seoul_subst) + tm_dots(size = 0.2, col = "#377eb8") +
+  tm_shape(starbucks_closest_station_unique) + tm_dots(size = 0.2, col = "#e41a1c") +
+  tm_legend(legend.position = c(0.81, 0.03)) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Starbucks (680)"), title = "") 
+my.map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu) + tm_polygons(lwd = 2, col = "gray95") +
+  tm_shape(starbucks_seoul_real) + tm_dots(size = 0.3, col = "gray70") +
+  tm_shape(seoul_subst) + tm_dots(size = 0.3, col = "#377eb8") +
+  tm_shape(starbucks_closest_station_unique) + tm_dots(size = 0.3, col = "#e41a1c") +
+  tm_legend(legend.title.size = 1.25, legend.text.size = 1.25, legend.position = c(0.80, 0.05)) +
+  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray70"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Starbucks (680)"), title = "") + 
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01)) + 
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_포인트_포인트", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 포인트-인-폴리곤
+
+관악구 내의 스타벅스만 선택한다. 우선 관악구만 선택한다.
+
+```{r}
+gwanak_gu <- seoul_gu |> 
+  filter(
+    SGG1_NM == "관악구"
+  )
+```
+
+관악구 내에 포함되는 스타벅스를 선택한다.
+
+```{r}
+starbucks_gwanak <- starbucks_seoul_real |> 
+  st_intersection(gwanak_gu)
+qtm(starbucks_gwanak)
+```
+
+지도로 나타낸다.
+
+```{r}
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray98", lwd = 1) +
+  tm_shape(gwanak_gu) + tm_polygons(col = "gray70") +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(starbucks_gwanak) + tm_dots(col = "red", size = 0.2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray98", lwd = 1) +
+  tm_shape(gwanak_gu) + tm_polygons(col = "gray70") +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(starbucks_gwanak) + tm_dots(col = "red", size = 0.3) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_포인트_폴리곤", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+### 라인-온-폴리곤
+
+서울시 도로망 데이터를 불러온다.
+
+```{r}
+#| results: hide
+seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp", options = "ENCODING=CP949")
+```
+
+중구만 선택한다.
+
+```{r}
+jung_gu <- seoul_gu |> 
+  filter(
+    SGG1_NM == "중구"
+  )
+```
+
+중구와 인터섹터의 관계에 있는 도로만 선택한다.
+
+```{r}
+jung_gu_sn <- seoul_sn[which(lengths(st_intersects(seoul_sn, jung_gu)) > 0), ]
+qtm(jung_gu_sn)
+```
+
+지도를 생성한다.
+
+```{r}
+my_map <- tm_shape(seoul_gu, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_라인_폴리곤", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+중구만 확대한 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 2.5, 0.5), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +  
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 2.5, 0.5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.84, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_라인_폴리곤_확대", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+### 폴리곤-온-폴리곤
+
+남부순환로로부터 1,000m 이내 지역에 대한 버퍼를 통해 동을 선택한다. 우선 버퍼를 생성한다.
+
+```{r}
+nambu_cir <- seoul_sn |> 
+  filter(
+    ROAD_NAME %in% c("남부순환로")
+  )
+nambu_cir_1000 <- st_union(st_buffer(nambu_cir, dist = 1000))
+```
+
+'일부 교차', '센트로이드 포함', '완전 포함'으로 분류하기 위한 작업을 한다. 우선 동의 센트로이드를 계산한다.
+
+```{r}
+seoul_dong_centroid <- st_centroid(seoul_dong)
+```
+
+```{r}
+seoul_dong_1 <- seoul_dong[which(lengths(st_intersects(seoul_dong, nambu_cir_1000)) > 0), ]
+seoul_dong_2 <- seoul_dong[which(lengths(st_intersects(seoul_dong_centroid, nambu_cir_1000)) > 0), ]
+seoul_dong_3 <- seoul_dong[which(lengths(st_covered_by(seoul_dong, nambu_cir_1000)) > 0), ]
+```
+
+'일부 교차'에 대한 지도를 생성한다.
+
+```{r}
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_dong_1) + tm_polygons(col = "gray50", border.col = "gray30") +
+  tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 3) +
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_dong_1) + tm_polygons(col = "gray50", border.col = "gray30") +
+  tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 5) +
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+my_map +
+    tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_폴리곤_폴리곤_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+'센트로이드 포함'에 대한 지도를 생성한다.
+
+```{r}
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_dong_2) + tm_polygons(col = "gray50", border.col = "gray30") +
+  tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 3) +
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_dong_2) + tm_polygons(col = "gray50", border.col = "gray30") +
+  tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 5) +
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+my_map +
+    tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_폴리곤_폴리곤_2", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+'완전 포함'에 대한 지도를 생성한다.
+
+```{r}
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_dong_3) + tm_polygons(col = "gray50", border.col = "gray30") +
+  tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 3) +
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_dong_3) + tm_polygons(col = "gray50", border.col = "gray30") +
+  tm_shape(nambu_cir_1000) + tm_borders(col = "black", lwd = 5) +
+  tm_shape(seoul_gu) + tm_borders(lwd = 2, col = "gray20")
+my_map +
+    tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_공간적선택_폴리곤_폴리곤_3", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```

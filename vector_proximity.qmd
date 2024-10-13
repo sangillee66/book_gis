@@ -14,4 +14,214 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 버퍼링
+
+필수적인 패키지를 불러온다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+```
+
+서울시의 관련 데이터를 불러온다.
+
+```{r}
+#| results: hide
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+```
+
+### 포인트 버퍼링
+
+지하철 역세권을 나타내본다. 우선, 서울시 지하철역 지도를 생성한다.
+
+```{r}
+seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
+seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
+seoul_subst <- seoul_subst |> 
+  st_transform(crs = st_crs(seoul)) |> 
+  st_intersection(seoul)
+```
+
+역으로부터 반경 500미터 이내 지역을 선택한다.
+
+```{r}
+seoul_subst_500 <- st_union(st_buffer(seoul_subst, dist = 500))
+qtm(seoul_subst_500)
+```
+
+지도를 생성한다.
+
+```{r}
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray95", lwd = 2) +
+  tm_shape(seoul_subst_500) + tm_polygons(col = "gray50", alpha = 0.5) +
+  tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray95", lwd = 2) +
+  tm_shape(seoul_subst_500) + tm_polygons(col = "gray50", alpha = 0.5) +
+  tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.3) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_버퍼링_포인트", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 라인 버퍼링
+
+데이터를 불러온다. 서울시의 도로망 데이터를 사용한다.
+
+```{r}
+#| results: hide
+seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp", options = "ENCODING=CP949")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+```
+
+남부순환로에로부터 1,000m 이내 지역에 대한 버퍼렁 만든다.
+
+```{r}
+nambu_cir <- seoul_sn |> 
+  filter(
+    ROAD_NAME %in% c("남부순환로")
+  )
+nambu_cir_1000 <- st_union(st_buffer(nambu_cir, dist = 1000))
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray98", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray50") +
+  tm_shape(nambu_cir_1000) + tm_polygons(col = "gray50", alpha = 0.5) +
+  tm_shape(nambu_cir) + tm_lines(col = "red", lwd = 3) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray98", lwd = 2, border.col = "gray20") +
+  tm_shape(seoul_sn) + tm_lines(lwd = 0.5, col = "gray50") +
+  tm_shape(nambu_cir_1000) + tm_polygons(col = "gray50", alpha = 0.5) +
+  tm_shape(nambu_cir) + tm_lines(col = "red", lwd = 5) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_버퍼링_라인", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+### 폴리곤 버퍼링
+
+서울시 중구에 대해 버퍼링을 적용한다. 우선 중구를 선택한다.
+
+```{r}
+jung_gu <- seoul_gu |> 
+  filter(
+    SGG1_NM == "중구"
+  )
+```
+
+중구로부터 2km, 5km, 10km의 버퍼를 생성한다.
+
+```{r}
+jung_gu_2000 <- st_union(st_buffer(jung_gu, dist = 2000))
+jung_gu_5000 <- st_union(st_buffer(jung_gu, dist = 5000))
+jung_gu_10000 <- st_union(st_buffer(jung_gu, dist = 10000))
+
+qtm(jung_gu_10000) + qtm(jung_gu_5000) + qtm(jung_gu_2000)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(jung_gu_10000) + tm_polygons(col = "#fee8c8") +
+  tm_shape(jung_gu_5000) + tm_polygons(col = "#fdbb84") +
+  tm_shape(jung_gu_2000) + tm_polygons(col = "#e34a33") +
+  tm_shape(seoul_gu, is.master = TRUE) + tm_borders() +
+  tm_shape(jung_gu) + tm_polygons(col = "gray60", lwd = 2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(jung_gu_10000) + tm_polygons(col = "#fee8c8") +
+  tm_shape(jung_gu_5000) + tm_polygons(col = "#fdbb84") +
+  tm_shape(jung_gu_2000) + tm_polygons(col = "#e34a33") +
+  tm_shape(seoul_gu, is.master = TRUE) + tm_borders(lwd = 2, col = "gray20") +
+  tm_shape(jung_gu) + tm_polygons(col = "gray60", lwd = 2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_버퍼링_폴리곤", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+## 티센 폴로곤 Thiessen Polygons
+
+스타벅스 매장에 대한 티센 폴리곤을 생성한다. 우선, 스타벅스 데이터를 불러온다.
+
+```{r}
+#| results: hide
+starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp")
+starbucks_seoul_real <- st_transform(starbucks_seoul_real, crs = st_crs(seoul_sido))
+```
+
+티센 폴리곤을 생성한다.
+
+```{r}
+starbucks_seoul_thiessen <- starbucks_seoul_real |> 
+  st_union() |> 
+  st_voronoi(st_as_sfc(st_bbox(seoul.sido))) |> 
+  st_cast() |> 
+  st_intersection(seoul_sido)
+qtm(starbucks_seoul_thiessen)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(starbucks_seoul_thiessen) + tm_polygons(col = "gray95") +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "black", size = 0.2, ) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(starbucks_seoul_thiessen) + tm_polygons(col = "gray95") +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "black", size = 0.2, ) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_티센폴리곤", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
