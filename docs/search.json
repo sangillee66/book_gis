@@ -113,7 +113,7 @@
     "href": "part_4.html",
     "title": "벡터-기반 GIS 오퍼레이션",
     "section": "",
-    "text": "이 파트에서는 다음의 내용을 다룬다.\n\n일바화(generalization)\n측정(measurement)\n벡터 레이어 생성\n근접성 분석(proximity analysis)\n공간적 선택(spatial selection)\n재분류(reclassification)\n중첩 분석(overlay analysis)",
+    "text": "이 파트에서는 다음의 내용을 다룬다.\n\n일반화(generalization)\n측정(measurement)\n벡터 레이어 생성\n근접성 분석(proximity analysis)\n공간적 선택(spatial selection)\n재분류(reclassification)\n중첩 분석(overlay analysis)",
     "crumbs": [
       "벡터-기반 GIS 오퍼레이션"
     ]

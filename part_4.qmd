@@ -17,7 +17,7 @@ editor: visual
 
 이 파트에서는 다음의 내용을 다룬다.
 
--   일바화(generalization)
+-   일반화(generalization)
 
 -   측정(measurement)
 
