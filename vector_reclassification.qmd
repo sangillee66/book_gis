@@ -243,6 +243,8 @@ my_map
 ```
 
 ```{r}
+#| echo: false
+#| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
   tm_shape(seoul_dong_sra_25_2) + tm_borders(lwd = 3, col = "gray20") +
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
@@ -282,6 +284,8 @@ my_map
 ```
 
 ```{r}
+#| echo: false
+#| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
   tm_shape(seoul_dong_sra_25_3) + tm_borders(lwd = 3, col = "gray20") +
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
@@ -325,6 +329,8 @@ my_map
 ```
 
 ```{r}
+#| echo: false
+#| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
   tm_shape(seoul_dong_sra_25_4) + tm_borders(lwd = 3, col = "gray20") +
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
@@ -347,6 +353,8 @@ my_map
 ```
 
 ```{r}
+#| echo: false
+#| output: false
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "SGG1_NM", legend.show = FALSE) +
   tm_shape(seoul_gu) + tm_polygons(alpha = 0, lwd = 3, border.col = "gray20") +
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
