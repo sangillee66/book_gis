@@ -14,4 +14,320 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 더글라스-포이커(Douglas-Peucker algorithm)
+
+여기서는 거제시를 사례로 더글라스-포이커 알고리즘을 적용하고자 한다. 기본 패키지를 설치한다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(rmapshaper)
+```
+
+기본 데이터를 불러온다.
+
+```{r}
+#| results: hide
+sigungu1 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SIGUNGU1_2023_2Q.shp", options = "ENCODING=CP949")
+```
+
+거제시에 대한 데이터를 생성한다.
+
+```{r}
+geojae <- sigungu1 |> 
+  filter(
+    SGG1_NM == "거제시"
+  )
+qtm(geojae)
+```
+
+거제시의 버텍스 객수를 센다.
+
+```{r}
+geojae |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+서로 다른 허용오차(tolerance)를 적용하여 폴리곤을 생성한다. 0을 적용한다. 위와 동일한 결과가 나옴을 확인한다.
+
+```{r}
+geojae.0 <- geojae |> 
+  st_simplify(dTolerance = 0)
+geojae.0 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+50미터를 적용한다.
+
+```{r}
+geojae.50 <- geojae |> 
+  st_simplify(dTolerance = 50)
+geojae.50 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+100미터를 적용한다.
+
+```{r}
+geojae.100 <- geojae |> 
+  st_simplify(dTolerance = 100)
+geojae.100 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+500미터를 적용한다.
+
+```{r}
+geojae.500 <- geojae |> 
+  st_simplify(dTolerance = 500)
+geojae.500 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+1,000미터를 적용한다.
+
+```{r}
+geojae.1000 <- geojae |> 
+  st_simplify(dTolerance = 1000)
+geojae.1000 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+서로 다른 허용오차를 적용한 지도를 제작한다. 우선 원 데이터(즉, 0미터)를 제작한다.
+
+```{r}
+tm_shape(geojae.0) + tm_polygons() 
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(geojae.0) + tm_polygons() 
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_일반화_0", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+허용오차 100미터 지도를 제작한다.
+
+```{r}
+tm_shape(geojae.100) + tm_polygons() 
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(geojae.100) + tm_polygons() + tm_layout(frame = FALSE)
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_일반화_100", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+허용오차 500미터 지도를 제작한다.
+
+```{r}
+tm_shape(geojae.500) + tm_polygons()
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(geojae.500) + tm_polygons() + tm_layout(frame = FALSE)
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_일반화_500", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+허용오차 1,000미터 지도를 제작한다.
+
+```{r}
+tm_shape(geojae.500) + tm_polygons()
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(geojae.1000) + tm_polygons() + tm_layout(frame = FALSE)
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_일반화_1000", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+## 비스발리엄-화이엇(Visvalingam-Whyatt) 알고리즘
+
+우리나라 시군구 단위의 데이터에 대한 서로 다른 단순화의 정도를 가진 지도를 제작한다.
+
+우선 0.1%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0010 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0010.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0010)
+```
+
+```{r}
+sigungu1.0010 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+0.2%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0020 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0020.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0020)
+```
+
+```{r}
+sigungu1.0020 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+0.3%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0030 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0030.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0030)
+```
+
+```{r}
+sigungu1.0030 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+0.4%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0040 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0040.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0040)
+```
+
+```{r}
+sigungu1.0040 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+0.5%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0050 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0050.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0050)
+```
+
+```{r}
+sigungu1.0050 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+1%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0100 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0100.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0100)
+```
+
+```{r}
+sigungu1.0100 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+5%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.0500 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_0500.shp", options = "ENCODING=CP949")
+qtm(sigungu1.0500)
+```
+
+```{r}
+sigungu1.0500 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+우선 10%의 버텍스를 남기는 단순화가 적용된 지도이다.
+
+```{r}
+#| results: hide
+sigungu1.1000 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIGUNGU1_2023_2Q_GEN_1000.shp", options = "ENCODING=CP949")
+qtm(sigungu1.1000)
+```
+
+```{r}
+sigungu1.1000 |> st_geometry() |> st_cast("POINT") |> length()
+```
+
+대표적인 두 개에 대해 완전한 지도를 완성한다.
+
+우선, 0.1%를 남기는 지도이다. 여타의 데이터를 불러온다.
+
+```{r}
+#| results: hide
+sido_poly.0100 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIDO_Polyline_2023_2Q_GEN_0010.shp", options = "ENCODING=CP949")
+bbox_seahae.0100 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/BBOX_Seohae3_2023_2Q_GEN_0010.shp", options = "ENCODING=CP949")
+bbox_ulleung.0100 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/BBOX_Ulleung_2023_2Q_GEN_0010.shp", options = "ENCODING=CP949")
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(sigungu1.0010) + tm_polygons() +
+  tm_shape(sido_poly.0100) + tm_lines(col = "black", lwd = 2) +
+  tm_shape(bbox_seahae.0100) + tm_lines() +
+  tm_shape(bbox_ulleung.0100) + tm_lines() +
+  tm_layout(inner.margins = c(0.02, 0.03, 0.02, 0.04)) +
+  tm_scale_bar(breaks = seq(0, 200, 50), color.dark = "gray60", position = c(0.48, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(sigungu1.0010) + tm_polygons() +
+  tm_shape(sido_poly.0100) + tm_lines(col = "black", lwd = 2) +
+  tm_shape(bbox_seahae.0100) + tm_lines() +
+  tm_shape(bbox_ulleung.0100) + tm_lines() +
+  tm_layout(inner.margins = c(0.04, 0.03, 0.02, 0.04)) +
+  tm_scale_bar(breaks = seq(0, 200, 50), text.size = 0.5, color.dark = "gray60", position = c(0.52, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.02, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_일반화_전국_0010", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+다음으로, 10%를 남기는 지도이다. 여타의 데이터를 불러온다.
+
+```{r}
+#| results: hide
+sido_poly.1000 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/SIDO_Polyline_2023_2Q_GEN_0020.shp", options = "ENCODING=CP949")
+bbox_seahae.1000 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/BBOX_Seohae3_2023_2Q_GEN_0020.shp", options = "ENCODING=CP949")
+bbox_ulleung.1000 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/3 Generalization/2023_2Q/BBOX_Ulleung_2023_2Q_GEN_0020.shp", options = "ENCODING=CP949")
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(sigungu1.1000) + tm_polygons() +
+  tm_shape(sido_poly.1000) + tm_lines(col = "black", lwd = 2) +
+  tm_shape(bbox_seahae.1000) + tm_lines() +
+  tm_shape(bbox_ulleung.1000) + tm_lines() +
+  tm_layout(inner.margins = c(0.02, 0.03, 0.02, 0.04)) +
+  tm_scale_bar(breaks = seq(0, 200, 50), color.dark = "gray60", position = c(0.48, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(sigungu1.1000) + tm_polygons() +
+  tm_shape(sido_poly.1000) + tm_lines(col = "black", lwd = 2) +
+  tm_shape(bbox_seahae.1000) + tm_lines() +
+  tm_shape(bbox_ulleung.1000) + tm_lines() +
+  tm_layout(inner.margins = c(0.04, 0.03, 0.02, 0.04)) +
+  tm_scale_bar(breaks = seq(0, 200, 50), text.size = 0.5, color.dark = "gray60", position = c(0.52, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.02, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_일반화_전국_1000", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```

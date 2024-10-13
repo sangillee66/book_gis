@@ -14,3 +14,19 @@ execute:
   freeze: auto
 editor: visual
 ---
+
+이 파트에서는 다음의 내용을 다룬다.
+
+-   일바화(generalization)
+
+-   측정(measurement)
+
+-   벡터 레이어 생성
+
+-   근접성 분석(proximity analysis)
+
+-   공간적 선택(spatial selection)
+
+-   재분류(reclassification)
+
+-   중첩 분석(overlay analysis)
