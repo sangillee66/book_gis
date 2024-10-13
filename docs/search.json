@@ -249,5 +249,27 @@
       "벡터-기반 GIS 오퍼레이션",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>공간적 선택</span>"
     ]
+  },
+  {
+    "objectID": "vector_reclassification.html",
+    "href": "vector_reclassification.html",
+    "title": "12  재분류",
+    "section": "",
+    "text": "12.1 합역 Spatial Aggregation",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>재분류</span>"
+    ]
+  },
+  {
+    "objectID": "vector_reclassification.html#합역-spatial-aggregation",
+    "href": "vector_reclassification.html#합역-spatial-aggregation",
+    "title": "12  재분류",
+    "section": "",
+    "text": "12.1.1 무작위 합역 프로세스",
+    "crumbs": [
+      "벡터-기반 GIS 오퍼레이션",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>재분류</span>"
+    ]
   }
 ]

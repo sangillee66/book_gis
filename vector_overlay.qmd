@@ -14,4 +14,150 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 중첩분석 
+
+필수적인 데이터를 패키지를 불러온다.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(readxl)
+```
+
+서울의 관련 데이터를 불러온다.
+
+```{r}
+#| results: hide
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
+seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
+```
+
+## 종류
+
+### 포인트-인-폴리곤
+
+공간적 선택과 마찬가지로 관악구 내의 스타벅스만 선택하여 새로운 포인트 레이어를 생성한다.
+
+```{r}
+gwanak_gu <- seoul_gu |> 
+  filter(
+    SGG1_NM == "관악구"
+  )
+```
+
+```{r}
+starbucks_gwanak <- starbucks_seoul_real |> 
+  st_intersection(gwanak_gu)
+```
+
+지도를 생성한다. 공간적 선택의 지도와 사실상 동일하다.
+
+```{r}
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray98", lwd = 1) +
+  tm_shape(gwanak_gu) + tm_polygons(col = "gray70") +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(starbucks_gwanak) + tm_dots(col = "red", size = 0.2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray98", lwd = 1) +
+  tm_shape(gwanak_gu) + tm_polygons(col = "gray70") +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(starbucks_gwanak) + tm_dots(col = "red", size = 0.3) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_중첩분석_포인트_폴리곤", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+### 라인-온-폴리곤
+
+공간적 선택과 마찬가지로 중구 내부의 도로망만을 선택하여 폴리라인 레이어를 생성한다. 우선 서울시 도로망 데이터를 불러온다.
+
+```{r}
+#| results: hide
+seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp", options = "ENCODING=CP949")
+```
+
+중구만 선택한다.
+
+```{r}
+jung_gu <- seoul_gu |> 
+  filter(
+    SGG1_NM == "중구"
+  )
+```
+
+중구와 인터섹터의 관계에 있는 도로만 선택한다. 선택이 아니라 클립에 해당한다는 사실에 유의한다.
+
+```{r}
+jung_gu_sn <- st_intersection(seoul_sn, jung_gu)
+```
+
+지도를 생성한다.
+
+```{r}
+my_map <- tm_shape(seoul_gu, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_gu, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_중첩분석_라인_폴리곤", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+중구만 확대한 지도를 제작한다. 공간적 선택의 결과와 다름을 이해한다.
+
+```{r}
+my_map <- tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 2.5, 0.5), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(jung_gu) + tm_polygons(col = "gray70", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(jung_gu_sn) + tm_lines(col = "red", lwd = 2) +  
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04)) + 
+  tm_scale_bar(breaks = seq(0, 2.5, 0.5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.84, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_중첩분석_라인_폴리곤_확대", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```

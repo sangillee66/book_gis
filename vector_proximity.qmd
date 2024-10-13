@@ -92,7 +92,7 @@ seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Data
 seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
 ```
 
-남부순환로에로부터 1,000m 이내 지역에 대한 버퍼렁 만든다.
+남부순환로로부터 1,000m 이내 지역에 대한 버퍼렁 만든다.
 
 ```{r}
 nambu_cir <- seoul_sn |> 

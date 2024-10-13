@@ -32,6 +32,7 @@ library(readxl)
 서울의 관련 데이터를 불러온다.
 
 ```{r}
+#| results: hide
 seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
@@ -110,9 +111,7 @@ gwanak_gu <- seoul_gu |>
 관악구 내에 포함되는 스타벅스를 선택한다.
 
 ```{r}
-starbucks_gwanak <- starbucks_seoul_real |> 
-  st_intersection(gwanak_gu)
-qtm(starbucks_gwanak)
+starbucks_gwanak <- starbucks_seoul_real[which(lengths(st_intersects(starbucks_seoul_real, gwanak_gu)) > 0), ]
 ```
 
 지도로 나타낸다.
@@ -165,7 +164,6 @@ jung_gu <- seoul_gu |>
 
 ```{r}
 jung_gu_sn <- seoul_sn[which(lengths(st_intersects(seoul_sn, jung_gu)) > 0), ]
-qtm(jung_gu_sn)
 ```
 
 지도를 생성한다.

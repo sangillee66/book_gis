@@ -15,3 +15,7 @@ execute:
   freeze: auto
 editor: visual
 ---
+
+## 합역 Spatial Aggregation
+
+### 무작위 합역 프로세스
