@@ -76,10 +76,12 @@ seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 
 #| fig-cap: 피처 클래스
 tm_shape(seoul) + tm_polygons(col = "gray98") +
   tm_shape(seoul_sn) + tm_lines(col = "gray70") +
-  tm_shape(seoul_gu, is.master = TRUE) + tm_borders(lwd = 2) +
-  tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.2) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
-  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+  tm_shape(seoul_gu, is.master = TRUE) + tm_borders(lwd = 1.5) +
+  tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.15) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Feature Classes", title.size = 1,
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 ```
 
 ```{r}
@@ -89,9 +91,13 @@ my_map <- tm_shape(seoul) + tm_polygons(col = "gray98") +
   tm_shape(seoul_sn) + tm_lines(col = "gray70") +
   tm_shape(seoul_gu, is.master = TRUE) + tm_borders(lwd = 2, col = "gray20") +
   tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.3) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "Feature Classes", title.size = 2, title.position = c(0.02, 0.97)) + 
-  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
-  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Feature Classes", title.size = 2, 
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, 
+               color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024",
+             size = 0.8, position = c(0.76, 0.01))
 my_map 
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "피처 클래스", ".jpg")

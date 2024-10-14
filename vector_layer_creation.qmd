@@ -49,8 +49,12 @@ seoul_subst <- seoul_subst |>
 
 ```{r}
 tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
-  tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.2) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.15) +
+  tm_legend(legend.position = c(0.75, 0.03)) +
+  tm_add_legend(type = "symbol", size = 0.80, col = "black", shape = 16, labels = "Subway Stations", title = "") +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Geocoding: Coordinates", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 ```
 
@@ -60,7 +64,11 @@ tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
 my_map <- 
   tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
   tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.3) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_legend(legend.title.size = 1.25, legend.text.size = 1.25, legend.position = c(0.820, 0.08)) +
+  tm_add_legend(type = "symbol", size = 0.70, col = "black", shape = 16, labels = "Subway Stations", title = "") +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Geocoding: Coordinates", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -90,9 +98,13 @@ qtm(starbucks_seoul_geocoding)
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
-  tm_shape(starbucks_seoul_real) + tm_dots(col = "red", size = 0.2, alpha = 1) +
+  tm_shape(starbucks_seoul_real) + tm_dots(col = "red", size = 0.15, alpha = 1) +
   tm_shape(starbucks_seoul_geocoding) + tm_dots(col = "black", size = 0.2, alpha = 0.3) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_legend(legend.position = c(0.75, 0.03)) +
+  tm_add_legend(type = "symbol", size = 0.80, col = "black", shape = 16, labels = "Starbucks", title = "") +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Geocoding: Addresses", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
@@ -103,7 +115,11 @@ my_map
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
   tm_shape(starbucks_seoul_real) + tm_dots(col = "red", size = 0.5, alpha = 1) +
   tm_shape(starbucks_seoul_geocoding) + tm_dots(col = "black", size = 0.5, alpha = 0.3) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_legend(legend.title.size = 1.25, legend.text.size = 1.25, legend.position = c(0.820, 0.08)) +
+  tm_add_legend(type = "symbol", size = 0.80, col = "black", shape = 16, labels = "Starbucks", title = "") +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Geocoding: Addresses", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -158,8 +174,10 @@ qtm(seoul_gu_mbr) + qtm(seoul_gu)
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
-  tm_shape(seoul_gu_mbr) + tm_borders(col = "red") +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2, lwd = 1) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Minimum Bounding Rectangle", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
@@ -168,8 +186,10 @@ my_map
 #| echo: false
 #| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
-  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 1) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2, lwd = 2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Minimum Bounding Rectangle", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -186,9 +206,11 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```{r}
 seoul_gu_mbr_center <- st_centroid(seoul_gu_mbr)
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
-  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2) +
-  tm_shape(seoul_gu_mbr_center) + tm_dots(col = "black", size = 0.2) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2, lwd = 1) +
+  tm_shape(seoul_gu_mbr_center) + tm_dots(col = "black", size = 0.15) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "CMBR", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
@@ -197,9 +219,11 @@ my_map
 #| echo: false
 #| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
-  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2) +
+  tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2, lwd = 2) +
   tm_shape(seoul_gu_mbr_center) + tm_dots(col = "black", size = 0.3) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "CMBR", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -215,8 +239,10 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```{r}
 seoul_gu_cm <- st_centroid(seoul_gu)
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
-  tm_shape(seoul_gu_cm) + tm_dots(col = "black", size = 0.2) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_shape(seoul_gu_cm) + tm_dots(col = "black", size = 0.15) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Center of Mass", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
@@ -226,7 +252,9 @@ my_map
 #| output: false
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
   tm_shape(seoul_gu_cm) + tm_dots(col = "black", size = 0.3) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Center of Mass", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -240,9 +268,11 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```{r}
 seoul_dong_cm <- st_centroid(seoul_dong)
 my_map <- tm_shape(seoul_dong) + tm_polygons() +
-  tm_shape(seoul_dong_cm) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(seoul_dong_cm) + tm_dots(col = "black", size = 0.15) +
   tm_shape(seoul_gu) + tm_borders(col = "black", lwd = 1) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Center of Mass", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
@@ -251,9 +281,11 @@ my_map
 #| echo: false
 #| output: false
 my_map <- tm_shape(seoul_dong) + tm_polygons() +
-  tm_shape(seoul_dong_cm) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(seoul_dong_cm) + tm_dots(col = "black", size = 0.15) +
   tm_shape(seoul_gu) + tm_borders(col = "black", lwd = 2) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Center of Mass", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -267,9 +299,11 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```{r}
 seoul_dong_cm_on <- st_point_on_surface(seoul_dong)
 my_map <- tm_shape(seoul_dong) + tm_polygons() +
-  tm_shape(seoul_dong_cm_on) + tm_dots(col = "black", size = 0.2) +
+  tm_shape(seoul_dong_cm_on) + tm_dots(col = "black", size = 0.15) +
   tm_shape(seoul_gu) + tm_borders(col = "black", lwd = 1) +
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Center of Mass 2", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
 my_map
 ```
@@ -280,7 +314,9 @@ my_map
 my_map <- tm_shape(seoul_dong) + tm_polygons() +
   tm_shape(seoul_dong_cm_on) + tm_dots(col = "red", size = 0.2) +
   tm_shape(seoul_gu) + tm_borders(col = "black", lwd = 2) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), title = "", title.size = 2, title.position = c(0.02, 0.97)) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Center of Mass 2", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 

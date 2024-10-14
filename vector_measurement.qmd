@@ -101,13 +101,12 @@ min.val <- seoul_gu |> pull(S1) |> min() |> format(digits = 3)
 max.val <- seoul_gu |> pull(S1) |> max() |> format(digits = 3)
 my_map <- tm_shape(seoul_gu) + 
   tm_polygons(
-    col = "S1", 
-    palette = "BuPu", 
-    style = "fixed", 
-    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),
+    col = "S1", palette = "BuPu", style = "fixed", breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),
     labels = c(paste0("< 0.3", " (Min. ", min.val, ")"), "0.3 ~ 0.4", "0.4 ~ 0.5", "0.5 ~ 0.6", paste0(">= 0.6", " (Max. ", max.val, ")")),     title = "Compactness", legend.show = TRUE) +
   tm_legend(legend.position = c(0.81, 0.03)) + 
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.13)) + 
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.13), 
+            title = "Compactness Ratio", title.size = 1,
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 my_map 
 ```
@@ -119,13 +118,12 @@ min.val <- seoul_gu |> pull(S1) |> min() |> format(digits = 3)
 max.val <- seoul_gu |> pull(S1) |> max() |> format(digits = 3)
 my_map <- tm_shape(seoul_gu) + 
   tm_polygons(
-    col = "S1", 
-    palette = "BuPu", 
-    style = "fixed", 
-    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),
+    col = "S1", palette = "BuPu", style = "fixed", breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),
     labels = c(paste0("< 0.3", " (Min. ", min.val, ")"), "0.3 ~ 0.4", "0.4 ~ 0.5", "0.5 ~ 0.6", paste0(">= 0.6", " (Max. ", max.val, ")")),     title = "Compactness", legend.show = TRUE) +
   tm_legend(legend.title.size = 1.5, legend.text.size = 1.25, legend.position = c(0.84, 0.06)) + 
-  tm_layout(inner.margins = c(0.05, 0.04, 0.05, 0.1)) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.05, 0.1), 
+            title = "Compactness Ratio", title.size = 2, 
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01)) + 
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
@@ -144,11 +142,13 @@ my_map <- tm_shape(seoul_dong) +
     col = "S1", 
     palette = "BuPu", 
     style = "fixed", 
-    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),
-    labels = c(paste0("< 0.3", " (Min. ", min.val, ")"), "0.3 ~ 0.4", "0.4 ~ 0.5", "0.5 ~ 0.6", paste0(">= 0.6", " (Max. ", max.val, ")")),     title = "Compactness", legend.show = TRUE) +
+    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1),
+    labels = c(paste0("< 0.3", " (Min. ", min.val, ")"), "0.3 ~ 0.4", "0.4 ~ 0.5", "0.5 ~ 0.6", "0.6 ~ 0.7", "0.7 ~ 0.8", paste0(">= 0.8", " (Max. ", max.val, ")")),     title = "Compactness", legend.show = TRUE) +
   tm_shape(seoul_gu) + tm_borders(col = "gray20", lwd = 2) +
   tm_legend(legend.position = c(0.81, 0.03)) + 
-  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.13)) + 
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.13), 
+            title = "Compactness Ratio", title.size = 1,
+            title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
 my_map 
 ```
@@ -163,11 +163,13 @@ my_map <- tm_shape(seoul_dong) +
     col = "S1", 
     palette = "BuPu", 
     style = "fixed", 
-    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 1),
-    labels = c(paste0("< 0.3", " (Min. ", min.val, ")"), "0.3 ~ 0.4", "0.4 ~ 0.5", "0.5 ~ 0.6", paste0(">= 0.6", " (Max. ", max.val, ")")),     title = "Compactness", legend.show = TRUE) +
+    breaks = c(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1),
+    labels = c(paste0("< 0.3", " (Min. ", min.val, ")"), "0.3 ~ 0.4", "0.4 ~ 0.5", "0.5 ~ 0.6", "0.6 ~ 0.7", "0.7 ~ 0.8", paste0(">= 0.8", " (Max. ", max.val, ")")),     title = "Compactness", legend.show = TRUE) +
   tm_shape(seoul_gu) + tm_borders(col = "gray20", lwd = 2) +
-  tm_legend(legend.title.size = 1.5, legend.text.size = 1.25, legend.position = c(0.84, 0.06)) + 
-  tm_layout(inner.margins = c(0.05, 0.04, 0.05, 0.1)) +    
+  tm_legend(legend.title.size = 1.5, legend.text.size = 1.25, legend.position = c(0.84, 0.04)) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.05, 0.1), 
+            title = "Compactness Ratio", title.size = 2, 
+            title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01)) + 
   tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
 my_map 
