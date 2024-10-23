@@ -18,9 +18,11 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 ## 준비
 
 필수적인 패키지를 불러온다.
+
 
 ```{r}
 library(tidyverse)
@@ -29,7 +31,9 @@ library(tmap)
 library(spdep)
 ```
 
+
 서울과 관련된 데이터를 불러온다.
+
 
 ```{r}
 #| results: hide
@@ -38,11 +42,13 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 ```
 
+
 ## 합역 Spatial Aggregation
 
 ### 무작위 합역 프로세스
 
 다음과 같은 함수를 사용한다.
+
 
 ```{r}
 utd.spatial.random.aggregation <- function (nhbr, m.region)
@@ -153,7 +159,9 @@ utd.spatial.random.aggregation <- function (nhbr, m.region)
 
 ```
 
+
 서울시의 426개 동을 25개로 RSA하는 한 가지 경우를 해 본다. 최종 결과로 합역의 인덱스 정보가 산출된다.
+
 
 ```{r}
 seoul_dong_nb <- poly2nb(seoul_dong, queen=FALSE)
@@ -164,7 +172,9 @@ seoul_sra_25_1 <- utd.spatial.random.aggregation(seoul_dong_sn, 25)
 seoul_sra_25_1 <- seoul_sra_25_1$sra
 ```
 
+
 위의 결과를 바탕으로 합역을 진행한다. 우선 seoul_dong에 일련번호를 생성한다. 이것을 공통키로 사용할 것이다.
+
 
 ```{r}
 seoul_dong <- seoul_dong |> 
@@ -173,14 +183,18 @@ seoul_dong <- seoul_dong |>
   )
 ```
 
+
 조인한다.
+
 
 ```{r}
 seoul_dong_1 <- seoul_dong |> 
   left_join(seoul_sra_25_1, join_by(id == agg.id))
 ```
 
+
 합역한다.
+
 
 ```{r}
 seoul_dong_sra_25_1 <- seoul_dong_1 |> 
@@ -191,7 +205,9 @@ seoul_dong_sra_25_1 <- seoul_dong_1 |>
   )
 ```
 
+
 지도를 작성한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
@@ -215,7 +231,9 @@ my.file.name <- paste0(my.path.name, "벡터_재분류_합역1", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
+
 두 번째 합역을 시행한다.
+
 
 ```{r}
 seoul_sra_25_2 <- utd.spatial.random.aggregation(seoul_dong_sn, 25)
@@ -232,7 +250,9 @@ seoul_dong_sra_25_2 <- seoul_dong_2 |>
   )
 ```
 
+
 두 번째 지도를 작성한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
@@ -256,7 +276,9 @@ my.file.name <- paste0(my.path.name, "벡터_재분류_합역2", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
 
+
 세 번째 합역을 시행한다.
+
 
 ```{r}
 seoul_sra_25_3 <- utd.spatial.random.aggregation(seoul_dong_sn, 25)
@@ -273,7 +295,9 @@ seoul_dong_sra_25_3 <- seoul_dong_3 |>
   )
 ```
 
+
 세 번째 지도를 작성한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
@@ -297,7 +321,9 @@ my.file.name <- paste0(my.path.name, "벡터_재분류_합역3", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
 
+
 네 번째 합역을 시행한다.
+
 
 ```{r}
 seoul_dong_nb <- poly2nb(seoul_dong, queen=FALSE)
@@ -318,7 +344,9 @@ seoul_dong_sra_25_4 <- seoul_dong_4 |>
   )
 ```
 
+
 네 번째 지도를 작성한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons(col = "SGG1_NM", border.col = NULL, legend.show = FALSE) +
@@ -342,7 +370,9 @@ my.file.name <- paste0(my.path.name, "벡터_재분류_합역4", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
 
+
 레퍼런스 지도를 제작한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "SGG1_NM", legend.show = FALSE) +
@@ -366,9 +396,11 @@ my.file.name <- paste0(my.path.name, "벡터_재분류_참조", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
 
+
 ### 목적함수 합역 프로세스
 
 ChatGPT의 도움을 받아 목적함수 합역 프로세스를 시도해 본다. 필수 패키지를 설치한다.
+
 
 ```{r}
 library(spdep)
@@ -376,7 +408,9 @@ library(GenSA)
 library(readxl)
 ```
 
+
 전국 2020년 센서스용 읍면동 데이터를 불러와 인구 데이터와 조인한다.
+
 
 ```{r}
 #| results: hide
@@ -395,7 +429,9 @@ EMD_2020_pop <- EMD_2020 |>
   )
 ```
 
+
 서울만 골라낸다.
+
 
 ```{r}
 seoul_2020_pop <- EMD_2020_pop |> 
@@ -404,14 +440,18 @@ seoul_2020_pop <- EMD_2020_pop |>
   )
 ```
 
+
 인접성 행렬을 생성한다.
+
 
 ```{r}
 nb <- poly2nb(seoul_2020_pop)
 listw <- nb2listw(nb)
 ```
 
+
 최적화를 실행한다.
+
 
 ```{r}
 set.seed(123)
@@ -448,14 +488,18 @@ write_rds(result, "optimal_zone_1.rds")
 # seoul_2020_pop$zone <- result$par  # 최적화된 구역 할당 결과
 ```
 
+
 결과를 확인해 봅니다.
+
 
 ```{r}
 optimal_res <- read_rds("optimal_zone_1.rds")
 seoul_2020_pop$zone <- result$par
 ```
 
+
 결과를 바탕으로 지오메트리를 생성합니다.
+
 
 ```{r}
 seoul_zone_10 <- seoul_2020_pop |> 
@@ -468,8 +512,11 @@ seoul_zone_10 <- seoul_2020_pop |>
 seoul_zone_10$zone <- as.character(seoul_zone_10$zone)
 ```
 
+
 지도를 생성합니다.
+
 
 ```{r}
 tm_shape(seoul_zone_10) + tm_polygons(col = "zone", style = "cat")
 ```
+

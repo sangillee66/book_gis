@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.549">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Sang-Il Lee">
-
 <title>GIS - 14&nbsp; 개요</title>
 <style>
 code{white-space: pre-wrap;}
@@ -21,8 +18,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -42,7 +72,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -68,35 +100,27 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="styles.css">
+}</script><link rel="stylesheet" href="styles.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">개요</span></h1>
+          <h1 class="quarto-secondary-nav-title">
+<span class="chapter-number">14</span>&nbsp; <span class="chapter-title">개요</span>
+</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">GIS</a> 
     </div>
@@ -108,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
@@ -122,8 +146,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./first_concepts.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">GIS의 개념</span></span></a>
@@ -136,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_2.html" class="sidebar-item-text sidebar-link">
@@ -145,8 +169,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./second_sources.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS 데이터의 원천</span></span></a>
@@ -159,7 +183,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_3.html" class="sidebar-item-text sidebar-link">
@@ -168,8 +192,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./third_sdm.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">공간데이터모델</span></span></a>
@@ -182,7 +206,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_4.html" class="sidebar-item-text sidebar-link">
@@ -191,8 +215,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_generalization.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">일반화</span></span></a>
@@ -235,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_5.html" class="sidebar-item-text sidebar-link">
@@ -244,8 +268,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./raster_intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">개요</span></span></a>
@@ -288,7 +312,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_6.html" class="sidebar-item-text sidebar-link">
@@ -297,8 +321,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sm_intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">공간모델링</span></span></a>
@@ -317,7 +341,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -325,19 +349,36 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EA%B8%B0%EC%B4%88" id="toc-래스터-기초" class="nav-link active" data-scroll-target="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EA%B8%B0%EC%B4%88"><span class="header-section-number">14.1</span> 래스터 기초</a>
+  <ul class="collapse">
+<li><a href="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EC%A2%8C%ED%91%9C%EA%B3%84" id="toc-래스터-좌표계" class="nav-link" data-scroll-target="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EC%A2%8C%ED%91%9C%EA%B3%84"><span class="header-section-number">14.1.1</span> 래스터 좌표계</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EB%A0%88%EC%9D%B4%EC%96%B4%EC%9D%98-%EC%82%AC%EB%A1%80-%EC%84%9C%EC%9A%B8%EC%8B%9C-dem" id="toc-래스터-레이어의-사례-서울시-dem" class="nav-link" data-scroll-target="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EB%A0%88%EC%9D%B4%EC%96%B4%EC%9D%98-%EC%82%AC%EB%A1%80-%EC%84%9C%EC%9A%B8%EC%8B%9C-dem"><span class="header-section-number">14.2</span> 래스터 레이어의 사례: 서울시 DEM</a>
+  <ul class="collapse">
+<li><a href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0" id="toc-데이터-불러오기" class="nav-link" data-scroll-target="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0"><span class="header-section-number">14.2.1</span> 데이터 불러오기</a></li>
+  <li><a href="#%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8-%EC%A7%80%EC%98%A4%EB%A9%94%ED%8A%B8%EB%A6%AC-%ED%99%95%EC%9D%B8" id="toc-기본적인-지오메트리-확인" class="nav-link" data-scroll-target="#%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8-%EC%A7%80%EC%98%A4%EB%A9%94%ED%8A%B8%EB%A6%AC-%ED%99%95%EC%9D%B8"><span class="header-section-number">14.2.2</span> 기본적인 지오메트리 확인</a></li>
+  <li><a href="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EC%A2%8C%ED%91%9C%EA%B3%84%EC%9D%98-%EC%99%95%EB%9E%98" id="toc-래스터-좌표계의-왕래" class="nav-link" data-scroll-target="#%EB%9E%98%EC%8A%A4%ED%84%B0-%EC%A2%8C%ED%91%9C%EA%B3%84%EC%9D%98-%EC%99%95%EB%9E%98"><span class="header-section-number">14.2.3</span> 래스터 좌표계의 왕래</a></li>
+  <li><a href="#%EC%85%80-%EA%B0%92%EC%9D%98-%ED%99%95%EC%9D%B8" id="toc-셀-값의-확인" class="nav-link" data-scroll-target="#%EC%85%80-%EA%B0%92%EC%9D%98-%ED%99%95%EC%9D%B8"><span class="header-section-number">14.2.4</span> 셀 값의 확인</a></li>
+  <li><a href="#%EC%9A%94%EC%95%BD-%ED%86%B5%EA%B3%84%EB%9F%89" id="toc-요약-통계량" class="nav-link" data-scroll-target="#%EC%9A%94%EC%95%BD-%ED%86%B5%EA%B3%84%EB%9F%89"><span class="header-section-number">14.2.5</span> 요약 통계량</a></li>
+  </ul>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">개요</span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">
+<span class="chapter-number">14</span>&nbsp; <span class="chapter-title">개요</span>
+</h1>
 </div>
 
 
@@ -355,7 +396,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 26, 2024</p>
+      <p class="date-modified">October 23, 2024</p>
     </div>
   </div>
     
@@ -363,14 +404,242 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
+</header><section id="래스터-기초" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="래스터-기초">
+<span class="header-section-number">14.1</span> 래스터 기초</h2>
+<section id="래스터-좌표계" class="level3" data-number="14.1.1"><h3 data-number="14.1.1" class="anchored" data-anchor-id="래스터-좌표계">
+<span class="header-section-number">14.1.1</span> 래스터 좌표계</h3>
+<p>래스터 좌표계는 기본적으로 <strong>그리드 좌표계</strong>(grid coordinate system)을 사용하지만, 빠른 검색을 위해 <strong>셀위치 좌표계</strong>(cell position coordinate system)도 함께 사용한다.</p>
+<p><strong>그리드 좌표계</strong>의 원점(0, 0)은 CRS에 의거해 주어지는 것으로 서남쪽 어딘가(보통 해당 그리드 내부에 있지 않음) 존재한다. 그러므로 동쪽과 북쪽으로 갈수록 좌표값이 증가한다. 해당 그리드의 최서남단 꼭지점에 동거와 북거가 가장 작은 지점이 존재하고, 이것을 해당 래스터의 그리드 원점이라고 부른다. 개별 래스터 데이터는 그리드 영역(extent) 정보를 가지고 있는데, 동거의 최소값과 최대값, 북거의 최소값과 최대값이 주어진다. 이 정보와 셀 크기(그리드 셀의 한 변의 길이)를 이용해 래스터 내부의 위치(주로, 개별 그리드 셀의 네 꼭지점 좌표와 셀 중심점 좌표)에 대한 좌표값을 알 수 있다.</p>
+<p><a href="images/clipboard-2007320168.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/clipboard-2007320168.png" class="img-fluid"></a></p>
+<p><strong>셀위치 좌표계</strong>의 좌표값은 지점에 대한 것이 아니라 그리드 셀 전체의 인덱스로, 해당 그리드 내에서만 통용된다. 최서북단 그리드가 원점 구실을 하고, 그 그리드 셀의 좌표값은 (0, 0)이다. 그것으로부터 동쪽으로 갈수록 셀 좌표값이 1씩 증가하고, 남쪽으로 갈수록 셀 좌표값이 1씩 증가한다. 개별 그리드 셀의 좌표값은 y 축을 먼저 읽고 다음에 x 축을 읽는 방식을 취한다. 그러므로 원점 셀 바로 아래에 있는 셀의 좌표값은 (1, 0)이다.</p>
+<p><a href="images/clipboard-2947632391.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="images/clipboard-2947632391.png" class="img-fluid"></a></p>
+<p>여기에 덧붙여 <strong>셀 일련번호</strong>(cell number)라는 것이 있다. 이것은 셀마다 인덱스 번호를 부여한 것인데, 좌상끝에 위치한 셀에 1을 부여하고, 행별로 일련번호를 붙여나가, 우하끝에 위치한 셀에 마지막 번호를 부여한 것이다.</p>
+</section></section><section id="래스터-레이어의-사례-서울시-dem" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="래스터-레이어의-사례-서울시-dem">
+<span class="header-section-number">14.2</span> 래스터 레이어의 사례: 서울시 DEM</h2>
+<section id="데이터-불러오기" class="level3" data-number="14.2.1"><h3 data-number="14.2.1" class="anchored" data-anchor-id="데이터-불러오기">
+<span class="header-section-number">14.2.1</span> 데이터 불러오기</h3>
+<p>필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 <a href="https://rspatial.github.io/terra/"><code>terra</code></a>를 사용한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-tmap.github.io/tmap/">tmap</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>서울에 대한 SRTM 기반 DEM 데이터를 불러온다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html">rast</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif"</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html">rast</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>서울의 행정구역 바운더리 파일을 불러온다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp"</span><span class="op">)</span></span>
+<span><span class="va">seoul_gu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp"</span><span class="op">)</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="기본적인-지오메트리-확인" class="level3" data-number="14.2.2"><h3 data-number="14.2.2" class="anchored" data-anchor-id="기본적인-지오메트리-확인">
+<span class="header-section-number">14.2.2</span> 기본적인 지오메트리 확인</h3>
+<p>기본적인 지오메트리 파라미터값을 알아본다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 1169, 1428, 1  (nrow, ncol, nlyr)
+resolution  : 25.92782, 25.92782  (x, y)
+extent      : 935046.3, 972071.2, 1936672, 1966982  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs 
+source      : srtm_seoul.tif 
+name        : n37_e126_1arc_v3 
+min value   :        -31.52316 
+max value   :        811.87531 </code></pre>
+</div>
+</div>
+<p>개별 파라미터 값을 다음과 같이 알아본다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/ext.html">ext</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="co"># 범역</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SpatExtent : 935046.294557821, 972071.227871716, 1936672.39531736, 1966982.02209884 (xmin, xmax, ymin, ymax)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html">res</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="co"># 셀 크기</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25.92782 25.92782</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="co"># 가로 세로 그리드 셀 수</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1169 1428    1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html">ncell</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="co"># 총 그리드 셀 수</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1669332</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/persp.html">persp</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="co"># 3D 시각화</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="raster_intro_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>간단히 그려본다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">seoul</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_intro_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>지도를 작성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul</span>, raster.downsample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"forestgreen"</span>,<span class="st">"yellow"</span>,<span class="st">"tan"</span>,<span class="st">"brown"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Elev.(m)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.06</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.07</span>, <span class="fl">0.04</span>, <span class="fl">0.06</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
+<span>            title <span class="op">=</span> <span class="st">"DEM for Seoul"</span>, title.size <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"LEFT"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">4</span><span class="op">)</span>, color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="raster_intro_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="래스터-좌표계의-왕래" class="level3" data-number="14.2.3"><h3 data-number="14.2.3" class="anchored" data-anchor-id="래스터-좌표계의-왕래">
+<span class="header-section-number">14.2.3</span> 래스터 좌표계의 왕래</h3>
+<p>셀 일련번호와 셀위치 좌표계를 왕래할 수 있다. 우선 셀 일련번호를 알고 있는 경우, 그것의 셀위치 좌표의 행값을 알아내려면 다음과 같이 하면 된다. 10,000번째 셀의 셀위치 좌표계의 행값이 8, 열값이 4임을 알 수 있다. 그러므로 행위치 좌표값은 (8, 4)이다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">rowFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">colFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p>거꾸로 셀위치 좌표값을 알고 있는 경우, 그것의 셀 일련번호를 알아내려면 다음과 같이 하면 된다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromRowCol</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10000</code></pre>
+</div>
+</div>
+<p>또한 셀 일련번호와 그리드 좌표계를 왕래할 수 있다. 우선 셀 일련번호를 알고 있는 경우, 그것의 셀위치 좌표의 행값을 알아내려면 다음과 같이 하면 된다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">xyFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          x       y
+[1,] 935137 1966788</code></pre>
+</div>
+</div>
+<p>거꾸로 그리드 좌표값을 알고 있는 경우, 그것의 셀 일련번호를 알아내려면 다음과 같이 하면 된다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromXY</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">935137</span>, <span class="fl">1966788</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10000</code></pre>
+</div>
+</div>
+<p>또한 셀위치 좌표계와 그리드 좌표계를 왕래할 수 있다. 우선 그리드의 x-좌표를 알고 있는 경우, 그것의 셀위치 좌표의 열값을 알아내려면 다음과 같이 하면 된다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">colFromX</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">935137</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p>그리드의 y-좌표를 알고 있는 경우, 그것의 셀위치 좌표의 행값을 알아내려면 다음과 같이 하면 된다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">rowFromY</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">1966788</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+</div>
+</section><section id="셀-값의-확인" class="level3" data-number="14.2.4"><h3 data-number="14.2.4" class="anchored" data-anchor-id="셀-값의-확인">
+<span class="header-section-number">14.2.4</span> 셀 값의 확인</h3>
+<p><code><a href="https://rspatial.github.io/terra/reference/extract.html">extract()</a></code> 함수를 이용하면 셀 값을 얻을 수 있다. 가장 단순한 방법은 셀 일련번호를 아는 경우이다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  n37_e126_1arc_v3
+1         36.23445</code></pre>
+</div>
+</div>
+<p>다음으로 그리드 좌표를 아는 경우는 다음과 같이 구할 수 있다</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">935137</span>, <span class="fl">1966788</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  n37_e126_1arc_v3
+1         36.23445</code></pre>
+</div>
+</div>
+<p>셀위치 좌표를 아는 경우 막바로 구할 수 없고, 먼저 셀 일련번호로 전환한 후 구할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromRowCol</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">cell_num</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  n37_e126_1arc_v3
+1         36.23445</code></pre>
+</div>
+</div>
+</section><section id="요약-통계량" class="level3" data-number="14.2.5"><h3 data-number="14.2.5" class="anchored" data-anchor-id="요약-통계량">
+<span class="header-section-number">14.2.5</span> 요약 통계량</h3>
+<p>최소값과 최대값은 다음과 같이 구할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/minmax.html">minmax</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    n37_e126_1arc_v3
+min        -31.52316
+max        811.87531</code></pre>
+</div>
+</div>
+<p>다음과 같이 하면 최소값과 해당 셀의 일련번호를 구할 수 있다. 그런데 에러가 난다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.min</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     layer cell value</code></pre>
+</div>
+</div>
+<p>다음과 같이 하면 최대값과 해당 셀의 일련번호를 구할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.max</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     layer   cell    value
+[1,]     1 259198 811.8753</code></pre>
+</div>
+</div>
+<p>이 정보를 바탕으로 최대값을 보이는 지점의 좌표값을 구할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">xyFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.max</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>벡터 포인트 객체로 만들 수 있다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_point</a></span><span class="op">(</span><span class="va">dem_max_xy</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">dem_max_sf</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-27-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="raster_intro_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
 
 
-
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -756,10 +1025,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./part_5.html" class="pagination-link  aria-label=" 래스터-기반="" gis="" 오퍼레이션"="">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./part_5.html" class="pagination-link  aria-label=" gis="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">래스터-기반 GIS 오퍼레이션</span>
       </a>          
   </div>
@@ -770,8 +1037,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
 
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
 
+};
+          </script>
 
 
 </body></html>

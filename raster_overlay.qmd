@@ -161,6 +161,8 @@ my_map
 ```
 
 ```{r}
+#| echo: false
+#| output: false
 my_map <- tm_shape(c_model) + tm_raster(style = "cat", labels = c("Not Suitable", "Suitable"), title = "Decision") +
   tm_layout(legend.outside = TRUE, legend.title.size = 2, legend.text.size = 1.75)
 my_map
@@ -243,6 +245,8 @@ my_map
 ```
 
 ```{r}
+#| echo: false
+#| output: false
 wo_model <- (elev_score*.1)+(slp_score*.4)+(air_score*.2)+(inter_score*.3) 
 my_map <- tm_shape(wo_model) + tm_raster(style="cont", title = "Weighted Scores") +
   tm_layout(legend.outside = TRUE, legend.title.size = 2, legend.text.size = 1.75)

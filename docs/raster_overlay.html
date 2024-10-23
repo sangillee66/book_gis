@@ -511,20 +511,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">c_model</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cat"</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Not Suitable"</span>, <span class="st">"Suitable"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Decision"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>legend.outside <span class="op">=</span> <span class="cn">TRUE</span>, legend.title.size <span class="op">=</span> <span class="fl">2</span>, legend.text.size <span class="op">=</span> <span class="fl">1.75</span><span class="op">)</span></span>
-<span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="raster_overlay_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_overlay_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my.path.name</span> <span class="op">&lt;-</span> <span class="st">"D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"</span></span>
-<span><span class="va">my.file.name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">my.path.name</span>, <span class="st">"래스터_7_example_3"</span>, <span class="st">".jpg"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tmap_save.html">tmap_save</a></span><span class="op">(</span><span class="va">my_map</span>, filename <span class="op">=</span> <span class="va">my.file.name</span>, height <span class="op">=</span> <span class="fl">12.5</span>, width <span class="op">=</span> <span class="fl">12.5</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">64</span>, dpi <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section><section id="점수-가중치-모델진보적-모델" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="점수-가중치-모델진보적-모델">
 <span class="header-section-number">20.2.2</span> 점수-가중치 모델(진보적 모델)</h3>
 <p>점수-가중치 모델의 규준은 다음과 같다.</p>
@@ -536,7 +522,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>네 조건에 대한 재분류를 실행한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elev_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/extremeValues.html">minValue</a></span><span class="op">(</span><span class="va">elev</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elev_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/extremeValues.html">minValue</a></span><span class="op">(</span><span class="va">elev</span><span class="op">)</span></span>
 <span><span class="va">elev_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/extremeValues.html">maxValue</a></span><span class="op">(</span><span class="va">elev</span><span class="op">)</span></span>
 <span><span class="va">elev_score</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="op">(</span><span class="va">elev</span> <span class="op">-</span> <span class="va">elev_min</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">elev_max</span> <span class="op">-</span> <span class="va">elev_min</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">elev_score</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
@@ -570,42 +556,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">ele_s</span>, <span class="va">slp_s</span>, <span class="va">airport_s</span>, <span class="va">interstate_s</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">ele_s</span>, <span class="va">slp_s</span>, <span class="va">airport_s</span>, <span class="va">interstate_s</span><span class="op">)</span></span>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_overlay_files/figure-html/unnamed-chunk-13-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="raster_overlay_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_overlay_files/figure-html/unnamed-chunk-13-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_overlay_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 <p>최종 지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wo_model</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">elev_score</span><span class="op">*</span><span class="fl">.1</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">slp_score</span><span class="op">*</span><span class="fl">.4</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">air_score</span><span class="op">*</span><span class="fl">.2</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">inter_score</span><span class="op">*</span><span class="fl">.3</span><span class="op">)</span> </span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wo_model</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">elev_score</span><span class="op">*</span><span class="fl">.1</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">slp_score</span><span class="op">*</span><span class="fl">.4</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">air_score</span><span class="op">*</span><span class="fl">.2</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">inter_score</span><span class="op">*</span><span class="fl">.3</span><span class="op">)</span> </span>
 <span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">wo_model</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cont"</span>, title <span class="op">=</span> <span class="st">"Weighted Scores"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>legend.outside <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_overlay_files/figure-html/unnamed-chunk-15-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="raster_overlay_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_overlay_files/figure-html/unnamed-chunk-15-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="raster_overlay_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wo_model</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">elev_score</span><span class="op">*</span><span class="fl">.1</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">slp_score</span><span class="op">*</span><span class="fl">.4</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">air_score</span><span class="op">*</span><span class="fl">.2</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="va">inter_score</span><span class="op">*</span><span class="fl">.3</span><span class="op">)</span> </span>
-<span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">wo_model</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cont"</span>, title <span class="op">=</span> <span class="st">"Weighted Scores"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>legend.outside <span class="op">=</span> <span class="cn">TRUE</span>, legend.title.size <span class="op">=</span> <span class="fl">2</span>, legend.text.size <span class="op">=</span> <span class="fl">1.75</span><span class="op">)</span></span>
-<span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="raster_overlay_files/figure-html/unnamed-chunk-16-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="raster_overlay_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my.path.name</span> <span class="op">&lt;-</span> <span class="st">"D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"</span></span>
-<span><span class="va">my.file.name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">my.path.name</span>, <span class="st">"래스터_7_example_5"</span>, <span class="st">".jpg"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tmap_save.html">tmap_save</a></span><span class="op">(</span><span class="va">my_map</span>, filename <span class="op">=</span> <span class="va">my.file.name</span>, height <span class="op">=</span> <span class="fl">12.5</span>, width <span class="op">=</span> <span class="fl">12.5</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">64</span>, dpi <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -1007,7 +978,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","loop":false,"closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
