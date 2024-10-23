@@ -14,4 +14,347 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 준비
+
+필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 `raster`를 사용한다.
+
+```{r}
+library(tidyverse)
+library(raster)
+library(sf)
+library(tmap)
+```
+
+서울에 대한 SRTM 기반 DEM 데이터를 불러온다.
+
+```{r}
+dem_seoul <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif")
+dem_seoul_mask <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif")
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+서울의 소방서 위치를 불러온다.
+
+```{r}
+#| results: hide
+seoul_sobang <- st_read("D:/My R/Vector Data Manipulation Korea/Seoul_Data_Plaza/sobang_station_seoul.shp", options = "ENCODING=CP949")
+seoul_sobang <- st_transform(seoul_sobang, crs = st_crs(seoul))
+qtm(seoul_sobang)
+```
+
+## 정의와 산출 레이어
+
+## 유클리드 거리
+
+### 거리
+
+소방서로부터의 유클리드 거리를 계산한다.
+
+```{r}
+seoul_sobang_r <- rasterize(seoul_sobang, dem_seoul, field = "ID")
+seoul_sobang_dist_1 <- distance(seoul_sobang_r)/1000
+seoul_sobang_dist_1_mask <- mask(seoul_sobang_dist_1, seoul)
+```
+
+지도를 제작한다. 먼저 연속형 컬러 스킴을 사용하여 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_sobang_dist_1_mask, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "GnBu", title = "Distance(km)") +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Euclidean Distance from Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_sobang_dist_1_mask, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "GnBu", title = "Distance(km)") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(seoul_sobang) + tm_symbols(size = 1) +
+  tm_legend(legend.position = c(0.88, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Euclidean Distance from Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_euclidean_distance_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+이번에는 단계구분형 컬러 스킴을 사용하여 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_sobang_dist_1_mask, raster.downsample = FALSE) + tm_raster(style = "fixed", breaks = c(0, 1, 2, 3, 4, 5, Inf), palette = "GnBu", title = "Distance(km)") +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Euclidean Distance from Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_sobang_dist_1_mask, raster.downsample = FALSE) + tm_raster(style = "fixed", breaks = c(0, 1, 2, 3, 4, 5, Inf), palette = "GnBu", title = "Distance(km)") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(seoul_sobang) + tm_symbols(size = 1) +
+  tm_legend(legend.position = c(0.88, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Euclidean Distance from Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_euclidean_distance_2", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 할당
+
+함수를 만든다.
+
+```{r}
+snu.rasterAlloc <- function(feature, rastermask){
+  p <- st_as_sf(rasterToPoints(rastermask, spatial = TRUE))
+  p <- st_transform(p, crs = st_crs(feature))
+  p$indx <- st_nearest_feature(st_geometry(p), st_geometry(feature))
+  output <- raster::rasterize(p, rastermask, field = "indx")
+  return(output)
+}
+```
+
+할당면을 생성한다.
+
+```{r}
+seoul_sobang_allo <- snu.rasterAlloc(seoul_sobang, dem_seoul_mask)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_sobang_allo, raster.downsample = FALSE) + tm_raster(style = "cat", palette = "Set3", legend.show = FALSE) +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Euclidean Distance: Allocation Layer for Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_sobang_allo, raster.downsample = FALSE) + tm_raster(style = "cat", palette = "Set3", legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(seoul_sobang) + tm_symbols(size = 1) +
+  tm_legend(legend.position = c(0.88, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Euclidean Distance: Allocation Layer for Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_euclidean_allocation_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+티센 폴리곤을 생성하여 비교해 본다.
+
+```{r}
+seoul_sobang_thiessen <- st_intersection(st_cast(st_voronoi(st_union(seoul_sobang), st_as_sfc(st_bbox(seoul)))), seoul)
+seoul_sobang_thiessen <- st_cast(st_as_sf(seoul_sobang_thiessen), "POLYGON")
+
+seoul_sobang_thiessen$ID <- unlist(st_intersects(seoul_sobang_thiessen, seoul_sobang)) 
+seoul_sobang_thiessen <- aggregate(seoul_sobang_thiessen, by = list(seoul_sobang_thiessen$ID), FUN = sum)
+seoul_sobang_thiessen$ID <- as.factor(seoul_sobang_thiessen$ID) 
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_sobang_thiessen) + tm_polygons(col = "ID", palette = "Set3", lwd = 1, border.col = "gray20", legend.show = FALSE) +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Thiessen Polygons for Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul) + tm_polygons(col = "gray98", border.col = "gray30") +
+  tm_shape(seoul_sobang_thiessen) + tm_polygons(col = "ID", palette = "Set3", lwd = 1, border.col = "gray20", legend.show = FALSE) +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 2) +
+  tm_legend(legend.position = c(0.88, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Thiessen Polygons for Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_euclidean_allocation_2", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+## 기능적 거리
+
+`movecost` 패키지를 사용한다.
+
+```{r}
+# library(devtools)
+# install_github("cran/movecost")
+library(movecost)
+```
+
+### 거리
+
+기능적 거리를 계산한다.
+
+```{r}
+# result_cost <- movecost(dem_seoul_mask, origin = as_Spatial(seoul_sobang), funct = "wcs")
+# seoul_sobang_cost <- result_cost$accumulated.cost.raster/1000
+# writeRaster(seoul_sobang_cost, "seoul_sobang_cost", format="GTiff", overwrite = TRUE)
+seoul_sobang_cost <- raster("seoul_sobang_cost.tif")
+crs(seoul_sobang_cost) <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m"
+```
+
+지도를 제작한다. 먼저 연속형 컬러 스킴을 사용하여 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_sobang_cost, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "GnBu", title = "Least Cost") +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Functional Distance from Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_sobang_cost, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "GnBu", title = "Least Cost") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(seoul_sobang) + tm_symbols(size = 1) +
+  tm_legend(legend.position = c(0.89, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Functional Distance from Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_cost_distance_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+이번에는 단계구분형 컬러 스킴을 사용하여 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_sobang_cost, raster.downsample = FALSE) + tm_raster(style = "fixed", breaks = c(0, 1, 2, 3, 4, 5, Inf), palette = "GnBu", title = "Least Cost") +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Functional Distance from Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_sobang_cost, raster.downsample = FALSE) + tm_raster(style = "fixed", breaks = c(0, 1, 2, 3, 4, 5, Inf), palette = "GnBu", title = "Least Cost") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(seoul_sobang) + tm_symbols(size = 1) +
+  tm_legend(legend.position = c(0.89, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Functional Distance from Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_cost_distance_2", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 할당
+
+할당 레이어를 계산한다.
+
+```{r}
+# result_allo <- movealloc(dem_seoul_mask, as_Spatial(seoul_sobang), funct = "wcs")
+# seoul_sobang_allo_cost <- result_allo$cost.allocation.raster
+# writeRaster(seoul_sobang_allo_cost, "seoul_sobang_allo_cost", format="GTiff", overwrite = TRUE)
+seoul_sobang_allo_cost <- raster("seoul_sobang_allo_cost.tif")
+crs(seoul_sobang_allo_cost) <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m"
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_sobang_allo_cost, raster.downsample = FALSE) + tm_raster(style = "cat", palette = "Set3", legend.show = FALSE) +
+  tm_shape(seoul_sobang) + tm_symbols() +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Functional Distance: Allocation for Fire Stations", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_sobang_allo_cost, raster.downsample = FALSE) + tm_raster(style = "cat", palette = "Set3", legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(seoul_sobang) + tm_symbols(size = 1) +
+  tm_legend(legend.position = c(0.88, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Functional Distance: Allocation for Fire Stations", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_6_functional_allocation_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```

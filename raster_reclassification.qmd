@@ -14,4 +14,115 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 준비
+
+필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 `raster`를 사용한다.
+
+```{r}
+library(tidyverse)
+library(raster)
+library(sf)
+library(tmap)
+```
+
+서울에 대한 SRTM 기반 DEM 데이터를 불러온다.
+
+```{r}
+dem_seoul <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif")
+dem_seoul_mask <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif")
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+## 정의와 구분
+
+## 로컬 재분류
+
+### 이항 매스킹
+
+이항 매스킹을 통해 새로운 래스터를 생성한다.
+
+```{r}
+dem_seoul_250 <- dem_seoul >= 250
+qtm(dem_seoul_250)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_250, raster.downsample = FALSE) + tm_raster(style = "cat", labels = c("No", "Yes"), title = "Elev. >= 250") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Reclassification: Binary Masking", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_250, raster.downsample = FALSE) + tm_raster(style = "cat", labels = c("No", "Yes"), title = "Elev. >= 250") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Reclassification: Binary Masking", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_5_binary_masking", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 분류 순위부여
+
+분류 순위부여를 통해 새로운 래스터를 생성한다.
+
+```{r}
+rclmat <- matrix(c(-Inf, 100, 1, 100, 200, 3, 200, 300, 5, 300, 400, 7, 400, Inf, 9), ncol = 3, byrow = TRUE)
+dem_seoul_rec <- reclassify(dem_seoul, rclmat, include.lowest = TRUE)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_rec, raster.downsample = FALSE) + tm_raster(style = "cat", title = "Classes") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Reclassification: Classification Ranking", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_rec, raster.downsample = FALSE) + tm_raster(style = "cat", title = "Classes") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.90, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Reclassification: Classification Ranking", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_5_class_ranking", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```

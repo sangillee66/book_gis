@@ -14,4 +14,240 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 준비
+
+필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 `raster`를 사용한다.
+
+```{r}
+library(tidyverse)
+library(raster)
+library(terra)
+library(sf)
+library(tmap)
+```
+
+사례 데이터를 불러온다. 이것은 West Virginia 주의 한 지역에 대한 것이다. [Raster-Based Spatial Analysis in R](https://www.wvview.org/os_sa/14_Raster_Analysis.html#content)을 참고하였다.
+
+```{r}
+#| results: hide
+elev <- raster("D:/My R/GIS/래스터분석사례데이터/elevation1.tif")
+slp <- raster("D:/My R/GIS/래스터분석사례데이터/slope1.tif")
+lc <- raster("D:/My R/GIS/래스터분석사례데이터/lc_example.tif")
+airports <- st_read("D:/My R/GIS/래스터분석사례데이터/airports.shp")
+interstates <- st_read("D:/My R/GIS/래스터분석사례데이터/interstates.shp")
+pnts <- st_read("D:/My R/GIS/래스터분석사례데이터/example_points.shp")
+ws <- st_read("D:/My R/GIS/래스터분석사례데이터/watersheds.shp")
+str <- st_read("D:/My R/GIS/래스터분석사례데이터/structures.shp")
+```
+
+## 사례 분석
+
+적지 분석(suitability analysis)를 수행하고자 한다. 네 가지 조건이 개입된다.
+
+-   높은 고도
+
+-   낮은 경사도
+
+-   공항 근접성
+
+-   고속도로 근접성
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(elev) + tm_raster(style= "cont", title = "Elevation(m)") +
+  tm_shape(airports) + tm_bubbles(col="black") +
+  tm_shape(interstates) + tm_lines() +
+  tm_layout(legend.outside = TRUE)
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(elev) + tm_raster(style= "cont", title = "Elevation(m)") +
+  tm_shape(airports) + tm_bubbles(col="black") +
+  tm_shape(interstates) + tm_lines(lwd = 2) +
+  tm_layout(legend.outside = TRUE, legend.title.size = 2, legend.text.size = 1.75)
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_7_example_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.5, width = 12.5*100/64, dpi = 600)
+```
+
+공항으로부터의 거리를 계산한다.
+
+```{r}
+airports.raster <- rasterize(airports, elev, field = "OBJECTID")
+airports.dist <- distance(airports.raster)/1000
+names(airports.dist) <- "Distance"
+```
+
+주간 고속도로로부터의 거리를 계산한다.
+
+```{r}
+interstates.raster <- rasterize(interstates, elev, field = "OBJECTID")
+interstates.dist <- distance(interstates.raster)/1000
+names(interstates.dist) <- "Distance"
+```
+
+### 이항 모델: 보수적 모델
+
+이항 모델의 규준은 다음과 같이 주어진다.
+
+-   고도: 500m 초과
+
+-   경사도: 15도 미만
+
+-   공항 근접성: 공항으로부터 7km 이내
+
+-   고속도로 근접성: 주간 고속도로로부터 5km 이내
+
+네 조건에 대한 재분류를 실행한다.
+
+```{r}
+elev_binary <- elev > 500
+names(elev_binary) <- "Reclassified"
+ele_b <- tm_shape(elev_binary) + tm_raster(style="cat", title = "> 500m") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Elevation")
+
+slp_binary <- slp < 15
+names(slp_binary) <- "Reclassified"
+slp_b <- tm_shape(slp_binary) + tm_raster(style="cat", title = "< 15") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Slope")
+
+air_binary <- airports.dist < 7
+names(air_binary) <- "Reclassified"
+airport_b <- tm_shape(air_binary) + tm_raster(style="cat", title = "< 7km") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Airports")
+
+inter_binary <- interstates.dist < 5
+names(inter_binary) <- "Reclassified"
+interstate_b <- tm_shape(inter_binary) + tm_raster(style="cat", title = "< 5km") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Interstates")
+```
+
+재분류 지도를 제작한다.
+
+```{r}
+my_map <- tmap_arrange(ele_b, slp_b, airport_b, interstate_b)
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tmap_arrange(ele_b, slp_b, airport_b, interstate_b)
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_7_example_2", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.5, dpi = 600)
+```
+
+최종 지도를 제작한다.
+
+```{r}
+c_model <- elev_binary*slp_binary*air_binary*inter_binary
+my_map <- tm_shape(c_model) + tm_raster(style = "cat", labels = c("Not Suitable", "Suitable"), title = "Decision") +
+  tm_layout(legend.outside = TRUE)
+my_map
+```
+
+```{r}
+my_map <- tm_shape(c_model) + tm_raster(style = "cat", labels = c("Not Suitable", "Suitable"), title = "Decision") +
+  tm_layout(legend.outside = TRUE, legend.title.size = 2, legend.text.size = 1.75)
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_7_example_3", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.5, width = 12.5*100/64, dpi = 600)
+```
+
+### 점수-가중치 모델(진보적 모델)
+
+점수-가중치 모델의 규준은 다음과 같다.
+
+-   고도: 높을수록 더 선호
+
+-   경사도: 낮을수록 더 선호
+
+-   공항 근접성: 가까울수록 더 선호
+
+-   고속도로 근접성: 가까울수록 더 선호
+
+네 조건에 대한 재분류를 실행한다.
+
+```{r}
+elev_min <- minValue(elev)
+elev_max <- maxValue(elev)
+elev_score <- ((elev - elev_min)/(elev_max - elev_min))
+names(elev_score) <- "Reclassified"
+ele_s <- tm_shape(elev_score) + tm_raster(style="cont") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Elevation")
+
+slp_min <- minValue(slp)
+slp_max <- maxValue(slp)
+slp_score <- 1 - ((slp - slp_min)/(slp_max - slp_min))
+names(slp_score) <- "Reclassified"
+slp_s <- tm_shape(slp_score) + tm_raster(style="cont") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Slope")
+
+air_min <- minValue(airports.dist)
+air_max <- maxValue(airports.dist)
+air_score <- 1 - ((airports.dist - air_min)/(air_max - air_min))
+names(air_score) <- "Reclassified"
+airport_s <- tm_shape(air_score) + tm_raster(style="cont") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Airports")
+
+inter_min <- minValue(interstates.dist)
+inter_max <- maxValue(interstates.dist)
+inter_score <- 1- (interstates.dist - inter_min)/(inter_max - inter_min)
+names(inter_score) <- "Reclassified"
+interstate_s <- tm_shape(inter_score) + tm_raster(style="cont") +
+  tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(main.title="Interstates")
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tmap_arrange(ele_s, slp_s, airport_s, interstate_s)
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tmap_arrange(ele_s, slp_s, airport_s, interstate_s)
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_7_example_4", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.5, dpi = 600)
+```
+
+최종 지도를 제작한다.
+
+```{r}
+wo_model <- (elev_score*.1)+(slp_score*.4)+(air_score*.2)+(inter_score*.3) 
+my_map <- tm_shape(wo_model) + tm_raster(style="cont", title = "Weighted Scores") +
+  tm_layout(legend.outside = TRUE)
+my_map
+```
+
+```{r}
+wo_model <- (elev_score*.1)+(slp_score*.4)+(air_score*.2)+(inter_score*.3) 
+my_map <- tm_shape(wo_model) + tm_raster(style="cont", title = "Weighted Scores") +
+  tm_layout(legend.outside = TRUE, legend.title.size = 2, legend.text.size = 1.75)
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_7_example_5", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.5, width = 12.5*100/64, dpi = 600)
+```

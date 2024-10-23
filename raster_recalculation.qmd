@@ -14,4 +14,377 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 준비
+
+필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 `raster`를 사용한다.
+
+```{r}
+library(tidyverse)
+library(raster)
+library(sf)
+library(tmap)
+```
+
+서울에 대한 SRTM 기반 DEM 데이터를 불러온다.
+
+```{r}
+dem_seoul <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif")
+dem_seoul_mask <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif")
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+## 정의와 종류
+
+## 수학적 연산
+
+### 산술 연산자
+
+루트값을 계산한다.
+
+```{r}
+dem_seoul_sqrt <- sqrt(dem_seoul)
+qtm(dem_seoul_sqrt) + qtm(seoul, fill = NULL)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_sqrt, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "Oranges", title = "Elev(sqrt)", legend.show = TRUE) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Local(sqrt)", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_sqrt, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "Oranges", title = "Elev(sqrt)", legend.show = TRUE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.89, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Local(sqrt)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_local_sqrt", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 로그 연산자
+
+자연로그값을 산출한다.
+
+```{r}
+dem_seoul_log <- log(dem_seoul)
+qtm(dem_seoul_log) + qtm(seoul, fill = NULL)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_log, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "Blues", title = "Elev(log)", legend.show = TRUE) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Local(log)", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_log, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "Blues", title = "Elev(log)", legend.show = TRUE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.895, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Local(log)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_local_log", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+## 포컬 통계
+
+### 평균
+
+포컬 평균을 계산한다.
+
+```{r}
+dem_seoul_focal_mean <- focal(dem_seoul, w = matrix(1, nrow = 3, ncol = 3), fun = mean)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_focal_mean, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elev.(m)") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Focal(Mean)", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_focal_mean, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Focal(Mean)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_focal_mean", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 표준편차
+
+포컬 표준편차를 계산한다.
+
+```{r}
+dem_seoul_focal_sd <- focal(dem_seoul, w = matrix(1, nrow = 3, ncol = 3), fun = sd)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_focal_sd, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "PuRd", title = "Std. Dev.", legend.show = TRUE) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Focal(Standard Deviation)", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_focal_sd, raster.downsample = FALSE) + 
+  tm_raster(style = "cont", palette = "PuRd", title = "Std. Dev.", legend.show = TRUE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.89, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Focal(Standard Deviation)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_focal_std", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+## 조널 통계
+
+서울시의 구와 동을 래스터화한다.
+
+```{r}
+seoul_gu$SGG_ID <- as.numeric(seoul_gu$SGG1_CD)
+seoul_gu_r <- rasterize(seoul_gu, dem_seoul_mask, field = "SGG1_CD")
+seoul_dong$EMD_ID <- as.numeric(seoul_dong$EMD_ID)
+seoul_dong_r <- rasterize(seoul_dong, dem_seoul_mask, field = "EMD_ID")
+```
+
+### 평균
+
+서울시 구와 동의 조널 평균을 계산한다.
+
+```{r}
+dem_seoul_gu_mask_zonal_mean_table <- zonal(dem_seoul_mask, seoul_gu_r, fun = mean)
+dem_seoul_gu_mask_zonal_mean_table <- as.data.frame(dem_seoul_gu_mask_zonal_mean_table)
+dem_seoul_gu_mask_zonal_mean <- seoul_gu_r
+dem_seoul_gu_mask_zonal_mean[] <- dem_seoul_gu_mask_zonal_mean_table$value[match(seoul_gu_r[], dem_seoul_gu_mask_zonal_mean_table$zone)]
+
+dem_seoul_dong_mask_zonal_mean_table <- zonal(dem_seoul_mask, seoul_dong_r, fun = mean)
+dem_seoul_dong_mask_zonal_mean_table <- as.data.frame(dem_seoul_dong_mask_zonal_mean_table)
+dem_seoul_dong_mask_zonal_mean <- seoul_dong_r
+dem_seoul_dong_mask_zonal_mean[] <- dem_seoul_dong_mask_zonal_mean_table$value[match(seoul_dong_r[], dem_seoul_dong_mask_zonal_mean_table$zone)]
+```
+
+동에 대한 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_dong_mask_zonal_mean) + tm_raster(style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Zonal(Mean)", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_dong_mask_zonal_mean) + tm_raster(style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.89, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Zonal(Mean)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_zonal_mean", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 표준편차
+
+서울시 구와 동의 조널 표준편차를 계산한다.
+
+```{r}
+dem_seoul_gu_mask_zonal_sd_table <- zonal(dem_seoul_mask, seoul_gu_r, fun = sd)
+dem_seoul_gu_mask_zonal_sd_table <- as.data.frame(dem_seoul_gu_mask_zonal_sd_table)
+dem_seoul_gu_mask_zonal_sd <- seoul_gu_r
+dem_seoul_gu_mask_zonal_sd[] <- dem_seoul_gu_mask_zonal_sd_table$value[match(seoul_gu_r[], dem_seoul_gu_mask_zonal_sd_table$zone)]
+
+dem_seoul_dong_mask_zonal_sd_table <- zonal(dem_seoul_mask, seoul_dong_r, fun = sd)
+dem_seoul_dong_mask_zonal_sd_table <- as.data.frame(dem_seoul_dong_mask_zonal_sd_table)
+dem_seoul_dong_mask_zonal_sd <- seoul_dong_r
+dem_seoul_dong_mask_zonal_sd[] <- dem_seoul_dong_mask_zonal_sd_table$value[match(seoul_dong_r[], dem_seoul_dong_mask_zonal_sd_table$zone)]
+```
+
+동에 대한 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_dong_mask_zonal_sd) + tm_raster(style = "cont", palette = "PuRd", title = "Std. Dev.") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Zonal(Standard Deviation)", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_dong_mask_zonal_sd) + tm_raster(style = "cont", palette = "PuRd", title = "Std. Dev.") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.89, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: Zonal(Standard Deviation)", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_zonal_std", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 벡터-온-래스터
+
+DEM의 값을 구와 동으로 전이시킨다.
+
+```{r}
+seoul_dong_elev <- extract(dem_seoul, seoul_dong, fun = mean)
+seoul_dong$elev <- as.vector(seoul_dong_elev)
+seoul_gu_elev <- extract(dem_seoul, seoul_gu, fun = mean)
+seoul_gu$elev <- as.vector(seoul_gu_elev)
+```
+
+동에 대한 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_dong) + 
+  tm_polygons(col = "elev", style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Recalculation: vector-on-raster", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_dong) + 
+  tm_polygons(col = "elev", style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Recalculation: vector-on-raster", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_zonal_vector_on_raster", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+벡터 동경계 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "white") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "Boundary of Dongs", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_dong) + tm_polygons(col = "white") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "Boundary of Dongs", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "래스터_4_zonal_dong", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```

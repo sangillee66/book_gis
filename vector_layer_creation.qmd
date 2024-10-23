@@ -48,7 +48,7 @@ seoul_subst <- seoul_subst |>
 지도를 제작한다.
 
 ```{r}
-tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
+my_map <- tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
   tm_shape(seoul_subst) + tm_symbols(col = "black", size = 0.15) +
   tm_legend(legend.position = c(0.75, 0.03)) +
   tm_add_legend(type = "symbol", size = 0.80, col = "black", shape = 16, labels = "Subway Stations", title = "") +
@@ -56,6 +56,7 @@ tm_shape(seoul_gu) + tm_polygons(col = "gray95") +
             title = "Geocoding: Coordinates", title.size = 1, 
             title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
 ```
 
 ```{r}

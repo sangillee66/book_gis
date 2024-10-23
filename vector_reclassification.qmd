@@ -188,7 +188,6 @@ seoul_dong_sra_25_1 <- seoul_dong_1 |>
   mutate(
     geometry = st_union(geometry)
   )
-qtm(seoul_dong_sra_25_1)
 ```
 
 지도를 작성한다.
@@ -229,7 +228,6 @@ seoul_dong_sra_25_2 <- seoul_dong_2 |>
   mutate(
     geometry = st_union(geometry)
   )
-qtm(seoul_dong_sra_25_2)
 ```
 
 두 번째 지도를 작성한다.
@@ -270,7 +268,6 @@ seoul_dong_sra_25_3 <- seoul_dong_3 |>
   mutate(
     geometry = st_union(geometry)
   )
-qtm(seoul_dong_sra_25_3)
 ```
 
 세 번째 지도를 작성한다.
@@ -315,7 +312,6 @@ seoul_dong_sra_25_4 <- seoul_dong_4 |>
   mutate(
     geometry = st_union(geometry)
   )
-qtm(seoul_dong_sra_25_4)
 ```
 
 네 번째 지도를 작성한다.
@@ -364,4 +360,19 @@ my_map
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "벡터_재분류_참조", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 목적함수 합역 프로세스
+
+ChatGPT의 도움을 받아 목적함수 합역 프로세스를 시도해 본다. 필수 패키지를 설치한다.
+
+```{r}
+library(spdep)
+library(GenSA)
+```
+
+서울시 2020년 동 데이터를 불러온다.
+
+```{r}
+EMD_2020 <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2020_Census_Adj/EMD_2020_Census.shp", options = "ENCODING=CP949")
 ```
