@@ -414,6 +414,7 @@ listw <- nb2listw(nb)
 최적화를 실행한다.
 
 ```{r}
+#| eval: false
 set.seed(123)
 
 # 목적함수: 인구 균등화 + 인접성 제약 조건 반영
@@ -440,7 +441,7 @@ objective_function <- function(partition) {
 # 3. 시뮬레이티드 어닐링 적용
 N <- 10
 initial_partition <- as.numeric(sample(1:N, nrow(seoul_2020_pop), replace = TRUE))  # 초기 구역 설정을 numeric 타입으로 변환
-result <- GenSA(par = initial_partition, fn = objective_function, lower = rep(1, nrow(seoul_2020_pop)), upper = rep(N, nrow(seoul_2020_pop)), control = list(max.call = 1000000, threshold.stop = 1e-5))
+result <- GenSA(par = initial_partition, fn = objective_function, lower = rep(1, nrow(seoul_2020_pop)), upper = rep(N, nrow(seoul_2020_pop)))
 
 # 결과 출력
 result$par <- round(result$par)
@@ -448,14 +449,14 @@ write_rds(result, "optimal_zone_1.rds")
 # seoul_2020_pop$zone <- result$par  # 최적화된 구역 할당 결과
 ```
 
-결과를 확인해 봅니다.
+결과를 확인한다.
 
 ```{r}
 optimal_res <- read_rds("optimal_zone_1.rds")
-seoul_2020_pop$zone <- result$par
+seoul_2020_pop$zone <- optimal_res$par
 ```
 
-결과를 바탕으로 지오메트리를 생성합니다.
+결과를 바탕으로 지오메트리를 생성한다.
 
 ```{r}
 seoul_zone_10 <- seoul_2020_pop |> 
@@ -468,7 +469,7 @@ seoul_zone_10 <- seoul_2020_pop |>
 seoul_zone_10$zone <- as.character(seoul_zone_10$zone)
 ```
 
-지도를 생성합니다.
+지도를 생성한다. 그런데 결과는 썩 만족스럽지 않다. 연접성 요구가 거의 지켜지지 않고 있다.
 
 ```{r}
 tm_shape(seoul_zone_10) + tm_polygons(col = "zone", style = "cat")
