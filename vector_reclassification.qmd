@@ -29,13 +29,138 @@ library(tmap)
 library(spdep)
 ```
 
-서울과 관련된 데이터를 불러온다.
+서울시 토지피복 데이터를 불러온다.
+
+```{r}
+#| results: hide
+seoul_landcover_M <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Landcover/seoul_landcover_M_2023.shp", options = "ENCODING=CP949")
+seoul_landcover_L <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Landcover/seoul_landcover_L_2023.shp", options = "ENCODING=CP949")
+```
+
+서울시 행정구역 관련 데이터를 불러온다.
 
 ```{r}
 #| results: hide
 seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
+```
+
+## 속성에 기반한 재분류
+
+### 재코드화(recoding)
+
+재코드화는 그룹화 속성에 의거해 피처를 그룹화함으로써 보다 단순화된 벡터 레이러를 생성하는 오퍼레이션이다. 재코드화의 가장 완벽한 예시는 보다 하위의 분류체계를 보다 상위의 분류체계로 전환하는 것이다.
+
+서울시 토지피복도를 제작한다. 먼저 컬러 스케을 지정한다.
+
+```{r}
+landcover_L2_color <- c("주거지역" = "#fee6c2",
+                     "공업지역" = "#c08484",
+                     "상업지역" = "#ed83b8", 
+                     "문화·체육·휴양지" = "#f67189",
+                     "교통지역" = "#f7422a",
+                     "공공시설지역" = "#f6b212",
+                     "논" = "#ffffbf", 
+                     "밭" = "#f7f966",
+                     "시설재배지" = "#dfdb73",
+                     "과수원" = "#b8b12c",
+                     "기타재배지" = "#b89112",
+                     "활엽수림" = "#34a02c",
+                     "침엽수림" = "#0a4f40",
+                     "혼효림" = "#336633",
+                     "자연초지" = "#a1d594",
+                     "인공초지" = "#607e33",
+                     "내륙습지" = "#b4a7d0",
+                     "연안습지" = "#997499",
+                     "자연나지" = "#c1dbec",
+                     "인공나지" = "#9ff2ff",
+                     "내륙수" = "#3ea8ff", 
+                     "해양수" = "#1739ff"
+                      )
+seoul_landcover_M <- seoul_landcover_M |> 
+  mutate(
+    L2_NAME = fct(L2_NAME, levels = c("주거지역", "공업지역", "상업지역", "문화·체육·휴양지",
+                                      "교통지역", "공공시설지역", "논", "밭", "시설재배지",
+                                      "과수원", "기타재배지", "활엽수림", "침엽수림", "혼효림",
+                                      "자연초지", "인공초지", "내륙습지", "연안습지", "자연나지", 
+                                      "인공나지", "내륙수", "해양수"))
+  )
+landcover_L1_color <- c("시가화·건조지역" = "#FF0000",
+                        "농업지역" = "#EEE907",
+                        "산림지역" = "#2A4B2D",
+                        "초지" = "#399926",
+                        "습지(수변식생)" = "#7C227E",
+                        "나지" = "#59CECA",
+                        "수역" = "#0602FA"
+                        )
+seoul_landcover_L <- seoul_landcover_L |> 
+  mutate(
+    L1_NAME = fct(L1_NAME, levels = c("시가화·건조지역", "농업지역", "산림지역", "초지", 
+                                      "습지(수변식생)", "나지", "수역"))
+  )
+```
+
+중분류 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_landcover_M) + 
+  tm_polygons(col = "L2_NAME", style = "cat", palette = landcover_L2_color, border.alpha = 0, legend.show = TRUE) +
+  tm_shape(seoul_sido) + tm_borders(lwd = 1) +
+  tm_legend(legend.position = c(0.89, 0.03)) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.14), 
+            title = "Landcover Classification: L2", title.size = 1, 
+            title.position = c("LEFT", "TOP")) +   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_landcover_M) + 
+  tm_polygons(col = "L2_NAME", style = "cat", palette = landcover_L2_color, border.alpha = 0, legend.show = TRUE) +
+  tm_shape(seoul_gu) + tm_borders() +
+  tm_legend(legend.title.size = 1.5, legend.text.size = 1.25, legend.position = c(0.87, 0.05)) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.16), 
+            title = "Landcover Classification: L2 Level", title.size = 2,
+            title.position = c(0.02, 0.97)) +  
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.78, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_재분류_토지이용_중분류", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+대분류 지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_landcover_L) + 
+  tm_polygons(col = "L1_NAME", style = "cat", palette = landcover_L1_color, border.alpha = 0, legend.show = TRUE) +
+  tm_shape(seoul_sido) + tm_borders(lwd = 1) +
+  tm_legend(legend.position = c(0.89, 0.03)) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.14), 
+            title = "Landcover Classification: L1", title.size = 1, 
+            title.position = c("LEFT", "TOP")) +   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_landcover_L) + 
+  tm_polygons(col = "L1_NAME", style = "cat", palette = landcover_L1_color, border.alpha = 0, legend.show = TRUE) +
+  tm_shape(seoul_gu) + tm_borders() +
+  tm_legend(legend.title.size = 1.5, legend.text.size = 1.25, legend.position = c(0.87, 0.05)) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.16), 
+            title = "Landcover Classification: L1 Level", title.size = 2,
+            title.position = c(0.02, 0.97)) +  
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.78, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "벡터_재분류_토지이용_대분류", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
 ## 합역 Spatial Aggregation
