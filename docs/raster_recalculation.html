@@ -225,13 +225,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_measurement.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">측정</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">vector_measurement.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_layer_creation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">벡터 레이어 생성</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">vector_layer_creation.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -243,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">공간적 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">vector_selection.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -263,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">래스터-기반 GIS 오퍼레이션</span></a>
+ <span class="menu-text">part_5.html</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -404,7 +404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 23, 2024</p>
+      <p class="date-modified">October 28, 2024</p>
     </div>
   </div>
     
@@ -417,14 +417,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 <code>raster</code>를 사용한다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-tmap.github.io/tmap/">tmap</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>서울에 대한 SRTM 기반 DEM 데이터를 불러온다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif"</span><span class="op">)</span></span>
-<span><span class="va">dem_seoul_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html">rast</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif"</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html">rast</a></span><span class="op">(</span><span class="st">"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>서울의 행정구역 바운더리 파일을 불러온다.</p>
 <div class="cell">
@@ -440,14 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">17.3.1</span> 산술 연산자</h3>
 <p>루트값을 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">dem_seoul_sqrt</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">seoul</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="raster_recalculation_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -462,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-5-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="raster_recalculation_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-5-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="raster_recalculation_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -471,14 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">17.3.2</span> 로그 연산자</h3>
 <p>자연로그값을 산출한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_log</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">dem_seoul_log</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">seoul</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="raster_recalculation_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_log</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -493,7 +479,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_recalculation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="raster_recalculation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -504,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">17.4.1</span> 평균</h3>
 <p>포컬 평균을 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_focal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/focal.html">focal</a></span><span class="op">(</span><span class="va">dem_seoul</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_focal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/focal.html">focal</a></span><span class="op">(</span><span class="va">dem_seoul</span>, w <span class="op">=</span> <span class="fl">3</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -519,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="raster_recalculation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="raster_recalculation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -528,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">17.4.2</span> 표준편차</h3>
 <p>포컬 표준편차를 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_focal_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/focal.html">focal</a></span><span class="op">(</span><span class="va">dem_seoul</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_focal_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/focal.html">focal</a></span><span class="op">(</span><span class="va">dem_seoul</span>, w <span class="op">=</span> <span class="fl">3</span>, fun <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -543,7 +529,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-14-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="raster_recalculation_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-14-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_recalculation_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -559,21 +545,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="평균-1" class="level3" data-number="17.5.1"><h3 data-number="17.5.1" class="anchored" data-anchor-id="평균-1">
 <span class="header-section-number">17.5.1</span> 평균</h3>
-<p>서울시 구와 동의 조널 평균을 계산한다.</p>
+<p>서울시 구와 동의 조널 평균을 계산한다. 이것은 <code>raster</code> 패키지용이다. 아래의 것이 훨씬 간편하다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_gu_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_gu_r</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
-<span><span class="va">dem_seoul_gu_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_gu_mask_zonal_mean_table</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_gu_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_gu_r</span>, fun <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_gu_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_gu_mask_zonal_mean_table</span><span class="op">)</span></span>
 <span><span class="va">dem_seoul_gu_mask_zonal_mean</span> <span class="op">&lt;-</span> <span class="va">seoul_gu_r</span></span>
-<span><span class="va">dem_seoul_gu_mask_zonal_mean</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_gu_mask_zonal_mean_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">seoul_gu_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_gu_mask_zonal_mean_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">dem_seoul_gu_mask_zonal_mean</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_gu_mask_zonal_mean_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/match.html">match</a></span><span class="op">(</span><span class="va">seoul_gu_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_gu_mask_zonal_mean_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">dem_seoul_dong_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_dong_r</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
-<span><span class="va">dem_seoul_dong_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_mean_table</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_dong_mask_zonal_mean_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_mean_table</span><span class="op">)</span></span>
 <span><span class="va">dem_seoul_dong_mask_zonal_mean</span> <span class="op">&lt;-</span> <span class="va">seoul_dong_r</span></span>
-<span><span class="va">dem_seoul_dong_mask_zonal_mean</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_dong_mask_zonal_mean_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">seoul_dong_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_dong_mask_zonal_mean_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">dem_seoul_dong_mask_zonal_mean</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_dong_mask_zonal_mean_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/match.html">match</a></span><span class="op">(</span><span class="va">seoul_dong_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_dong_mask_zonal_mean_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이것은 <code>terra</code> 패키지 용이다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_gu_mask_zonal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_gu_r</span>, fun <span class="op">=</span> <span class="st">"mean"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, as.raster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_dong_mask_zonal_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_dong_r</span>, fun <span class="op">=</span> <span class="st">"mean"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, as.raster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>동에 대한 지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_mean</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"forestgreen"</span>,<span class="st">"yellow"</span>,<span class="st">"tan"</span>,<span class="st">"brown"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Elevation(m)"</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_mean</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"forestgreen"</span>,<span class="st">"yellow"</span>,<span class="st">"tan"</span>,<span class="st">"brown"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Elevation(m)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.03</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.07</span>, <span class="fl">0.04</span>, <span class="fl">0.06</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
@@ -583,28 +574,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-18-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="raster_recalculation_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="raster_recalculation_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 </section><section id="표준편차-1" class="level3" data-number="17.5.2"><h3 data-number="17.5.2" class="anchored" data-anchor-id="표준편차-1">
 <span class="header-section-number">17.5.2</span> 표준편차</h3>
-<p>서울시 구와 동의 조널 표준편차를 계산한다.</p>
+<p>서울시 구와 동의 조널 표준편차를 계산한다. 이것은 <code>raster</code> 패키지용이다. 아래의 것이 훨씬 간편하다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_gu_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_gu_r</span>, fun <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span>
-<span><span class="va">dem_seoul_gu_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_gu_mask_zonal_sd_table</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_gu_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_gu_r</span>, fun <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_gu_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_gu_mask_zonal_sd_table</span><span class="op">)</span></span>
 <span><span class="va">dem_seoul_gu_mask_zonal_sd</span> <span class="op">&lt;-</span> <span class="va">seoul_gu_r</span></span>
-<span><span class="va">dem_seoul_gu_mask_zonal_sd</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_gu_mask_zonal_sd_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">seoul_gu_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_gu_mask_zonal_sd_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">dem_seoul_gu_mask_zonal_sd</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_gu_mask_zonal_sd_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/match.html">match</a></span><span class="op">(</span><span class="va">seoul_gu_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_gu_mask_zonal_sd_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">dem_seoul_dong_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_dong_r</span>, fun <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span>
-<span><span class="va">dem_seoul_dong_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_sd_table</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_dong_mask_zonal_sd_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_sd_table</span><span class="op">)</span></span>
 <span><span class="va">dem_seoul_dong_mask_zonal_sd</span> <span class="op">&lt;-</span> <span class="va">seoul_dong_r</span></span>
-<span><span class="va">dem_seoul_dong_mask_zonal_sd</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_dong_mask_zonal_sd_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">seoul_dong_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_dong_mask_zonal_sd_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">dem_seoul_dong_mask_zonal_sd</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dem_seoul_dong_mask_zonal_sd_table</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/match.html">match</a></span><span class="op">(</span><span class="va">seoul_dong_r</span><span class="op">[</span><span class="op">]</span>, <span class="va">dem_seoul_dong_mask_zonal_sd_table</span><span class="op">$</span><span class="va">zone</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이것은 <code>terra</code> 패키지 용이다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul_gu_mask_zonal_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_gu_r</span>, fun <span class="op">=</span> <span class="st">"sd"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, as.raster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_dong_mask_zonal_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/zonal.html">zonal</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, <span class="va">seoul_dong_r</span>, fun <span class="op">=</span> <span class="st">"sd"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, as.raster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>동에 대한 지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_sd</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="st">"PuRd"</span>, title <span class="op">=</span> <span class="st">"Std. Dev."</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul_dong_mask_zonal_sd</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="st">"PuRd"</span>, title <span class="op">=</span> <span class="st">"Std. Dev."</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.03</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.07</span>, <span class="fl">0.04</span>, <span class="fl">0.06</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
@@ -614,7 +610,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-21-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="raster_recalculation_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-23-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="raster_recalculation_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -623,14 +619,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">17.5.3</span> 벡터-온-래스터</h3>
 <p>DEM의 값을 구와 동으로 전이시킨다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_dong_elev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="va">seoul_dong</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
-<span><span class="va">seoul_dong</span><span class="op">$</span><span class="va">elev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">seoul_dong_elev</span><span class="op">)</span></span>
-<span><span class="va">seoul_gu_elev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="va">seoul_gu</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
-<span><span class="va">seoul_gu</span><span class="op">$</span><span class="va">elev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">seoul_gu_elev</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_dong_elev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="va">seoul_dong</span>, fun <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span>
+<span><span class="va">seoul_dong</span><span class="op">$</span><span class="va">elev</span> <span class="op">&lt;-</span> <span class="va">seoul_dong_elev</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">seoul_gu_elev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="va">seoul_gu</span>, fun <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span>
+<span><span class="va">seoul_gu</span><span class="op">$</span><span class="va">elev</span> <span class="op">&lt;-</span> <span class="va">seoul_gu_elev</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>동에 대한 지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_dong</span><span class="op">)</span> <span class="op">+</span> </span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_dong</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"elev"</span>, style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"forestgreen"</span>,<span class="st">"yellow"</span>,<span class="st">"tan"</span>,<span class="st">"brown"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Elevation(m)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.03</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
@@ -641,14 +637,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-24-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="raster_recalculation_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-26-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="raster_recalculation_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 <p>벡터 동경계 지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_dong</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_dong</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.03</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.07</span>, <span class="fl">0.04</span>, <span class="fl">0.06</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
@@ -658,7 +654,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-26-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="raster_recalculation_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_recalculation_files/figure-html/unnamed-chunk-28-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="raster_recalculation_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -1063,7 +1059,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom","selector":".lightbox","loop":false});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -51,7 +51,6 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 #| results: hide
 seoul_sobang <- st_read("D:/My R/Vector Data Manipulation Korea/Seoul_Data_Plaza/sobang_station_seoul.shp", options = "ENCODING=CP949")
 seoul_sobang <- st_transform(seoul_sobang, crs = st_crs(seoul))
-qtm(seoul_sobang)
 ```
 
 ## 정의와 산출 레이어
@@ -246,9 +245,9 @@ library(movecost)
 ```{r}
 # result_cost <- movecost(dem_seoul_mask, origin = as_Spatial(seoul_sobang), funct = "wcs")
 # seoul_sobang_cost <- result_cost$accumulated.cost.raster/1000
+# crs(seoul_sobang_cost) <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m"
 # writeRaster(seoul_sobang_cost, "seoul_sobang_cost", format="GTiff", overwrite = TRUE)
 seoul_sobang_cost <- raster("seoul_sobang_cost.tif")
-crs(seoul_sobang_cost) <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m"
 ```
 
 지도를 제작한다. 먼저 연속형 컬러 스킴을 사용하여 제작한다.
@@ -322,9 +321,9 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```{r}
 # result_allo <- movealloc(dem_seoul_mask, as_Spatial(seoul_sobang), funct = "wcs")
 # seoul_sobang_allo_cost <- result_allo$cost.allocation.raster
+# crs(seoul_sobang_allo_cost) <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m"
 # writeRaster(seoul_sobang_allo_cost, "seoul_sobang_allo_cost", format="GTiff", overwrite = TRUE)
 seoul_sobang_allo_cost <- raster("seoul_sobang_allo_cost.tif")
-crs(seoul_sobang_allo_cost) <- "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m"
 ```
 
 지도를 제작한다.

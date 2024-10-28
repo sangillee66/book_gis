@@ -225,13 +225,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_measurement.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">측정</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">vector_measurement.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_layer_creation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">벡터 레이어 생성</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">vector_layer_creation.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -243,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">공간적 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">vector_selection.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -263,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">래스터-기반 GIS 오퍼레이션</span></a>
+ <span class="menu-text">part_5.html</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 23, 2024</p>
+      <p class="date-modified">October 28, 2024</p>
     </div>
   </div>
     
@@ -449,8 +449,8 @@ extent      : 935046.3, 972071.2, 1936672, 1966982  (xmin, xmax, ymin, ymax)
 coord. ref. : +proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs 
 source      : srtm_seoul.tif 
 name        : n37_e126_1arc_v3 
-min value   :        -31.52316 
-max value   :        811.87531 </code></pre>
+min value   :     9.129879e-04 
+max value   :     8.118753e+02 </code></pre>
 </div>
 </div>
 <p>개별 파라미터 값을 다음과 같이 알아본다.</p>
@@ -487,19 +487,9 @@ max value   :        811.87531 </code></pre>
 </div>
 </div>
 </div>
-<p>간단히 그려본다.</p>
+<p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">seoul</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_intro_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-</div>
-<p>지도를 작성한다.</p>
-<div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul</span>, raster.downsample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">dem_seoul</span>, raster.downsample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"cont"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"forestgreen"</span>,<span class="st">"yellow"</span>,<span class="st">"tan"</span>,<span class="st">"brown"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Elev.(m)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_borders</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray20"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.06</span><span class="op">)</span>, legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
@@ -510,7 +500,7 @@ max value   :        811.87531 </code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="raster_intro_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="raster_intro_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -519,27 +509,27 @@ max value   :        811.87531 </code></pre>
 <span class="header-section-number">14.2.3</span> 래스터 좌표계의 왕래</h3>
 <p>셀 일련번호와 셀위치 좌표계를 왕래할 수 있다. 우선 셀 일련번호를 알고 있는 경우, 그것의 셀위치 좌표의 행값을 알아내려면 다음과 같이 하면 된다. 10,000번째 셀의 셀위치 좌표계의 행값이 8, 열값이 4임을 알 수 있다. 그러므로 행위치 좌표값은 (8, 4)이다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">rowFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">rowFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">colFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">colFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4</code></pre>
 </div>
 </div>
 <p>거꾸로 셀위치 좌표값을 알고 있는 경우, 그것의 셀 일련번호를 알아내려면 다음과 같이 하면 된다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromRowCol</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromRowCol</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10000</code></pre>
 </div>
 </div>
 <p>또한 셀 일련번호와 그리드 좌표계를 왕래할 수 있다. 우선 셀 일련번호를 알고 있는 경우, 그것의 셀위치 좌표의 행값을 알아내려면 다음과 같이 하면 된다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">xyFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">xyFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          x       y
 [1,] 935137 1966788</code></pre>
@@ -547,21 +537,21 @@ max value   :        811.87531 </code></pre>
 </div>
 <p>거꾸로 그리드 좌표값을 알고 있는 경우, 그것의 셀 일련번호를 알아내려면 다음과 같이 하면 된다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromXY</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">935137</span>, <span class="fl">1966788</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromXY</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">935137</span>, <span class="fl">1966788</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10000</code></pre>
 </div>
 </div>
 <p>또한 셀위치 좌표계와 그리드 좌표계를 왕래할 수 있다. 우선 그리드의 x-좌표를 알고 있는 경우, 그것의 셀위치 좌표의 열값을 알아내려면 다음과 같이 하면 된다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">colFromX</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">935137</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">colFromX</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">935137</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4</code></pre>
 </div>
 </div>
 <p>그리드의 y-좌표를 알고 있는 경우, 그것의 셀위치 좌표의 행값을 알아내려면 다음과 같이 하면 된다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">rowFromY</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">1966788</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">rowFromY</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">1966788</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
@@ -570,7 +560,7 @@ max value   :        811.87531 </code></pre>
 <span class="header-section-number">14.2.4</span> 셀 값의 확인</h3>
 <p><code><a href="https://rspatial.github.io/terra/reference/extract.html">extract()</a></code> 함수를 이용하면 셀 값을 얻을 수 있다. 가장 단순한 방법은 셀 일련번호를 아는 경우이다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  n37_e126_1arc_v3
@@ -579,7 +569,7 @@ max value   :        811.87531 </code></pre>
 </div>
 <p>다음으로 그리드 좌표를 아는 경우는 다음과 같이 구할 수 있다</p>
 <div class="cell">
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">|&gt;</span>  </span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_seoul</span> <span class="op">|&gt;</span>  </span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">935137</span>, <span class="fl">1966788</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  n37_e126_1arc_v3
@@ -588,7 +578,7 @@ max value   :        811.87531 </code></pre>
 </div>
 <p>셀위치 좌표를 아는 경우 막바로 구할 수 없고, 먼저 셀 일련번호로 전환한 후 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromRowCol</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cell_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">cellFromRowCol</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">dem_seoul</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html">extract</a></span><span class="op">(</span><span class="va">cell_num</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -600,23 +590,24 @@ max value   :        811.87531 </code></pre>
 <span class="header-section-number">14.2.5</span> 요약 통계량</h3>
 <p>최소값과 최대값은 다음과 같이 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/minmax.html">minmax</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/minmax.html">minmax</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    n37_e126_1arc_v3
-min        -31.52316
-max        811.87531</code></pre>
+min     9.129879e-04
+max     8.118753e+02</code></pre>
 </div>
 </div>
 <p>다음과 같이 하면 최소값과 해당 셀의 일련번호를 구할 수 있다. 그런데 에러가 난다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.min</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.min</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     layer cell value</code></pre>
+<pre><code>     layer    cell        value
+[1,]     1 1595536 0.0009129879</code></pre>
 </div>
 </div>
 <p>다음과 같이 하면 최대값과 해당 셀의 일련번호를 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.max</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.max</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     layer   cell    value
 [1,]     1 259198 811.8753</code></pre>
@@ -624,18 +615,17 @@ max        811.87531</code></pre>
 </div>
 <p>이 정보를 바탕으로 최대값을 보이는 지점의 좌표값을 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">xyFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.max</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html">xyFromCell</a></span><span class="op">(</span><span class="va">dem_seoul</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/where.html">where.max</a></span><span class="op">(</span><span class="va">dem_seoul</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>벡터 포인트 객체로 만들 수 있다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_point</a></span><span class="op">(</span><span class="va">dem_max_xy</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">dem_max_sf</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="raster_intro_files/figure-html/unnamed-chunk-27-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="raster_intro_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_point</a></span><span class="op">(</span><span class="va">dem_max_xy</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
+<p>혹은 다른 방식으로 만들 수도 있다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dem_max_sf</span> <span class="op">&lt;-</span>  </span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">dem_max_xy</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -1026,8 +1016,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./part_5.html" class="pagination-link  aria-label=" gis="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">래스터-기반 GIS 오퍼레이션</span>
+      <a href="./part_5.html" class="pagination-link  aria-label=" part_5.html="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">part_5.html</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -1037,7 +1027,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","loop":false,"closeEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

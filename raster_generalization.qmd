@@ -51,7 +51,6 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 
 ```{r}
 dem_seoul_agg <- aggregate(dem_seoul, fact = 10, fun = mean)
-qtm(dem_seoul_agg) + qtm(seoul, fill = NULL)
 ```
 
 기본적인 지오메트리 파라미터값을 알아본다.

@@ -55,7 +55,6 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 
 ```{r}
 dem_seoul_250 <- dem_seoul >= 250
-qtm(dem_seoul_250)
 ```
 
 지도를 제작한다.

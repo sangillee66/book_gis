@@ -14,6 +14,8 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## 래스터 기초
@@ -91,13 +93,7 @@ ncell(dem_seoul) # 총 그리드 셀 수
 persp(dem_seoul) # 3D 시각화
 ```
 
-간단히 그려본다.
-
-```{r}
-qtm(dem_seoul) + qtm(seoul, fill = NULL)
-```
-
-지도를 작성한다.
+지도를 제작한다.
 
 ```{r}
 my_map <- tm_shape(dem_seoul, raster.downsample = FALSE) + 
@@ -224,6 +220,13 @@ dem_max_xy <- xyFromCell(dem_seoul, where.max(dem_seoul)[,2])
 벡터 포인트 객체로 만들 수 있다.
 
 ```{r}
-dem_max_sf <- st_sfc(geometry = st_point(dem_max_xy), crs = st_crs(seoul))
-qtm(dem_max_sf)
+dem_max_sf <- st_sfc(st_point(dem_max_xy), crs = st_crs(seoul)) |> st_sf()
+```
+
+혹은 다른 방식으로 만들 수도 있다.
+
+```{r}
+dem_max_sf <-  
+  as_tibble(dem_max_xy) |> 
+  st_as_sf(coords = c("x", "y"), crs = st_crs(seoul))
 ```
