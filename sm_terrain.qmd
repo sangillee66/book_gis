@@ -14,4 +14,503 @@ execute:
   error: false
   freeze: auto
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
+## 수치지형모델
+
+### 종류
+
+### DEM 데이터
+
+## DEM 분석
+
+### 준비
+
+필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 `terra`를 사용한다.
+
+```{r}
+library(tidyverse)
+library(terra)
+library(sf)
+library(tmap)
+```
+
+서울에 대한 SRTM 기반 DEM 데이터를 불러온다.
+
+```{r}
+dem_seoul <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif")
+dem_seoul_mask <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif")
+```
+
+서울의 행정구역 바운더리 파일을 불러온다.
+
+```{r}
+#| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
+seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp")
+seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
+```
+
+### 지형 요소의 추출
+
+#### 경사
+
+`terrain()` 함수를 이용하여 경사(slope)를 계산한다.
+
+```{r}
+seoul_slope <- terrain(dem_seoul_mask, v = "slope", neighbors = 8, unit = "degrees")
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_slope, raster.downsample = FALSE) + 
+  tm_raster(style = "fixed", breaks = c(0, 5, 10, 15, 20, 25, 30, 35, Inf), palette = "-RdYlGn", title = "Slope") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Slope", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_slope, raster.downsample = FALSE) + 
+  tm_raster(style = "fixed", breaks = c(0, 5, 10, 15, 20, 25, 30, 35, Inf), palette = "-RdYlGn", title = "Slope") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.89, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Slope", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_1_slope", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+#### 향
+
+`terrain()` 함수를 이용하여 향(aspect)을 계산한다.
+
+```{r}
+seoul_aspect <- terrain(dem_seoul_mask, v = "aspect", neighbors = 8, unit = "degrees")
+```
+
+지도를 제작한다.
+
+```{r}
+aspect_col <- c("#84D600", "#00AB44", "#0068C0", "#6C00A3", "#CA009C", "#FF5568", "#FFAB47", "#F4FA00", "#84D600")
+
+my_map <- tm_shape(seoul_aspect) + 
+  tm_raster(style = "fixed", 
+            breaks = c(0, 22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5, 360), 
+            labels = c("N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"), 
+            palette = aspect_col, title = "Aspect", legend.is.portrait = FALSE) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Aspect", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+aspect_col <- c("#84D600", "#00AB44", "#0068C0", "#6C00A3", "#CA009C", "#FF5568", "#FFAB47", "#F4FA00", "#84D600")
+
+my_map <- tm_shape(seoul_aspect) + 
+  tm_raster(style = "fixed", 
+            breaks = c(0, 22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5, 360), 
+            labels = c("N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"), 
+            palette = aspect_col, title = "Aspect", legend.is.portrait = FALSE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.76, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.0) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Aspect", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_2_aspect", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+#### TRI(Terrain Ruggedness Index)
+
+```{r}
+seoul_TRI <- terrain(dem_seoul_mask, v = "TRI", neighbors = 8, unit = "degrees")
+```
+
+```{r}
+my_map <- tm_shape(seoul_TRI, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "Purples", title = "TRI") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: TRI", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+#### TPI(Topographic Position Index)
+
+```{r}
+seoul_TPI <- terrain(dem_seoul_mask, v = "TRI", neighbors = 8, unit = "degrees")
+```
+
+```{r}
+my_map <- tm_shape(seoul_TPI, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "Purples", title = "TPI") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: TPI", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+#### Roughness
+
+```{r}
+seoul_roughness <- terrain(dem_seoul_mask, v = "roughness", neighbors = 8, unit = "degrees")
+```
+
+```{r}
+my_map <- tm_shape(seoul_roughness, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "Purples", title = "Roughness") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Roughness", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+#### Flow Direction
+
+```{r}
+seoul_flowdir <- terrain(dem_seoul_mask, v = "flowdir", neighbors = 8, unit = "degrees")
+```
+
+```{r}
+my_map <- tm_shape(seoul_flowdir, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "Purples", title = "Flow Direction") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Flow Direction", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+#### 곡률: 종곡률(profile curvature)
+
+곡률은 `spatialEco` 패키지를 활용하여 계산한다.
+
+```{r}
+library(spatialEco)
+seoul_curv_profile <- curvature(dem_seoul_mask, type = "profile")
+```
+
+지도를 제작한다. 연속형은 별로 좋지 않을 것 같음.
+
+```{r}
+my_map <- tm_shape(seoul_curv_profile, raster.downsample = FALSE) + tm_raster(style = "quantile", palette = "BrBG", title = "Curvature") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Profile Curvature", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_curv_profile, raster.downsample = FALSE) + tm_raster(style = "quantile", palette = "BrBG", title = "Curvature") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.84, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Profile Curvature", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_3_curvature_profile", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+#### 곡률: 횡곡률(plan curvature)
+
+```{r}
+seoul_curv_plan <- curvature(dem_seoul_mask, type = "planform")
+```
+
+지도를 제작한다. 연속형은 별로 좋지 않을 것 같음.
+
+```{r}
+my_map <- tm_shape(seoul_curv_plan, raster.downsample = FALSE) + tm_raster(style = "quantile", palette = "BrBG", title = "Curvature") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Plan Curvature", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_curv_plan, raster.downsample = FALSE) + tm_raster(style = "quantile", palette = "BrBG", title = "Curvature") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.84, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Profile Curvature", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_3_curvature_plan", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 시각화
+
+#### 힐셰이딩(hillshading)
+
+```{r}
+seoul_slope_radian <- terrain(dem_seoul_mask, v = "slope", neighbors = 8, unit = "radians")
+seoul_aspect_radian <- terrain(dem_seoul_mask, v = "aspect", neighbors = 8, unit = "radians")
+seoul_hillshade <- shade(seoul_slope_radian, seoul_aspect_radian, angle = 45, direction = 45, normalize = TRUE)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Hillshading", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.90, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Hillshading", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_3_hillshade", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+#### 단면도 생성(transverse profiling)
+
+```{r}
+library(stars)
+
+dem_seoul_mask <- project(dem_seoul_mask, "epsg:5179")
+
+
+pts_matrix <- matrix(c(126.961091, 37.442904,
+                      126.992310, 37.660032),
+                    ncol = 2, byrow = TRUE)
+pts_df <- data.frame(id = 1:2, X = pts_matrix[, 1], Y = pts_matrix[, 2])
+pts_sf <- st_as_sf(pts_df, coords = c("X", "Y"), crs = 4326)
+
+dist <- st_distance(pts_sf)
+
+line <- st_sfc(st_linestring(pts_matrix), crs = 4326)
+line_sf <- st_sf(geometry = line)
+line_sf <- st_transform(line_sf, crs = 5179)
+
+points_sf <- st_line_sample(line_sf, density = 0.1)
+points_sf <- st_cast(points_sf, "POINT") |> st_sf() 
+
+# dem_seoul_mask_stars <- st_as_stars(dem_seoul_mask)
+# 
+# elev_line <- st_extract(dem_seoul_mask_stars, points_sf)
+
+elev_profile <- extract(dem_seoul_mask, points_sf)
+names(elev_profile) <- c("distance", "elevation")
+
+plot(elev_profile[, "distance"], elev_profile[, "elevation"], type = "l", 
+     xlab = "Distance (m)", ylab = "Elevation (m)", main = "Transverse Profile")
+
+ggplot(data = elev_profile) +
+  geom_line(aes(x = distance, y = elevation)) +
+  labs(x = "", y = "Elevation(m)") +
+  coord_fixed()
+```
+
+그래피를 제작한다.
+
+```{r}
+my_graph <- ggplot(data = elev_profile) +
+  geom_line(aes(x = distance, y = elevation)) +
+  labs(x = "Distance(m)", y = "Elevation(m)") +
+  coord_fixed()
+my_graph
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_graph <- ggplot(data = elev_profile) +
+  geom_line(aes(x = distance, y = elevation)) +
+  labs(x = "Distance(m)", y = "Elevation(m)") +
+  coord_fixed()
+my_graph
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "profile", ".jpg")
+ggsave(my_graph, filename = my.file.name, width = 12.1, height = 3, dpi = 600)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(line_sf) + tm_lines(col = "red", lwd = 2) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Transverse Profiling", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(line_sf) + tm_lines(col = "red", lwd = 3) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.90, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Transverse Profiling", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_3_profiling", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+#### 컨투어링(contouring)
+
+```{r}
+seoul_contour <- as.contour(dem_seoul_mask)
+seoul_contour <- st_as_sf(seoul_contour)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(dem_seoul_mask, raster.downsample = FALSE) + tm_raster(style = "fixed", breaks = c(-Inf, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, Inf), palette = "Greys", legend.show = FALSE) +
+  tm_shape(subset(seoul_contour, level %in% c(50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700))) + 
+  tm_iso(text = "level", color = "black", lwd = 1, size = 1, alpha = 0.7) +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Contouring", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(dem_seoul_mask, raster.downsample = FALSE) + tm_raster(style = "fixed", breaks = c(-Inf, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, Inf), palette = "Greys", legend.show = FALSE) +
+  tm_shape(subset(seoul_contour, level %in% c(50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700))) + 
+  tm_iso(text = "level", color = "black", lwd = 1, size = 1, alpha = 0.7) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.90, 0.04), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Contouring", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_4_contouring", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+### 가시성(visibility) 분석
+
+우선 내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.
+
+```{r}
+coords <- tibble(lon = 126.955184, lat = 37.460422)
+points_sf <- st_as_sf(coords, coords = c("lon", "lat"), crs = 4326)
+points_5179 <- st_transform(points_sf, crs = 5179)
+st_coordinates(points_5179)
+```
+
+`terra` 패키지의 `viewshed()` 함수를 활용하여 가시역을 계산한다.
+
+```{r}
+seoul_viewshed <- viewshed(dem_seoul_mask, loc = c(951818.1, 1940275), observer = 15, output = "yes/no")
+qtm(seoul_viewshed)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(seoul_viewshed, raster.downsample = FALSE) + tm_raster(style = "cat", title = "Viewshed", alpha = 0.5) +
+  tm_shape(points_5179) + tm_symbols(col = "black") +
+  tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Viewshed", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(seoul_viewshed, raster.downsample = FALSE) + tm_raster(style = "cat", title = "Viewshed", alpha = 0.5) +
+  tm_shape(points_5179) + tm_symbols(col = "black") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+            title = "DEM Analysis: Viewshed", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_5_viewshed", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```

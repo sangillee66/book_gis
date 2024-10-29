@@ -1,5 +1,5 @@
 ---
-title: "공간모델링"
+title: "GIS 모델링"
 author: Sang-Il Lee
 date-modified: last-modified
 number-sections: true
@@ -15,3 +15,13 @@ execute:
   freeze: auto
 editor: visual
 ---
+
+## 개요
+
+### GIS-기반 공간모델링
+
+## 적합성 모델링
+
+### 가중치 부여와 결합
+
+### AHP 방법

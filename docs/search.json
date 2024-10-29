@@ -619,5 +619,81 @@
       "래스터-기반 GIS 오퍼레이션",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>재분류</span>"
     ]
+  },
+  {
+    "objectID": "part_6.html",
+    "href": "part_6.html",
+    "title": "GIS 모델링과 고급 GIS 분석",
+    "section": "",
+    "text": "공간모델링이란 지리공간적 사상과 그것의 작동 및 관련 방식을 특정한 프레임워크 속에서 모사함으로써, 공간적 문제를 해결하거나 지리적 연구 과제를 수행하는 것을 의미한다. 다음과 같은 두 가지 종류가 있을 수 있다.\n\n주제에 따른 분류: 자연환경적 모델, 인문사회적 모델, 종합 모델\n적용 기법에 따른 분류: 개념적 모델(시스템 다이어그램), 수리통계적 모델, 시뮬레이션 모델(CA, ABM 등) 등\n\nGIS 모델링은 공간모델링을 GIS의 맥락 속에서 행하는 것을 의미한다. 즉, GIS 모델링은 GIS-기반 공간모델링을 의미한다. 좀더 구체적으로 정의하면, GIS 모델링이란 특정한 목적(공간적 문제 해결, 지리적 연구 과제 수행 등)을 위해 GIS 오퍼레이션을 체계적으로 조합ㆍ연계시키는 일련의 과정을 의미한다.\n고급 GIS 분석에서 고급(advanced)은 두 가지를 의미한다. 보다 복잡한 GIS 오퍼레이션의 적용하거나 특수 목적형 GIS 오퍼레이션의 적용한 것을 의미한다. 종류에 다음과 같은 것이 있을 수 있다.\n\n지형 분석(terrain analysis)\n네트워크 분석(network analysis)\n수문 분석(hydrologic analysis)\n공간통계 분석(spatial statistical analysis)\n3D 혹은 4D 분석(3-dimensional or 4-dimensional analysis)",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석"
+    ]
+  },
+  {
+    "objectID": "sm_intro.html",
+    "href": "sm_intro.html",
+    "title": "21  GIS 모델링",
+    "section": "",
+    "text": "21.1 개요",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석",
+      "<span class='chapter-number'>21</span>  <span class='chapter-title'>GIS 모델링</span>"
+    ]
+  },
+  {
+    "objectID": "sm_intro.html#적합성-모델링",
+    "href": "sm_intro.html#적합성-모델링",
+    "title": "21  GIS 모델링",
+    "section": "21.2 적합성 모델링",
+    "text": "21.2 적합성 모델링\n\n21.2.1 가중치 부여와 결합\n\n\n21.2.2 AHP 방법",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석",
+      "<span class='chapter-number'>21</span>  <span class='chapter-title'>GIS 모델링</span>"
+    ]
+  },
+  {
+    "objectID": "sm_intro.html#개요",
+    "href": "sm_intro.html#개요",
+    "title": "21  GIS 모델링",
+    "section": "",
+    "text": "21.1.1 GIS-기반 공간모델링",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석",
+      "<span class='chapter-number'>21</span>  <span class='chapter-title'>GIS 모델링</span>"
+    ]
+  },
+  {
+    "objectID": "sm_terrain.html",
+    "href": "sm_terrain.html",
+    "title": "\n22  지형 분석\n",
+    "section": "",
+    "text": "22.1 수치지형모델",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>지형 분석</span>"
+    ]
+  },
+  {
+    "objectID": "sm_terrain.html#수치지형모델",
+    "href": "sm_terrain.html#수치지형모델",
+    "title": "\n22  지형 분석\n",
+    "section": "",
+    "text": "22.1.1 종류\n\n22.1.2 DEM 데이터",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>지형 분석</span>"
+    ]
+  },
+  {
+    "objectID": "sm_terrain.html#dem-분석",
+    "href": "sm_terrain.html#dem-분석",
+    "title": "\n22  지형 분석\n",
+    "section": "\n22.2 DEM 분석",
+    "text": "22.2 DEM 분석\n\n22.2.1 준비\n필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 terra를 사용한다.\n\nlibrary(tidyverse)\nlibrary(terra)\nlibrary(sf)\nlibrary(tmap)\n\n서울에 대한 SRTM 기반 DEM 데이터를 불러온다.\n\ndem_seoul &lt;- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif\")\ndem_seoul_mask &lt;- rast(\"D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif\")\n\n서울의 행정구역 바운더리 파일을 불러온다.\n\nseoul &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp\")\nseoul_gu &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp\")\nseoul_dong &lt;- st_read(\"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp\")\n\n\n22.2.2 지형 요소의 추출\n\n22.2.2.1 경사\nterrain() 함수를 이용하여 경사(slope)를 계산한다.\n\nseoul_slope &lt;- terrain(dem_seoul_mask, v = \"slope\", neighbors = 8, unit = \"degrees\")\n\n지도를 제작한다.\n\nmy_map &lt;- tm_shape(seoul_slope, raster.downsample = FALSE) + \n  tm_raster(style = \"fixed\", breaks = c(0, 5, 10, 15, 20, 25, 30, 35, Inf), palette = \"-RdYlGn\", title = \"Slope\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Slope\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.2 향\nterrain() 함수를 이용하여 향(aspect)을 계산한다.\n\nseoul_aspect &lt;- terrain(dem_seoul_mask, v = \"aspect\", neighbors = 8, unit = \"degrees\")\n\n지도를 제작한다.\n\naspect_col &lt;- c(\"#84D600\", \"#00AB44\", \"#0068C0\", \"#6C00A3\", \"#CA009C\", \"#FF5568\", \"#FFAB47\", \"#F4FA00\", \"#84D600\")\n\nmy_map &lt;- tm_shape(seoul_aspect) + \n  tm_raster(style = \"fixed\", \n            breaks = c(0, 22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5, 360), \n            labels = c(\"N\", \"NE\", \"E\", \"SE\", \"S\", \"SW\", \"W\", \"NW\", \"N\"), \n            palette = aspect_col, title = \"Aspect\", legend.is.portrait = FALSE) +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Aspect\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.3 TRI(Terrain Ruggedness Index)\n\nseoul_TRI &lt;- terrain(dem_seoul_mask, v = \"TRI\", neighbors = 8, unit = \"degrees\")\n\n\nmy_map &lt;- tm_shape(seoul_TRI, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"Purples\", title = \"TRI\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: TRI\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.4 TPI(Topographic Position Index)\n\nseoul_TPI &lt;- terrain(dem_seoul_mask, v = \"TRI\", neighbors = 8, unit = \"degrees\")\n\n\nmy_map &lt;- tm_shape(seoul_TPI, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"Purples\", title = \"TPI\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: TPI\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.5 Roughness\n\nseoul_roughness &lt;- terrain(dem_seoul_mask, v = \"roughness\", neighbors = 8, unit = \"degrees\")\n\n\nmy_map &lt;- tm_shape(seoul_roughness, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"Purples\", title = \"Roughness\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Roughness\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.6 Flow Direction\n\nseoul_flowdir &lt;- terrain(dem_seoul_mask, v = \"flowdir\", neighbors = 8, unit = \"degrees\")\n\n\nmy_map &lt;- tm_shape(seoul_flowdir, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"Purples\", title = \"Flow Direction\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Flow Direction\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.7 곡률: 종곡률(profile curvature)\n곡률은 spatialEco 패키지를 활용하여 계산한다.\n\nlibrary(spatialEco)\nseoul_curv_profile &lt;- curvature(dem_seoul_mask, type = \"profile\")\n\n지도를 제작한다. 연속형은 별로 좋지 않을 것 같음.\n\nmy_map &lt;- tm_shape(seoul_curv_profile, raster.downsample = FALSE) + tm_raster(style = \"quantile\", palette = \"BrBG\", title = \"Curvature\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Profile Curvature\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.2.8 곡률: 횡곡률(plan curvature)\n\nseoul_curv_plan &lt;- curvature(dem_seoul_mask, type = \"planform\")\n\n지도를 제작한다. 연속형은 별로 좋지 않을 것 같음.\n\nmy_map &lt;- tm_shape(seoul_curv_plan, raster.downsample = FALSE) + tm_raster(style = \"quantile\", palette = \"BrBG\", title = \"Curvature\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Plan Curvature\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.3 시각화\n\n22.2.3.1 힐셰이딩(hillshading)\n\nseoul_slope_radian &lt;- terrain(dem_seoul_mask, v = \"slope\", neighbors = 8, unit = \"radians\")\nseoul_aspect_radian &lt;- terrain(dem_seoul_mask, v = \"aspect\", neighbors = 8, unit = \"radians\")\nseoul_hillshade &lt;- shade(seoul_slope_radian, seoul_aspect_radian, angle = 45, direction = 45, normalize = TRUE)\n\n지도를 제작한다.\n\nmy_map &lt;- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"-Greys\", title = \"\", legend.show = FALSE) +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Hillshading\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.3.2 단면도 생성(transverse profiling)\n\nlibrary(stars)\n\ndem_seoul_mask &lt;- project(dem_seoul_mask, \"epsg:5179\")\n\n\npts_matrix &lt;- matrix(c(126.961091, 37.442904,\n                      126.992310, 37.660032),\n                    ncol = 2, byrow = TRUE)\npts_df &lt;- data.frame(id = 1:2, X = pts_matrix[, 1], Y = pts_matrix[, 2])\npts_sf &lt;- st_as_sf(pts_df, coords = c(\"X\", \"Y\"), crs = 4326)\n\ndist &lt;- st_distance(pts_sf)\n\nline &lt;- st_sfc(st_linestring(pts_matrix), crs = 4326)\nline_sf &lt;- st_sf(geometry = line)\nline_sf &lt;- st_transform(line_sf, crs = 5179)\n\npoints_sf &lt;- st_line_sample(line_sf, density = 0.1)\npoints_sf &lt;- st_cast(points_sf, \"POINT\") |&gt; st_sf() \n\n# dem_seoul_mask_stars &lt;- st_as_stars(dem_seoul_mask)\n# \n# elev_line &lt;- st_extract(dem_seoul_mask_stars, points_sf)\n\nelev_profile &lt;- extract(dem_seoul_mask, points_sf)\nnames(elev_profile) &lt;- c(\"distance\", \"elevation\")\n\nplot(elev_profile[, \"distance\"], elev_profile[, \"elevation\"], type = \"l\", \n     xlab = \"Distance (m)\", ylab = \"Elevation (m)\", main = \"Transverse Profile\")\n\n\n\n\n\n\nggplot(data = elev_profile) +\n  geom_line(aes(x = distance, y = elevation)) +\n  labs(x = \"\", y = \"Elevation(m)\") +\n  coord_fixed()\n\n\n\n\n\n\n\n그래피를 제작한다.\n\nmy_graph &lt;- ggplot(data = elev_profile) +\n  geom_line(aes(x = distance, y = elevation)) +\n  labs(x = \"Distance(m)\", y = \"Elevation(m)\") +\n  coord_fixed()\nmy_graph\n\n\n\n\n\n\n\n지도를 제작한다.\n\nmy_map &lt;- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"-Greys\", title = \"\", legend.show = FALSE) +\n  tm_shape(line_sf) + tm_lines(col = \"red\", lwd = 2) +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Transverse Profiling\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.3.3 컨투어링(contouring)\n\nseoul_contour &lt;- as.contour(dem_seoul_mask)\nseoul_contour &lt;- st_as_sf(seoul_contour)\n\n지도를 제작한다.\n\nmy_map &lt;- tm_shape(dem_seoul_mask, raster.downsample = FALSE) + tm_raster(style = \"fixed\", breaks = c(-Inf, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, Inf), palette = \"Greys\", legend.show = FALSE) +\n  tm_shape(subset(seoul_contour, level %in% c(50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700))) + \n  tm_iso(text = \"level\", color = \"black\", lwd = 1, size = 1, alpha = 0.7) +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Contouring\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map\n\n\n\n\n\n\n\n\n22.2.4 가시성(visibility) 분석\n우선 내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.\n\ncoords &lt;- tibble(lon = 126.955184, lat = 37.460422)\npoints_sf &lt;- st_as_sf(coords, coords = c(\"lon\", \"lat\"), crs = 4326)\npoints_5179 &lt;- st_transform(points_sf, crs = 5179)\nst_coordinates(points_5179)\n\n            X       Y\n[1,] 951818.1 1940275\n\n\nterra 패키지의 viewshed() 함수를 활용하여 가시역을 계산한다.\n\nseoul_viewshed &lt;- viewshed(dem_seoul_mask, loc = c(951818.1, 1940275), observer = 15, output = \"yes/no\")\nqtm(seoul_viewshed)\n\n\n\n\n\n\n\n지도를 제작한다.\n\nmy_map &lt;- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = \"cont\", palette = \"-Greys\", title = \"\", legend.show = FALSE) +\n  tm_shape(seoul_viewshed, raster.downsample = FALSE) + tm_raster(style = \"cat\", title = \"Viewshed\", alpha = 0.5) +\n  tm_shape(points_5179) + tm_symbols(col = \"black\") +\n  tm_shape(seoul) + tm_borders(col = \"gray20\", lwd = 1.5) +\n  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = \"white\", legend.bg.alpha = 0.6) +\n  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), \n            title = \"DEM Analysis: Viewshed\", title.size = 1, \n            title.position = c(\"LEFT\", \"TOP\")) + \n  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = \"gray60\", position = c(0.03, 0.01))\nmy_map",
+    "crumbs": [
+      "GIS 모델링과 고급 GIS 분석",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>지형 분석</span>"
+    ]
   }
 ]

@@ -1,5 +1,5 @@
 ---
-title: "공간모델링과 고급 GIS 분석"
+title: "GIS 모델링과 고급 GIS 분석"
 author: Sang-Il Lee
 date-modified: last-modified
 number-sections: true
@@ -14,3 +14,23 @@ execute:
   freeze: auto
 editor: visual
 ---
+
+공간모델링이란 지리공간적 사상과 그것의 작동 및 관련 방식을 특정한 프레임워크 속에서 모사함으로써, 공간적 문제를 해결하거나 지리적 연구 과제를 수행하는 것을 의미한다. 다음과 같은 두 가지 종류가 있을 수 있다.
+
+-   주제에 따른 분류: 자연환경적 모델, 인문사회적 모델, 종합 모델
+
+-   적용 기법에 따른 분류: 개념적 모델(시스템 다이어그램), 수리통계적 모델, 시뮬레이션 모델(CA, ABM 등) 등
+
+GIS 모델링은 공간모델링을 GIS의 맥락 속에서 행하는 것을 의미한다. 즉, GIS 모델링은 GIS-기반 공간모델링을 의미한다. 좀더 구체적으로 정의하면, GIS 모델링이란 특정한 목적(공간적 문제 해결, 지리적 연구 과제 수행 등)을 위해 GIS 오퍼레이션을 체계적으로 조합ㆍ연계시키는 일련의 과정을 의미한다.
+
+고급 GIS 분석에서 고급(advanced)은 두 가지를 의미한다. 보다 복잡한 GIS 오퍼레이션의 적용하거나 특수 목적형 GIS 오퍼레이션의 적용한 것을 의미한다. 종류에 다음과 같은 것이 있을 수 있다.
+
+-   지형 분석(terrain analysis)
+
+-   네트워크 분석(network analysis)
+
+-   수문 분석(hydrologic analysis)
+
+-   공간통계 분석(spatial statistical analysis)
+
+-   3D 혹은 4D 분석(3-dimensional or 4-dimensional analysis)
