@@ -24,7 +24,6 @@ editor_options:
 
 ```{r}
 library(tidyverse)
-library(raster)
 library(terra)
 library(sf)
 library(tmap)
@@ -34,9 +33,9 @@ library(tmap)
 
 ```{r}
 #| results: hide
-elev <- raster("D:/My R/GIS/래스터분석사례데이터/elevation1.tif")
-slp <- raster("D:/My R/GIS/래스터분석사례데이터/slope1.tif")
-lc <- raster("D:/My R/GIS/래스터분석사례데이터/lc_example.tif")
+elev <- rast("D:/My R/GIS/래스터분석사례데이터/elevation1.tif")
+slp <- rast("D:/My R/GIS/래스터분석사례데이터/slope1.tif")
+lc <- rast("D:/My R/GIS/래스터분석사례데이터/lc_example.tif")
 airports <- st_read("D:/My R/GIS/래스터분석사례데이터/airports.shp")
 interstates <- st_read("D:/My R/GIS/래스터분석사례데이터/interstates.shp")
 pnts <- st_read("D:/My R/GIS/래스터분석사례데이터/example_points.shp")
@@ -183,35 +182,35 @@ tmap_save(my_map, filename = my.file.name, height = 12.5, width = 12.5*100/64, d
 
 -   고속도로 근접성: 가까울수록 더 선호
 
-네 조건에 대한 재분류를 실행한다.
+네 조건에 대한 재분류를 실행한다. `global()` 함수를 통해 최대값과 최소값을 구한 뒤, 범위 표준화를 적용하여 분류 순위부여(classification ranking)을 수행한다.
 
 ```{r}
-elev_min <- minValue(elev)
-elev_max <- maxValue(elev)
+elev_min <- global(elev, fun = "min", na.rm = TRUE)[1, 1]
+elev_max <- global(elev, fun = "max", na.rm = TRUE)[1, 1]
 elev_score <- ((elev - elev_min)/(elev_max - elev_min))
 names(elev_score) <- "Reclassified"
 ele_s <- tm_shape(elev_score) + tm_raster(style="cont") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Elevation")
 
-slp_min <- minValue(slp)
-slp_max <- maxValue(slp)
+slp_min <- global(slp, fun = "min", na.rm = TRUE)[1, 1]
+slp_max <- global(slp, fun = "max", na.rm = TRUE)[1, 1]
 slp_score <- 1 - ((slp - slp_min)/(slp_max - slp_min))
 names(slp_score) <- "Reclassified"
 slp_s <- tm_shape(slp_score) + tm_raster(style="cont") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Slope")
 
-air_min <- minValue(airports.dist)
-air_max <- maxValue(airports.dist)
+air_min <- global(airports.dist, fun = "min", na.rm = TRUE)[1, 1]
+air_max <- global(airports.dist, fun = "max", na.rm = TRUE)[1, 1]
 air_score <- 1 - ((airports.dist - air_min)/(air_max - air_min))
 names(air_score) <- "Reclassified"
 airport_s <- tm_shape(air_score) + tm_raster(style="cont") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Airports")
 
-inter_min <- minValue(interstates.dist)
-inter_max <- maxValue(interstates.dist)
+inter_min <- global(interstates.dist, fun = "min", na.rm = TRUE)[1, 1]
+inter_max <- global(interstates.dist, fun = "max", na.rm = TRUE)[1, 1]
 inter_score <- 1- (interstates.dist - inter_min)/(inter_max - inter_min)
 names(inter_score) <- "Reclassified"
 interstate_s <- tm_shape(inter_score) + tm_raster(style="cont") +

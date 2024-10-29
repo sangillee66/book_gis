@@ -57,17 +57,7 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 seoul_gu_r <- rasterize(seoul_gu, dem_seoul_mask, field = "SGG1_CD")
 ```
 
-구에 해당되는 셀에 해당 구의 면적을 할당하여 새로운 래이어를 생성한다. 이것은 `raster` 패키지 기반의 코드이다. 아래의 것이 훨씬 더 좋다.
-
-```{r}
-#| eval: false
-seoul_gu_area_table <- tapply(area(seoul_gu_r), seoul_gu_r[], sum)/1000000
-seoul_gu_area_table <- data.frame(ID = names(seoul_gu_area_table), Value = seoul_gu_area_table) 
-seoul_gu_area_r <- dem_seoul_mask
-seoul_gu_area_r[] <- seoul_gu_area_table$Value[match(seoul_gu_r[], seoul_gu_area_table$ID)]
-```
-
-이것은 `terra` 패키지 기반의 코드이다.
+구에 해당되는 셀에 해당 구의 면적을 할당하여 새로운 래이어를 생성한다. `cellsize()` 함수를 통해 모든 셀에 해당 셀의 면적이 들어가 있는 래스터를 생성한 후, `zonal()` 함수를 적용한다. `as.raster` 아규먼트를 통해 래스터 레이어를 생성하는 것이 키포인트이다.
 
 ```{r}
 seoul_gu_area <- cellSize(seoul_gu_r)/1000000

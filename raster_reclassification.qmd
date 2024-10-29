@@ -20,11 +20,11 @@ editor_options:
 
 ## 준비
 
-필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지를 `raster`를 사용한다.
+필수적인 패키지를 설치한다. 래스터 분석을 위한 기본 패키지로 `terra`를 사용한다.
 
 ```{r}
 library(tidyverse)
-library(raster)
+library(terra)
 library(sf)
 library(tmap)
 ```
@@ -32,8 +32,8 @@ library(tmap)
 서울에 대한 SRTM 기반 DEM 데이터를 불러온다.
 
 ```{r}
-dem_seoul <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif")
-dem_seoul_mask <- raster("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif")
+dem_seoul <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul.tif")
+dem_seoul_mask <- rast("D:/My R/World Data Manupulation/USGS EarthExplorer/srtm_seoul_mask.tif")
 ```
 
 서울의 행정구역 바운더리 파일을 불러온다.
@@ -89,11 +89,11 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ### 분류 순위부여
 
-분류 순위부여를 통해 새로운 래스터를 생성한다.
+분류 순위부여를 통해 새로운 래스터를 생성한다. `raster` 패키지의 `reclassify()` 함수가 `terra` 패키지에서 `classify()`로 바뀌었다.
 
 ```{r}
 rclmat <- matrix(c(-Inf, 100, 1, 100, 200, 3, 200, 300, 5, 300, 400, 7, 400, Inf, 9), ncol = 3, byrow = TRUE)
-dem_seoul_rec <- reclassify(dem_seoul, rclmat, include.lowest = TRUE)
+dem_seoul_rec <- classify(dem_seoul, rclmat, include.lowest = TRUE)
 ```
 
 지도를 제작한다.

@@ -136,7 +136,7 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 포컬 평균을 계산한다.
 
 ```{r}
-dem_seoul_focal_mean <- focal(dem_seoul, w = 3, fun = mean)
+dem_seoul_focal_mean <- focal(dem_seoul, w = 3, fun = "mean")
 ```
 
 지도를 제작한다.
@@ -224,22 +224,7 @@ seoul_dong_r <- rasterize(seoul_dong, dem_seoul_mask, field = "EMD_ID")
 
 ### 평균
 
-서울시 구와 동의 조널 평균을 계산한다. 이것은 `raster` 패키지용이다. 아래의 것이 훨씬 간편하다.
-
-```{r}
-#| eval: false
-dem_seoul_gu_mask_zonal_mean_table <- zonal(dem_seoul_mask, seoul_gu_r, fun = "mean")
-dem_seoul_gu_mask_zonal_mean_table <- as.data.frame(dem_seoul_gu_mask_zonal_mean_table)
-dem_seoul_gu_mask_zonal_mean <- seoul_gu_r
-dem_seoul_gu_mask_zonal_mean[] <- dem_seoul_gu_mask_zonal_mean_table$value[match(seoul_gu_r[], dem_seoul_gu_mask_zonal_mean_table$zone)]
-
-dem_seoul_dong_mask_zonal_mean_table <- zonal(dem_seoul_mask, seoul_dong_r, fun = mean)
-dem_seoul_dong_mask_zonal_mean_table <- as.data.frame(dem_seoul_dong_mask_zonal_mean_table)
-dem_seoul_dong_mask_zonal_mean <- seoul_dong_r
-dem_seoul_dong_mask_zonal_mean[] <- dem_seoul_dong_mask_zonal_mean_table$value[match(seoul_dong_r[], dem_seoul_dong_mask_zonal_mean_table$zone)]
-```
-
-이것은 `terra` 패키지 용이다.
+서울시 구와 동의 조널 평균을 계산한다. `zonal()` 함수의 `as.raster` 아규먼트가 중요하다.
 
 ```{r}
 dem_seoul_gu_mask_zonal_mean <- zonal(dem_seoul_mask, seoul_gu_r, fun = "mean", na.rm = TRUE, as.raster = TRUE)
@@ -278,22 +263,7 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ### 표준편차
 
-서울시 구와 동의 조널 표준편차를 계산한다. 이것은 `raster` 패키지용이다. 아래의 것이 훨씬 간편하다.
-
-```{r}
-#| eval: false
-dem_seoul_gu_mask_zonal_sd_table <- zonal(dem_seoul_mask, seoul_gu_r, fun = sd)
-dem_seoul_gu_mask_zonal_sd_table <- as.data.frame(dem_seoul_gu_mask_zonal_sd_table)
-dem_seoul_gu_mask_zonal_sd <- seoul_gu_r
-dem_seoul_gu_mask_zonal_sd[] <- dem_seoul_gu_mask_zonal_sd_table$value[match(seoul_gu_r[], dem_seoul_gu_mask_zonal_sd_table$zone)]
-
-dem_seoul_dong_mask_zonal_sd_table <- zonal(dem_seoul_mask, seoul_dong_r, fun = sd)
-dem_seoul_dong_mask_zonal_sd_table <- as.data.frame(dem_seoul_dong_mask_zonal_sd_table)
-dem_seoul_dong_mask_zonal_sd <- seoul_dong_r
-dem_seoul_dong_mask_zonal_sd[] <- dem_seoul_dong_mask_zonal_sd_table$value[match(seoul_dong_r[], dem_seoul_dong_mask_zonal_sd_table$zone)]
-```
-
-이것은 `terra` 패키지 용이다.
+서울시 구와 동의 조널 표준편차를 계산한다.
 
 ```{r}
 dem_seoul_gu_mask_zonal_sd <- zonal(dem_seoul_mask, seoul_gu_r, fun = "sd", na.rm = TRUE, as.raster = TRUE)
