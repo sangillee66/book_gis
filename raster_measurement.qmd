@@ -100,7 +100,7 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ### 주변길이
 
-약간의 계산이 필요하다. 속도가 느리다. 성공은 했지만, 다른 방법이 있을 듯 하다.
+약간의 계산이 필요하다. 속도가 상당히 느리다. 성공은 했지만, 다른 방법이 있을 듯 하다.
 
 ```{r}
 
@@ -121,7 +121,6 @@ for (region_id in region_ids) {
   region_r_r <- seoul_gu_r == region_id # 값을 셀로 옮기려면 서울 전체가 살아있는 raster가 존재해야 함.
   seoul_perimeter_r[region_r_r] <- perimeter
 }
-
 ```
 
 지도를 제작한다.

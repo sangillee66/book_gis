@@ -331,49 +331,35 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 #### 단면도 생성(transverse profiling)
 
 ```{r}
-library(stars)
-
-dem_seoul_mask <- project(dem_seoul_mask, "epsg:5179")
-
-
-pts_matrix <- matrix(c(126.961091, 37.442904,
-                      126.992310, 37.660032),
-                    ncol = 2, byrow = TRUE)
-pts_df <- data.frame(id = 1:2, X = pts_matrix[, 1], Y = pts_matrix[, 2])
+pts_df <- tibble(id = 1:2, X = c(126.961091, 126.992310), Y = c(37.442904, 37.660032))
 pts_sf <- st_as_sf(pts_df, coords = c("X", "Y"), crs = 4326)
 
-dist <- st_distance(pts_sf)
+line_sf <- st_cast(st_as_sf(aggregate(x = pts_sf$geometry, by = list(c(1,1)), FUN = st_combine)), "LINESTRING") 
 
-line <- st_sfc(st_linestring(pts_matrix), crs = 4326)
-line_sf <- st_sf(geometry = line)
+# pts_matrix <- matrix(c(126.961091, 37.442904,
+#                       126.992310, 37.660032),
+#                     ncol = 2, byrow = TRUE)
+# line_sf <- st_sfc(st_linestring(pts_matrix), crs = 4326) |> st_sf()
+
 line_sf <- st_transform(line_sf, crs = 5179)
-
 points_sf <- st_line_sample(line_sf, density = 0.1)
 points_sf <- st_cast(points_sf, "POINT") |> st_sf() 
 
-# dem_seoul_mask_stars <- st_as_stars(dem_seoul_mask)
-# 
-# elev_line <- st_extract(dem_seoul_mask_stars, points_sf)
-
 elev_profile <- extract(dem_seoul_mask, points_sf)
 names(elev_profile) <- c("distance", "elevation")
+elev_profile$distance <- elev_profile$distance/100
 
 plot(elev_profile[, "distance"], elev_profile[, "elevation"], type = "l", 
-     xlab = "Distance (m)", ylab = "Elevation (m)", main = "Transverse Profile")
-
-ggplot(data = elev_profile) +
-  geom_line(aes(x = distance, y = elevation)) +
-  labs(x = "", y = "Elevation(m)") +
-  coord_fixed()
+     xlab = "Distance (km)", ylab = "Elevation (m)", main = "Transverse Profile")
 ```
 
-그래피를 제작한다.
+그래프를 제작한다.
 
 ```{r}
 my_graph <- ggplot(data = elev_profile) +
   geom_line(aes(x = distance, y = elevation)) +
-  labs(x = "Distance(m)", y = "Elevation(m)") +
-  coord_fixed()
+  labs(x = "Distance(km)", y = "Elevation(m)") + 
+  theme(aspect.ratio = 1/4)
 my_graph
 ```
 
@@ -382,12 +368,20 @@ my_graph
 #| output: false
 my_graph <- ggplot(data = elev_profile) +
   geom_line(aes(x = distance, y = elevation)) +
-  labs(x = "Distance(m)", y = "Elevation(m)") +
-  coord_fixed()
+  labs(
+    x = "Distance(km)", 
+    y = "Elevation(m)", 
+    caption = "SANG-IL LEE, Geography Education at SNU, 2023"
+  ) +
+  theme(
+    aspect.ratio = 1/4, 
+    axis.text = element_text(size = 14), 
+    axis.title = element_text(size = 16, face = "plain")
+  )
 my_graph
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "profile", ".jpg")
-ggsave(my_graph, filename = my.file.name, width = 12.1, height = 3, dpi = 600)
+ggsave(my_graph, filename = my.file.name, width = 12.1, height = 3.7, dpi = 600)
 ```
 
 지도를 제작한다.
@@ -478,7 +472,6 @@ st_coordinates(points_5179)
 
 ```{r}
 seoul_viewshed <- viewshed(dem_seoul_mask, loc = c(951818.1, 1940275), observer = 15, output = "yes/no")
-qtm(seoul_viewshed)
 ```
 
 지도를 제작한다.

@@ -199,7 +199,14 @@ dem_seoul |>
 minmax(dem_seoul)
 ```
 
-다음과 같이 하면 최소값과 해당 셀의 일련번호를 구할 수 있다. 그런데 에러가 난다.
+다음과 같은 global() 함수를 이용할 수도 있다.
+
+```{r}
+global(dem_seoul, fun = "max", na.rm = TRUE)
+global(dem_seoul, fun = "min", na.rm = TRUE)
+```
+
+다음과 같이 하면 최소값과 해당 셀의 일련번호를 구할 수 있다.
 
 ```{r}
 where.min(dem_seoul)
@@ -215,6 +222,7 @@ where.max(dem_seoul)
 
 ```{r}
 dem_max_xy <- xyFromCell(dem_seoul, where.max(dem_seoul)[,2])
+dem_max_xy
 ```
 
 벡터 포인트 객체로 만들 수 있다.
