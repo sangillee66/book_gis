@@ -734,8 +734,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">22.2.4</span> 가시성(visibility) 분석</h3>
 <p>우선 내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">126.955184</span>, lat <span class="op">=</span> <span class="fl">37.460422</span><span class="op">)</span></span>
-<span><span class="va">points_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">coords</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">coords_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">126.955184</span>, lat <span class="op">=</span> <span class="fl">37.460422</span><span class="op">)</span></span>
+<span><span class="va">points_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">coords_df</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
 <span><span class="va">points_5179</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">points_sf</span>, crs <span class="op">=</span> <span class="fl">5179</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">points_5179</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -745,14 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>terra</code> 패키지의 <code><a href="https://rspatial.github.io/terra/reference/viewshed.html">viewshed()</a></code> 함수를 활용하여 가시역을 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_viewshed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/viewshed.html">viewshed</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">951818.1</span>, <span class="fl">1940275</span><span class="op">)</span>, observer <span class="op">=</span> <span class="fl">15</span>, output <span class="op">=</span> <span class="st">"yes/no"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm</a></span><span class="op">(</span><span class="va">seoul_viewshed</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><a href="sm_terrain_files/figure-html/unnamed-chunk-36-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="sm_terrain_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_viewshed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/viewshed.html">viewshed</a></span><span class="op">(</span><span class="va">dem_seoul_mask</span>, loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">951818.1</span>, <span class="fl">1940275</span><span class="op">)</span>, observer <span class="op">=</span> <span class="fl">15</span>, output <span class="op">=</span> <span class="st">"yes/no"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -768,7 +761,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_terrain_files/figure-html/unnamed-chunk-37-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="sm_terrain_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_terrain_files/figure-html/unnamed-chunk-37-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="sm_terrain_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -1173,7 +1166,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -462,8 +462,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 우선 내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.
 
 ```{r}
-coords <- tibble(lon = 126.955184, lat = 37.460422)
-points_sf <- st_as_sf(coords, coords = c("lon", "lat"), crs = 4326)
+coords_df <- tibble(lon = 126.955184, lat = 37.460422)
+points_sf <- st_as_sf(coords_df, coords = c("lon", "lat"), crs = 4326)
 points_5179 <- st_transform(points_sf, crs = 5179)
 st_coordinates(points_5179)
 ```
