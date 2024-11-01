@@ -341,7 +341,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">공간모델링과 고급 GIS 분석</span></a>
+ <span class="menu-text">GIS 모델링과 고급 GIS 분석</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -350,7 +350,7 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sm_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">공간모델링</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -381,8 +381,8 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%EB%A9%B4%EC%A0%81%EA%B3%BC-%EC%A3%BC%EB%B3%80%EA%B8%B8%EC%9D%B4" id="toc-폴리곤의-면적과-주변길이" class="nav-link active" data-scroll-target="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%EB%A9%B4%EC%A0%81%EA%B3%BC-%EC%A3%BC%EB%B3%80%EA%B8%B8%EC%9D%B4"><span class="header-section-number">8.1</span> <strong>폴리곤의 면적과 주변길이</strong></a></li>
-  <li><a href="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%ED%98%95%ED%83%9C" id="toc-폴리곤의-형태" class="nav-link" data-scroll-target="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%ED%98%95%ED%83%9C"><span class="header-section-number">8.2</span> <strong>폴리곤의 형태</strong></a></li>
+<li><a href="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%EB%A9%B4%EC%A0%81%EA%B3%BC-%EC%A3%BC%EB%B3%80%EA%B8%B8%EC%9D%B4" id="toc-폴리곤의-면적과-주변길이" class="nav-link active" data-scroll-target="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%EB%A9%B4%EC%A0%81%EA%B3%BC-%EC%A3%BC%EB%B3%80%EA%B8%B8%EC%9D%B4"><span class="header-section-number">8.1</span> 폴리곤의 면적과 주변길이</a></li>
+  <li><a href="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%ED%98%95%ED%83%9C" id="toc-폴리곤의-형태" class="nav-link" data-scroll-target="#%ED%8F%B4%EB%A6%AC%EA%B3%A4%EC%9D%98-%ED%98%95%ED%83%9C"><span class="header-section-number">8.2</span> 폴리곤의 형태</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -407,7 +407,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 29, 2024</p>
+      <p class="date-modified">November 1, 2024</p>
     </div>
   </div>
     
@@ -416,8 +416,7 @@ window.Quarto = {
 
 
 </header><section id="폴리곤의-면적과-주변길이" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="폴리곤의-면적과-주변길이">
-<span class="header-section-number">8.1</span> <strong>폴리곤의 면적과 주변길이</strong>
-</h2>
+<span class="header-section-number">8.1</span> 폴리곤의 면적과 주변길이</h2>
 <p>필수적인 패키지를 불러온다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
@@ -440,14 +439,13 @@ window.Quarto = {
 <span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_area</a></span><span class="op">(</span><span class="va">seoul_dong</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="폴리곤의-형태" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="폴리곤의-형태">
-<span class="header-section-number">8.2</span> <strong>폴리곤의 형태</strong>
-</h2>
+<span class="header-section-number">8.2</span> 폴리곤의 형태</h2>
 <p>콤펙트비(compactness ratio)를 다음의 수식에 의거해 계산한다.</p>
 <p><span class="math display">\[
 S_1=A/(P^2/4\pi)=4\pi A/P^2
 \]</span></p>
 <p><span class="math display">\[
-S_2=(2\pi \sqrt{A/\pi})/P=2\sqrt{\pi A}/P=3.545\sqrt A/P
+S_2=(2\pi \sqrt{A/\pi})/P=2\sqrt{\pi A}/P=3.545\sqrt{A}/P
 \]</span></p>
 <p>함수를 작성한다.</p>
 <div class="cell">
@@ -562,7 +560,7 @@ Projected CRS: KGD2002 / Unified CS
 <span><span class="va">my_map</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="vector_measurement_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="vector_measurement_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="vector_measurement_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="vector_measurement_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -967,7 +965,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

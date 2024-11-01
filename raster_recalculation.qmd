@@ -237,7 +237,7 @@ dem_seoul_dong_mask_zonal_mean <- zonal(dem_seoul_mask, seoul_dong_r, fun = "mea
 my_map <- tm_shape(dem_seoul_dong_mask_zonal_mean) + tm_raster(style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
   tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
   tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
-  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.07, 0.04, 0.04, 0.04), 
             title = "Recalculation: Zonal(Mean)", title.size = 1, 
             title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
@@ -250,7 +250,7 @@ my_map
 my_map <- tm_shape(dem_seoul_dong_mask_zonal_mean) + tm_raster(style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
   tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
   tm_legend(legend.position = c(0.89, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
             title = "Recalculation: Zonal(Mean)", title.size = 2,
             title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
@@ -276,7 +276,7 @@ dem_seoul_dong_mask_zonal_sd <- zonal(dem_seoul_mask, seoul_dong_r, fun = "sd", 
 my_map <- tm_shape(dem_seoul_dong_mask_zonal_sd) + tm_raster(style = "cont", palette = "PuRd", title = "Std. Dev.") +
   tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
   tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
-  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.07, 0.04, 0.04, 0.04), 
             title = "Recalculation: Zonal(Standard Deviation)", title.size = 1, 
             title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
@@ -289,7 +289,7 @@ my_map
 my_map <- tm_shape(dem_seoul_dong_mask_zonal_sd) + tm_raster(style = "cont", palette = "PuRd", title = "Std. Dev.") +
   tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
   tm_legend(legend.position = c(0.89, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
             title = "Recalculation: Zonal(Standard Deviation)", title.size = 2,
             title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
@@ -318,7 +318,7 @@ my_map <- tm_shape(seoul_dong) +
   tm_polygons(col = "elev", style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
   tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
   tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
-  tm_layout(inner.margins = c(0.07, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.07, 0.04, 0.04, 0.04), 
             title = "Recalculation: vector-on-raster", title.size = 1, 
             title.position = c("LEFT", "TOP")) + 
   tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
@@ -332,7 +332,7 @@ my_map <- tm_shape(seoul_dong) +
   tm_polygons(col = "elev", style = "cont", palette = c("forestgreen","yellow","tan","brown"), title = "Elevation(m)") +
   tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
   tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
             title = "Recalculation: vector-on-raster", title.size = 2,
             title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
@@ -362,7 +362,7 @@ my_map
 my_map <- tm_shape(seoul_dong) + tm_polygons(col = "white") +
   tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
   tm_legend(legend.position = c(0.87, 0.05), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
-  tm_layout(inner.margins = c(0.05, 0.04, 0.06, 0.04), 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
             title = "Boundary of Dongs", title.size = 2,
             title.position = c(0.02, 0.97)) + 
   tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
