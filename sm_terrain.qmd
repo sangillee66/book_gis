@@ -330,6 +330,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 #### 단면도 생성(transverse profiling)
 
+이 방식이 훨씬 빠르다.
+
 ```{r}
 pts_df <- tibble(id = 1:2, X = c(126.961091, 126.992310), Y = c(37.442904, 37.660032))
 pts_sf <- st_as_sf(pts_df, coords = c("X", "Y"), crs = 4326)
@@ -353,9 +355,30 @@ plot(elev_profile[, "distance"], elev_profile[, "elevation"], type = "l",
      xlab = "Distance (km)", ylab = "Elevation (m)", main = "Transverse Profile")
 ```
 
+다른 방식으로 해본다.
+
+```{r}
+#| eval: false
+line_sf <- cbind(c(126.961091, 126.992310), c(37.442904, 37.660032)) |> 
+  st_linestring() |> 
+  st_sfc(crs = 4326) |> 
+  st_sf(geometry = _)
+line_sf$id = 1:nrow(line_sf)
+points_sf <- st_segmentize(line_sf, dfMaxLength = 10) |> # st_segmentize()가 느리다.
+  st_cast("POINT") |> 
+  group_by(id) |> 
+  mutate(dist = st_distance(geometry)[, 1])
+
+elev_profile <- extract(dem_seoul_mask, points_sf)
+points_sf <- cbind(points_sf, elev_profile)
+names(points_sf)[c(2,4)] <- c("distance", "elevation")
+points_sf$distance <- drop_units(points_sf$distance/1000)
+```
+
 그래프를 제작한다.
 
 ```{r}
+# library(units)
 my_graph <- ggplot(data = elev_profile) +
   geom_line(aes(x = distance, y = elevation)) +
   labs(x = "Distance(km)", y = "Elevation(m)") + 
@@ -459,6 +482,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ### 가시성(visibility) 분석
 
+#### 가시권(viewshed) 분석
+
 우선 내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.
 
 ```{r}
@@ -505,5 +530,88 @@ my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style
 my_map
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "지형분석_5_viewshed", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
+```
+
+#### 가시선(line-of-sight) 분석
+
+10동 옥상에서 개화산 정상을 바라봤을 때의 가시선 분석을 수행한다. 우선, 옥상과 개화산 정상을 연결한 라인 피처를 생성한다.
+
+```{r}
+pts_df_1 <- tibble(id = 1:2, X = c(126.955184, 126.803605), Y = c(37.460422, 37.582374))
+pts_sf_1 <- st_as_sf(pts_df_1, coords = c("X", "Y"), crs = 4326)
+line_sf_1 <- st_cast(st_as_sf(aggregate(x = pts_sf_1$geometry, by = list(c(1,1)), FUN = st_combine)), "LINESTRING")
+line_sf_1 <- st_transform(line_sf_1, crs = 5179)
+```
+
+가시권 분석의 결과를 활용한다. 가시권면에서 라인이 지나가는 부분의 레스터 셀을 선택한다. 성공하지 못했다.
+
+```{r}
+library(lwgeom)
+los_raster <- mask(seoul_viewshed, line_sf_1)
+
+los_points <- as.points(los_raster) |> 
+  st_as_sf()
+qtm(los_points)
+
+a <- st_split(line_sf_1, los_points)
+```
+
+다른 방법으로 가시선을 구한다.
+
+```{r}
+extracted <- extract(seoul_viewshed, line_sf_1, cells = TRUE)
+extracted <- extracted[!is.na(extracted[, "viewshed"]), ]  # Filter out No (NA) cells
+
+# Step 3: Loop through adjacent points to create line segments with attributes
+segments <- list()
+for (i in 1:(nrow(extracted) - 1)) {
+  # Get coordinates for each pair of adjacent cells
+  coords <- xyFromCell(seoul_viewshed, extracted[c(i, i + 1), "cell"])
+  
+  # Create a line segment
+  segment <- vect(coords, type="line", crs=crs(seoul_viewshed))
+  
+  # Assign Yes/No attribute (1 for Yes, NA for No) based on the first point in each pair
+  values(segment) <- data.frame(Yes_No = extracted[i, "viewshed"])
+  
+  # Append to list
+  segments[[i]] <- segment
+}
+
+# Step 4: Combine all segments into a single SpatVector
+line_segments <- do.call(rbind, segments)
+los_line <- st_as_sf(line_segments)
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(los_line) + tm_lines(col = "Yes_No", lwd = 3, title.col = "Seen or Not") +
+    tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "DEM Analysis: Line-of-Site", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 4), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
+  tm_shape(los_line) + tm_lines(col = "Yes_No", lwd = 5, title.col = "Seen or Not") +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_legend(legend.position = c(0.87, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "DEM Analysis: Line-of-Site", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "지형분석_5_los", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
