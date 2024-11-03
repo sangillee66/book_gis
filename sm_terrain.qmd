@@ -60,7 +60,8 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 `terrain()` 함수를 이용하여 경사(slope)를 계산한다.
 
 ```{r}
-seoul_slope <- terrain(dem_seoul_mask, v = "slope", neighbors = 8, unit = "degrees")
+seoul_slope <- dem_seoul_mask |> 
+  terrain(v = "slope", neighbors = 8, unit = "degrees")
 ```
 
 지도를 제작한다.
@@ -100,7 +101,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 `terrain()` 함수를 이용하여 향(aspect)을 계산한다.
 
 ```{r}
-seoul_aspect <- terrain(dem_seoul_mask, v = "aspect", neighbors = 8, unit = "degrees")
+seoul_aspect <- dem_seoul_mask |> 
+  terrain(v = "aspect", neighbors = 8, unit = "degrees")
 ```
 
 지도를 제작한다.
@@ -148,7 +150,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 #### TRI(Terrain Ruggedness Index)
 
 ```{r}
-seoul_TRI <- terrain(dem_seoul_mask, v = "TRI", neighbors = 8, unit = "degrees")
+seoul_TRI <- dem_seoul_mask |> 
+  terrain(v = "TRI", neighbors = 8, unit = "degrees")
 ```
 
 ```{r}
@@ -165,7 +168,8 @@ my_map
 #### TPI(Topographic Position Index)
 
 ```{r}
-seoul_TPI <- terrain(dem_seoul_mask, v = "TRI", neighbors = 8, unit = "degrees")
+seoul_TPI <- dem_seoul_mask |> 
+  terrain(v = "TRI", neighbors = 8, unit = "degrees")
 ```
 
 ```{r}
@@ -182,7 +186,8 @@ my_map
 #### Roughness
 
 ```{r}
-seoul_roughness <- terrain(dem_seoul_mask, v = "roughness", neighbors = 8, unit = "degrees")
+seoul_roughness <- dem_seoul_mask |> 
+  terrain(v = "roughness", neighbors = 8, unit = "degrees")
 ```
 
 ```{r}
@@ -199,7 +204,8 @@ my_map
 #### Flow Direction
 
 ```{r}
-seoul_flowdir <- terrain(dem_seoul_mask, v = "flowdir", neighbors = 8, unit = "degrees")
+seoul_flowdir <- dem_seoul_mask |> 
+  terrain(v = "flowdir", neighbors = 8, unit = "degrees")
 ```
 
 ```{r}
@@ -220,6 +226,8 @@ my_map
 ```{r}
 library(spatialEco)
 seoul_curv_profile <- curvature(dem_seoul_mask, type = "profile")
+seoul_curv_profile <- dem_seoul_mask |> 
+  curvature(type = "profile")
 ```
 
 지도를 제작한다. 연속형은 별로 좋지 않을 것 같음.
@@ -255,10 +263,11 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 #### 곡률: 횡곡률(plan curvature)
 
 ```{r}
-seoul_curv_plan <- curvature(dem_seoul_mask, type = "planform")
+seoul_curv_plan <- dem_seoul_mask |> 
+  curvature(type = "planform")
 ```
 
-지도를 제작한다. 연속형은 별로 좋지 않을 것 같음.
+지도를 제작한다. 연속형은 별로 좋지 않을 것으로 보인다.
 
 ```{r}
 my_map <- tm_shape(seoul_curv_plan, raster.downsample = FALSE) + tm_raster(style = "quantile", palette = "BrBG", title = "Curvature") +
@@ -292,10 +301,17 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 #### 힐셰이딩(hillshading)
 
+slope와 aspect를 라디안 단위로 생성하고, `shade()` 함수에 두 개를 투입하면 힐셰이드 래스터 래이어를 얻을 수 있다.
+
 ```{r}
-seoul_slope_radian <- terrain(dem_seoul_mask, v = "slope", neighbors = 8, unit = "radians")
-seoul_aspect_radian <- terrain(dem_seoul_mask, v = "aspect", neighbors = 8, unit = "radians")
-seoul_hillshade <- shade(seoul_slope_radian, seoul_aspect_radian, angle = 45, direction = 45, normalize = TRUE)
+seoul_slope_radian <- dem_seoul_mask |> 
+  terrain(v = "slope", neighbors = 8, unit = "radians")
+seoul_aspect_radian <- dem_seoul_mask |> 
+  terrain(v = "aspect", neighbors = 8, unit = "radians")
+seoul_hillshade <- shade(
+  seoul_slope_radian, 
+  seoul_aspect_radian, angle = 45, direction = 45, normalize = TRUE
+  )
 ```
 
 지도를 제작한다.
@@ -330,52 +346,32 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 #### 단면도 생성(transverse profiling)
 
-이 방식이 훨씬 빠르다.
-
 ```{r}
-pts_df <- tibble(id = 1:2, X = c(126.961091, 126.992310), Y = c(37.442904, 37.660032))
-pts_sf <- st_as_sf(pts_df, coords = c("X", "Y"), crs = 4326)
-
-line_sf <- st_cast(st_as_sf(aggregate(x = pts_sf$geometry, by = list(c(1,1)), FUN = st_combine)), "LINESTRING") 
-
-# pts_matrix <- matrix(c(126.961091, 37.442904,
-#                       126.992310, 37.660032),
-#                     ncol = 2, byrow = TRUE)
-# line_sf <- st_sfc(st_linestring(pts_matrix), crs = 4326) |> st_sf()
-
-line_sf <- st_transform(line_sf, crs = 5179)
-points_sf <- st_line_sample(line_sf, density = 0.1)
-points_sf <- st_cast(points_sf, "POINT") |> st_sf() 
-
-elev_profile <- extract(dem_seoul_mask, points_sf)
-names(elev_profile) <- c("distance", "elevation")
-elev_profile$distance <- elev_profile$distance/100
-
-plot(elev_profile[, "distance"], elev_profile[, "elevation"], type = "l", 
-     xlab = "Distance (km)", ylab = "Elevation (m)", main = "Transverse Profile")
-```
-
-다른 방식으로 해본다.
-
-```{r}
-#| eval: false
-line_sf <- cbind(c(126.961091, 126.992310), c(37.442904, 37.660032)) |> 
+# 두 지점을 연결하는 라인 sf 객체를 만든다.
+line_sf <- tibble(x = c(126.961091, 126.992310), y = c(37.442904, 37.660032)) |> 
+  as.matrix() |> # st_linestring()은 매트릭스만 받음
   st_linestring() |> 
   st_sfc(crs = 4326) |> 
-  st_sf(geometry = _)
-line_sf$id = 1:nrow(line_sf)
-points_sf <- st_segmentize(line_sf, dfMaxLength = 10) |> # st_segmentize()가 느리다.
-  st_cast("POINT") |> 
-  group_by(id) |> 
-  mutate(dist = st_distance(geometry)[, 1])
+  st_sf(geometry = _) |> # _ 표시는 직전에 만들어진 것을 인풋으로 받는다는 의미
+  st_transform(crs = 5179)
 
-elev_profile <- extract(dem_seoul_mask, points_sf)
-points_sf <- cbind(points_sf, elev_profile)
-names(points_sf)[c(2,4)] <- c("distance", "elevation")
-points_sf$distance <- drop_units(points_sf$distance/1000)
+# 라인 상에 적절한 간격의 포인트를 생성한다.
+points_sf <- line_sf |> 
+  st_line_sample(density = 0.1) |> # '단위 길이 당 포인트의 수'를 의미, 10m당 하나씩을 택한다는 의미.
+  st_cast("POINT") |> 
+  st_sf() 
+
+# 래스터로부터 각 포인트에 해당하는 값을 추출한다.
+elev_profile <- dem_seoul_mask |> 
+  extract(points_sf) |> 
+  mutate(
+    distance = ID * 10 / 1000, # 10m 당 하나이므로 10을 곱해 거리(m)로 만들고, 1,000으로 나누어 km 단위
+    elevation = n37_e126_1arc_v3,
+    .keep = "unused"
+  )
 ```
 
-그래프를 제작한다.
+단면 그래프를 제작한다.
 
 ```{r}
 # library(units)
@@ -407,7 +403,7 @@ my.file.name <- paste0(my.path.name, "profile", ".jpg")
 ggsave(my_graph, filename = my.file.name, width = 12.1, height = 3.7, dpi = 600)
 ```
 
-지도를 제작한다.
+두 지점을 연결한 선이 나타나는 레퍼런스 지도를 제작한다.
 
 ```{r}
 my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
@@ -442,8 +438,9 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 #### 컨투어링(contouring)
 
 ```{r}
-seoul_contour <- as.contour(dem_seoul_mask)
-seoul_contour <- st_as_sf(seoul_contour)
+seoul_contour <- dem_seoul_mask |> 
+  as.contour() |> 
+  st_as_sf()
 ```
 
 지도를 제작한다.
@@ -487,16 +484,20 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 우선 내 연구실의 경위도 좌표를 평면직각좌표로 전환한다.
 
 ```{r}
-coords_df <- tibble(lon = 126.955184, lat = 37.460422)
-points_sf <- st_as_sf(coords_df, coords = c("lon", "lat"), crs = 4326)
-points_5179 <- st_transform(points_sf, crs = 5179)
-st_coordinates(points_5179)
+points_sf <- tibble(lon = 126.955184, lat = 37.460422) |> 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
+  st_transform(crs = 5179) 
+st_coordinates(points_sf)
 ```
 
-`terra` 패키지의 `viewshed()` 함수를 활용하여 가시역을 계산한다.
+`terra` 패키지의 `viewshed()` 함수를 활용하여 가시권을 계산한다.
 
 ```{r}
-seoul_viewshed <- viewshed(dem_seoul_mask, loc = c(951818.1, 1940275), observer = 15, output = "yes/no")
+seoul_viewshed <- dem_seoul_mask |> 
+  viewshed(loc = c(951818.1, 1940275), 
+           observer = 15, 
+           output = "yes/no"
+  )
 ```
 
 지도를 제작한다.
@@ -504,7 +505,7 @@ seoul_viewshed <- viewshed(dem_seoul_mask, loc = c(951818.1, 1940275), observer 
 ```{r}
 my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
   tm_shape(seoul_viewshed, raster.downsample = FALSE) + tm_raster(style = "cat", title = "Viewshed", alpha = 0.5) +
-  tm_shape(points_5179) + tm_symbols(col = "black") +
+  tm_shape(points_sf) + tm_symbols(col = "black") +
   tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
   tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
@@ -519,7 +520,7 @@ my_map
 #| output: false
 my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
   tm_shape(seoul_viewshed, raster.downsample = FALSE) + tm_raster(style = "cat", title = "Viewshed", alpha = 0.5) +
-  tm_shape(points_5179) + tm_symbols(col = "black") +
+  tm_shape(points_sf) + tm_symbols(col = "black") +
   tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
   tm_legend(legend.position = c(0.87, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
@@ -535,31 +536,56 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 #### 가시선(line-of-sight) 분석
 
-10동 옥상에서 개화산 정상을 바라봤을 때의 가시선 분석을 수행한다. 우선, 옥상과 개화산 정상을 연결한 라인 피처를 생성한다.
+10동 옥상에서 개화산 정상을 바라봤을 때의 가시선 분석을 수행한다.
+
+우선, 옥상과 개화산 정상으로 이루어진 포인트 피처 레이어를 만든다.
 
 ```{r}
-pts_df_1 <- tibble(id = 1:2, X = c(126.955184, 126.803605), Y = c(37.460422, 37.582374))
-pts_sf_1 <- st_as_sf(pts_df_1, coords = c("X", "Y"), crs = 4326)
-line_sf_1 <- st_cast(st_as_sf(aggregate(x = pts_sf_1$geometry, by = list(c(1,1)), FUN = st_combine)), "LINESTRING")
-line_sf_1 <- st_transform(line_sf_1, crs = 5179)
+points_sf_2 <- tibble(X = c(126.955184, 126.803605), Y = c(37.460422, 37.582374)) |> 
+  st_as_sf(coords = c("X", "Y"), crs = 4326) |> 
+  st_transform(crs = 5179) 
 ```
 
-가시권 분석의 결과를 활용한다. 가시권면에서 라인이 지나가는 부분의 레스터 셀을 선택한다. 성공하지 못했다.
+다음으로, 옥상과 개화산 정상을 연결한 라인 피처 레이어를 생성한다.
 
 ```{r}
-library(lwgeom)
-los_raster <- mask(seoul_viewshed, line_sf_1)
-
-los_points <- as.points(los_raster) |> 
-  st_as_sf()
-qtm(los_points)
-
-a <- st_split(line_sf_1, los_points)
+line_sf_1 <- tibble(X = c(126.955184, 126.803605), Y = c(37.460422, 37.582374)) |> 
+  as.matrix() |> 
+  st_linestring() |> 
+  st_sfc(crs = 4326) |> 
+  st_sf(geometry = _) |> 
+  st_transform(crs = 5179)
 ```
 
-다른 방법으로 가시선을 구한다.
+가시선 분석은 가시권 분석이 이루어진 이상 별다른 가치가 없다. 그러나 특별한 라인 상에서 가시성이 어떻게 나타나는지를 살펴보고 싶을 수는 있다. 가시선을 생성하기 위한 시작은 당연히 가시권면에서 라인이 지나가는 부분의 레스터 셀을 선택하는 것일 것이다.
 
 ```{r}
+los_r <- seoul_viewshed |> 
+  mask(line_sf_1)
+```
+
+그런데 이것은 결국 래스터이므로 선형 피처를 얻고자 하는 목적에 부합하지 않는다. 최종적으로 원하는 것은 래스터의 대각선 길이로 라인 세그먼트가 분할되어 있고, 그것의 속성으로 TRUE/FALSE 값이 들어가 있는 벡터 라인 레이어이다. `st` 패키지의 `st_segmentize()` 함수와 `st_split()` 함수를 사용한 방법을 생각해 보았지만 모두 실패하였다.
+
+그래서 `stplanr` 패키지의 `line_segment()` 함수를 사용하고자 한다. 이 함수를 사용하여 전체 라인을 적당한 숫자의 라인 세그먼트로 분할한다. 라인의 전체 길이가 대략 20km 정도이고, 셀 크기를 고려할 때 약 700개 정도이면 적절한 것으로 판단하였다. 그리고 나서 terra 패키지의 extract() 함수를 이용하여 라인 세그먼트의 viewshed 값을 가져온다. 일종의 인터폴레이션을 적용하는 것이기 때문에 함수를 지정해야 하고 이 맥락에서는 max 혹은 min이 적절할 것으로 보인다.
+
+```{r}
+library(stplanr)
+line_segments <- line_sf_1 |> 
+  line_segment(
+    n_segments = 700
+  )
+los_line <- seoul_viewshed |> 
+  extract(line_segments, fun = "max", bind = TRUE) |> 
+  st_as_sf() |> 
+  mutate(
+    Yes_No = if_else(viewshed == 1, "TRUE", "FALSE")
+  )
+```
+
+아래의 방법은 chatGPT 선생이 제안한 방법이다. 속도는 조근 더 빠른 것 같고, viewshed의 값을 읽는 방식이 좀 더 직접적인 것으로 보인다. 그러나 결과에 큰 차이는 없다.
+
+```{r}
+#| eval: false
 extracted <- extract(seoul_viewshed, line_sf_1, cells = TRUE)
 extracted <- extracted[!is.na(extracted[, "viewshed"]), ]  # Filter out No (NA) cells
 
@@ -568,17 +594,13 @@ segments <- list()
 for (i in 1:(nrow(extracted) - 1)) {
   # Get coordinates for each pair of adjacent cells
   coords <- xyFromCell(seoul_viewshed, extracted[c(i, i + 1), "cell"])
-  
   # Create a line segment
   segment <- vect(coords, type="line", crs=crs(seoul_viewshed))
-  
   # Assign Yes/No attribute (1 for Yes, NA for No) based on the first point in each pair
   values(segment) <- data.frame(Yes_No = extracted[i, "viewshed"])
-  
   # Append to list
   segments[[i]] <- segment
 }
-
 # Step 4: Combine all segments into a single SpatVector
 line_segments <- do.call(rbind, segments)
 los_line <- st_as_sf(line_segments)
@@ -588,8 +610,9 @@ los_line <- st_as_sf(line_segments)
 
 ```{r}
 my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
-  tm_shape(los_line) + tm_lines(col = "Yes_No", lwd = 3, title.col = "Seen or Not") +
+  tm_shape(los_line) + tm_lines(col = "Yes_No", style = "cat", lwd = 3, title.col = "Seen or Not") +
     tm_shape(seoul) + tm_borders(col = "gray20", lwd = 1.5) +
+  tm_shape(points_sf_2) + tm_symbols(col = "gray10", size = 1) +
   tm_legend(legend.position = c(0.85, 0.03), legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
             title = "DEM Analysis: Line-of-Site", title.size = 1, 
@@ -602,8 +625,9 @@ my_map
 #| echo: false
 #| output: false
 my_map <- tm_shape(seoul_hillshade, raster.downsample = FALSE) + tm_raster(style = "cont", palette = "-Greys", title = "", legend.show = FALSE) +
-  tm_shape(los_line) + tm_lines(col = "Yes_No", lwd = 5, title.col = "Seen or Not") +
-  tm_shape(seoul) + tm_borders(col = "black", lwd = 2) +
+  tm_shape(los_line) + tm_lines(col = "Yes_No", lwd = 5, title.col = "Seen or Not", alpha = 0.5) +
+  tm_shape(seoul) + tm_borders(col = "black", lwd = 1) +
+  tm_shape(points_sf_2) + tm_symbols(col = "gray10", size = 1) +
   tm_legend(legend.position = c(0.87, 0.06), legend.bg.color = "white", legend.bg.alpha = 0.6, legend.title.size = 1.5, legend.text.size = 1.2) +
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
             title = "DEM Analysis: Line-of-Site", title.size = 2,
