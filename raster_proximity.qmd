@@ -362,3 +362,38 @@ my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교�
 my.file.name <- paste0(my.path.name, "래스터_6_functional_allocation_1", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 ```
+
+### 또 다른 방법
+
+위의 예시와 달리 [`topoDistance`](https://cran.r-project.org/web/packages/topoDistance/vignettes/topoDistance-vignette.html) 패키지를 활용하여 거리면을 생성해 본다. 이 패키지는 DEM 상에서의 거리를 계산해 주는데, 일반적인 GIS 프로그램에 사용되는 지형 거리 혹은 표면 거리와 달리 일종의 최소비용경로 개념을 상정한다. 보통은 두 지점 사이의 직선 거리를 계산하되 DEM이 보여주는 지표면의 실질적인 굴곡을 감안하는 정도이지만(예를 들어 [`spatialEco`](https://jeffreyevans.github.io/spatialEco/) 패키지의 `top.distance()` 함수), `topoDistance` 패키지는 표면 거리를 최소화하는 경로를 설정하고 그 때의 표면 거리를 산출해준다. 그런데 문제는 topdDist() 함수는 오로지 포인트 벡터만 받아 그들 사이의 최소 지형 거리만을 산출해 준다는 것이다. 물론 apply 문을 이용해 계산을 할 수는 있으나 시간이 너무 많이 소요된다. 따라서 여기서는 소방서간 지형 거리를 산출하는 것만 해본다. 직선 거리와 비교해보면 지형 거리의 개념을 보다 명확히 할 수 있다.
+
+```{r}
+library(topoDistance)
+library(raster)
+
+dem_seoul_mask_r <- raster(dem_seoul_mask) # topoDist는 terra 형식은 받지 않고 raster 형식만 받음.
+
+seoul_sobang_coords <- seoul_sobang |> 
+  st_coordinates() |> 
+  as.matrix()
+
+sobang_topo_dist <- topoDist(dem_seoul_mask_r, seoul_sobang_coords)
+sobang_eucl_dist <- st_distance(seoul_sobang)
+```
+
+최소 지형 거리의 경로도 계산하고 그것을 지도화할 수도 있다. 그런데 시간이 너무 많이 걸리기 때문에 소방서 3개만 가지고 계산한다. 결과는 전혀 현실적이지 않다.
+
+```{r}
+seoul_sobang_coords_3 <- seoul_sobang |> 
+  filter(
+    Name %in% c("강서소방서", "관악소방서", "송파소방서")
+  ) |> 
+  st_coordinates() |> 
+  as.matrix()
+
+sobang_topo_dist_3 <- topoDist(dem_seoul_mask_r, seoul_sobang_coords_3, paths = TRUE)
+
+topoPathMap(dem_seoul_mask_r, seoul_sobang_coords_3, 
+            topoPaths = sobang_topo_dist_3, type = "hillshade",
+            pathWidth = 4, cex = 2, bg = "blue")
+```
