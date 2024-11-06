@@ -18,9 +18,11 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 ## 준비
 
 필수적인 패키지를 설치한다. 네트워크 분석에서는 특히 [`sfnetworks`](https://luukvdmeer.github.io/sfnetworks/) 패키지를 기본으로 사용한다.
+
 
 ```{r}
 library(tidyverse)
@@ -29,7 +31,9 @@ library(sf)
 library(tmap)
 ```
 
+
 서울의 행정구역 경계 파일을 불러온다.
+
 
 ```{r}
 #| results: hide
@@ -38,14 +42,18 @@ seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 
 seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp")
 ```
 
+
 서울의 소방서 위치를 불러온다.
+
 
 ```{r}
 #| results: hide
 seoul_sobang <- st_read("D:/My R/Vector Data Manipulation Korea/Seoul_Data_Plaza/sobang_station_seoul.shp", options = "ENCODING=CP949")
 ```
 
+
 서울시 도로망 데이터를 불러온다.
+
 
 ```{r}
 seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp", options = "ENCODING=CP949")
@@ -54,32 +62,40 @@ seoul_sn <- seoul_sn |>
   st_cast("LINESTRING") # 반드시 수행해야 함. 차이가 뭘까? 위는 MULTILINESTRING임.
 ```
 
+
 서울시 도로망을 sfn 객체로 만든다.
+
 
 ```{r}
 seoul_sfn <- seoul_sn |> 
   as_sfnetwork(directed = FALSE)
 ```
 
+
 ## 네트워크 거리 매트릭스
 
 #### 유클리드 거리 매트릭스
+
 
 ```{r}
 dist_matrix_eucl <- seoul_sobang |> 
   st_distance()
 ```
 
+
 #### 네트워크 거리 매트릭스
+
 
 ```{r}
 dist_matrix_network <- seoul_sfn |> 
   st_network_cost(from = seoul_sobang, to = seoul_sobang, direction = "all")
 ```
 
+
 ## 최단 네트워크 경로
 
 각 소방서에서 종로소방서로 가는 최단 네트워크 경로를 구한다.
+
 
 ```{r}
 jongro_st <- seoul_sobang |> 
@@ -90,7 +106,9 @@ sobang_network_paths_sfn <- seoul_sfn |>
   st_network_paths(from = jongro_st, to = seoul_sobang)
 ```
 
+
 경로를 라인으로 표현하기 위해서는 `sobang_network_paths_sfn` 객체를 해부해야 한다. 함수를 작성한다.
+
 
 ```{r}
 # snu_paths_generator <- function(net, paths_sfn, dest.point, id.var){
@@ -120,14 +138,18 @@ snu_paths_generator <- function(net, paths_sfn, dest.point, id.var){
 }
 ```
 
+
 이 함수를 활용하여 최단 경로에 대한 라인을 추출한다.
+
 
 ```{r}
 sobang_network_paths_sfn_lines <- seoul_sn |>  
   snu_paths_generator(sobang_network_paths_sfn, seoul_sobang, "Name") #여기서는 seoul_sn 사용
 ```
 
+
 지도를 제작한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
@@ -161,9 +183,11 @@ my.file.name <- paste0(my.path.name, "네트워크_최단경로_1", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
+
 ## 최적배달경로분석
 
 여기서는 `TSP` 패키지를 사용한다.
+
 
 ```{r}
 library(TSP)
@@ -198,7 +222,9 @@ TSP_paths <- map2(from_index, to_index, ~st_network_paths(x = seoul_sfn, from = 
   unlist(recursive = FALSE)
 ```
 
+
 경로를 라인으로 표현하기 위해서는 TSP_paths 객체를 해부해야 한다. 함수를 작성한다.
+
 
 ```{r}
 snu_TSP_generator <- function(net, tsp_paths, dest.point, id.var){
@@ -216,13 +242,17 @@ snu_TSP_generator <- function(net, tsp_paths, dest.point, id.var){
 }
 ```
 
+
 이 함수를 활용하여 TSP 경로를 추출한다.
+
 
 ```{r}
 TSP_paths_line <- snu_TSP_generator(seoul_sn, TSP_paths, seoul_sobang, "Name")
 ```
 
+
 지도를 작성한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
@@ -254,11 +284,13 @@ my.file.name <- paste0(my.path.name, "네트워크_TSP_1", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
+
 ## 최근접시설물분석
 
 #### 네트워크 할당: line-to-facility
 
 도로 세그먼트에 최근린 소방서의 ID를 할당하고자 한다.
+
 
 ```{r}
 seoul_sn_cent <- seoul_sn |> 
@@ -277,7 +309,9 @@ closest_cent <- map_int(1:nrow(dist_cent_sobang), ~ {
 seoul_sn$closest <- seoul_sobang$Name[closest_cent]
 ```
 
+
 지도를 제작한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
@@ -307,9 +341,11 @@ my.file.name <- paste0(my.path.name, "네트워크_최근린시설물_1", ".jpg"
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
+
 #### 포인트 할당: point-to-facility
 
 임의의 지점을 선정하고 최근린 소방서를 연결하는 일종의 스파이더 지도(spider map) 혹은 디자이어 라인 지도(desire line map) 지도를 생성한다. 우선 도로 네트워크의 센트로이드 중 임의의 지점 500개를 추출한다.
+
 
 ```{r}
 network_sample <- seoul_sn_cent |> 
@@ -318,7 +354,9 @@ network_sample <- seoul_sn_cent |>
   st_cast("POINT")
 ```
 
+
 500개 지점에서 최근린 소방서를 확인한다.
+
 
 ```{r}
 dist_sample_sobang <- seoul_sfn |>  
@@ -334,7 +372,9 @@ closest_sample <- seoul_sobang |>
   slice(closest_index)
 ```
 
+
 이 정보를 이용해 샘플링 포인트와 최근린 소방서를 연결하는 라인을 생성하기 위한 함수를 작성한다.
+
 
 ```{r}
 snu_make_linestring_from_2points <- function(source.point, target.point, target.id.var){
@@ -351,13 +391,17 @@ snu_make_linestring_from_2points <- function(source.point, target.point, target.
 } 
 ```
 
+
 이 함수를 이용해 라인을 생성한다.
+
 
 ```{r}
 closest_sample_lines <- snu_make_linestring_from_2points(network_sample, closest_sample, "Name")
 ```
 
+
 지도를 제작한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
@@ -391,16 +435,20 @@ my.file.name <- paste0(my.path.name, "네트워크_최근린시설물_2", ".jpg"
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
+
 ## 서비스영역분석
 
 종로 소방서의 서비스영역을 분석한다. 서비스영역(isochrone)을 생성하기 위해 [`snNetwork`](https://jeremygelb.github.io/spNetwork/) 패키지를 활용한다.
+
 
 ```{r}
 devtools::install_github("JeremyGelb/spNetwork")
 library(spNetwork)
 ```
 
+
 `calc_isochrones` 함수를 이용하여 2km, 5km, 10km 네트워크에 해당하는 서비스 영역을 생성한다.
+
 
 ```{r}
 iso_jongro <- calc_isochrones(
@@ -413,7 +461,9 @@ iso_jongro <- calc_isochrones(
   )
 ```
 
+
 지도를 제작한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
@@ -447,7 +497,9 @@ my.file.name <- paste0(my.path.name, "네트워크_서비스영역_1", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
+
 서비스 영역에 대한 폴리곤을 생성한다. 여기서는 또 다른 패키지인 `concaveman`을 활용한다.
+
 
 ```{r}
 library(concaveman)
@@ -491,7 +543,9 @@ iso_sp |>
 # iso_sp <- iso_sp[order(-1*iso_sp$distance),]
 ```
 
+
 지도를 제작한다.
+
 
 ```{r}
 my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
@@ -524,3 +578,4 @@ my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교�
 my.file.name <- paste0(my.path.name, "네트워크_서비스영역_2", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
+

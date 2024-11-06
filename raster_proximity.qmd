@@ -50,7 +50,6 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 ```{r}
 #| results: hide
 seoul_sobang <- st_read("D:/My R/Vector Data Manipulation Korea/Seoul_Data_Plaza/sobang_station_seoul.shp", options = "ENCODING=CP949")
-seoul_sobang <- st_transform(seoul_sobang, crs = st_crs(seoul))
 ```
 
 ## 정의와 산출 레이어
