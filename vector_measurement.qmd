@@ -48,8 +48,12 @@ st_area(seoul_dong)
 
 ```{r}
 #| results: hide
-st_length(st_cast(seoul_gu, "MULTILINESTRING"))
-st_area(seoul_dong)
+seoul_gu |> 
+  st_cast("MULTILINESTRING") |> 
+  st_length()
+seoul_dong |> 
+  st_cast("MULTILINESTRING") |> 
+  st_length()
 ```
 
 ## 폴리곤의 형태

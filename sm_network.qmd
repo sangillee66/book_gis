@@ -50,13 +50,16 @@ seoul_sobang <- st_transform(seoul_sobang, crs = st_crs(seoul))
 
 ```{r}
 seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp", options = "ENCODING=CP949")
-seoul_sn <- st_cast(seoul_sn, "LINESTRING") # 반드시 수행해야 함.
+
+seoul_sn <- seoul_sn |> 
+  st_cast("LINESTRING") # 반드시 수행해야 함.
 ```
 
 서울시 도로망을 sfn 객체로 만든다.
 
 ```{r}
-seoul_sfn <- as_sfnetwork(seoul_sn, directed = FALSE)
+seoul_sfn <- seoul_sn |> 
+  as_sfnetwork(directed = FALSE)
 ```
 
 ## 네트워크 거리 매트릭스
@@ -64,13 +67,15 @@ seoul_sfn <- as_sfnetwork(seoul_sn, directed = FALSE)
 #### 유클리드 거리 매트릭스
 
 ```{r}
-dist_matrix_eucl <- st_distance(seoul_sobang)
+dist_matrix_eucl <- seoul_sobang |> 
+  st_distance()
 ```
 
 #### 네트워크 거리 매트릭스
 
 ```{r}
-dist_matrix_network <- st_network_cost(seoul_sfn, from = seoul_sobang, to = seoul_sobang, direction = "all")
+dist_matrix_network <- seoul_sfn |> 
+  st_network_cost(from = seoul_sobang, to = seoul_sobang, direction = "all")
 ```
 
 ## 최단 네트워크 경로
@@ -78,8 +83,12 @@ dist_matrix_network <- st_network_cost(seoul_sfn, from = seoul_sobang, to = seou
 모든 소방서에서 종로소방서로 가는 최단 네트워크 경로를 구한다.
 
 ```{r}
-jongro_st <- subset(seoul_sobang, Name == "종로소방서")
-sobang_network_paths_sfn <- st_network_paths(seoul_sfn, from = jongro_st, to = seoul_sobang)
+jongro_st <- seoul_sobang |> 
+  filter(
+    Name == "종로소방서"
+  )
+sobang_network_paths_sfn <- seoul_sfn |> 
+  st_network_paths(from = jongro_st, to = seoul_sobang)
 ```
 
 경로를 라인으로 표현하기 위해서는 paths_sobang_network 객체를 해부해야 한다. 함수를 작성한다.
@@ -103,7 +112,8 @@ snu_paths_generator <- function(net, paths_sfn, dest.point, id.var){
 이 함수를 활용하여 최단 경로에 대한 라인을 추출한다.
 
 ```{r}
-sobang_network_paths_sfn_lines <- snu_paths_generator(seoul_sn, sobang_network_paths_sfn, seoul_sobang, "Name") #여기서는 seoul_sn 사용
+sobang_network_paths_sfn_lines <- seoul_sn |>  
+  snu_paths_generator(sobang_network_paths_sfn, seoul_sobang, "Name") #여기서는 seoul_sn 사용
 ```
 
 지도를 제작한다.
@@ -146,8 +156,10 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ```{r}
 library(TSP)
-dist_matrix_network <- st_network_cost(seoul_sfn, from = seoul_sobang, to = seoul_sobang)
-sobang_index <- st_nearest_feature(seoul_sobang, seoul_sfn) # 가장 가까이에 있는 도로 세그먼트 index
+dist_matrix_network <- seoul_sfn |> 
+  st_network_cost(from = seoul_sobang, to = seoul_sobang)
+sobang_index <- seoul_sobang |> 
+  st_nearest_feature(seoul_sfn) # 가장 가까이에 있는 도로 세그먼트 index
 
 # 소방서간 최단 거리가 아니라 도로 세그먼트 간 최단 거리
 row.names(dist_matrix_network) <- sobang_index
@@ -230,9 +242,11 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 도로 세그먼트에 최근린 소방서의 ID를 할당하고자 한다.
 
 ```{r}
-seoul_sn_cent <- st_centroid(seoul_sn) # 모든 도로 세그먼트의 센트로이드 생성
+seoul_sn_cent <- seoul_sn |> 
+  st_centroid() # 모든 도로 세그먼트의 센트로이드 생성
 
-dist_cent_sobang <- st_network_cost(seoul_sfn, from = seoul_sn_cent, to = seoul_sobang) # 모든 도로 세그먼트의 센트로이드로부터 소방서까지의 네트워크 거리 계산
+dist_cent_sobang <- seoul_sfn |> 
+  st_network_cost(from = seoul_sn_cent, to = seoul_sobang) # 모든 도로 세그먼트의 센트로이드로부터 소방서까지의 네트워크 거리 계산
 
 closest_cent <- seoul_sobang$Name[apply(dist_cent_sobang, 1, function(x) which(x == min(x))[1])] # 최단 거리에 있는 소방서 ID
 
@@ -283,7 +297,8 @@ network_sample <- seoul_sn_cent |>
 500개 지점에서 최근린 소방서를 확인한다.
 
 ```{r}
-dist_sample_sobang <- st_network_cost(seoul_sfn, from = network_sample, to = seoul_sobang)
+dist_sample_sobang <- seoul_sfn |>  
+  st_network_cost(from = network_sample, to = seoul_sobang)
 closest_sample <- seoul_sobang[apply(dist_sample_sobang, 1, function(x) which(x == min(x))[1]), ]
 ```
 

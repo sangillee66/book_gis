@@ -50,7 +50,8 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 `aggregate()` 함수를 이용하여 실행한다.
 
 ```{r}
-dem_seoul_agg <- aggregate(dem_seoul, fact = 10, fun = mean)
+dem_seoul |> 
+  aggregate(fact = 10, fun = mean) -> dem_seoul_agg
 ```
 
 기본적인 지오메트리 파라미터값을 알아본다.

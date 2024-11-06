@@ -81,16 +81,20 @@ tmap_save(my_map, filename = my.file.name, height = 12.5, width = 12.5*100/64, d
 공항으로부터의 거리를 계산한다.
 
 ```{r}
-airports.raster <- rasterize(airports, elev, field = "OBJECTID")
-airports.dist <- distance(airports.raster)/1000
+airports |> 
+  rasterize(elev, field = "OBJECTID") -> airports.raster
+airports.raster |> 
+  distance()/1000 -> airports.dist
 names(airports.dist) <- "Distance"
 ```
 
 주간 고속도로로부터의 거리를 계산한다.
 
 ```{r}
-interstates.raster <- rasterize(interstates, elev, field = "OBJECTID")
-interstates.dist <- distance(interstates.raster)/1000
+interstates |> 
+  rasterize(elev, field = "OBJECTID") -> interstates.raster
+interstates.raster |> 
+  distance()/1000 -> interstates.dist
 names(interstates.dist) <- "Distance"
 ```
 
@@ -109,25 +113,25 @@ names(interstates.dist) <- "Distance"
 네 조건에 대한 재분류를 실행한다.
 
 ```{r}
-elev_binary <- elev > 500
+elev > 500 -> elev_binary
 names(elev_binary) <- "Reclassified"
 ele_b <- tm_shape(elev_binary) + tm_raster(style="cat", title = "> 500m") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Elevation")
 
-slp_binary <- slp < 15
+slp < 15 -> slp_binary
 names(slp_binary) <- "Reclassified"
 slp_b <- tm_shape(slp_binary) + tm_raster(style="cat", title = "< 15") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Slope")
 
-air_binary <- airports.dist < 7
+airports.dist < 7 -> air_binary
 names(air_binary) <- "Reclassified"
 airport_b <- tm_shape(air_binary) + tm_raster(style="cat", title = "< 7km") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Airports")
 
-inter_binary <- interstates.dist < 5
+interstates.dist < 5 -> inter_binary
 names(inter_binary) <- "Reclassified"
 interstate_b <- tm_shape(inter_binary) + tm_raster(style="cat", title = "< 5km") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
@@ -185,32 +189,48 @@ tmap_save(my_map, filename = my.file.name, height = 12.5, width = 12.5*100/64, d
 네 조건에 대한 재분류를 실행한다. `global()` 함수를 통해 최대값과 최소값을 구한 뒤, 범위 표준화를 적용하여 분류 순위부여(classification ranking)을 수행한다.
 
 ```{r}
-elev_min <- global(elev, fun = "min", na.rm = TRUE)[1, 1]
-elev_max <- global(elev, fun = "max", na.rm = TRUE)[1, 1]
+elev |> 
+  global(fun = "min", na.rm = TRUE) |> 
+  as.numeric() -> elev_min
+elev |> 
+  global(fun = "max", na.rm = TRUE) |> 
+  as.numeric() -> elev_max
 elev_score <- ((elev - elev_min)/(elev_max - elev_min))
 names(elev_score) <- "Reclassified"
 ele_s <- tm_shape(elev_score) + tm_raster(style="cont") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Elevation")
 
-slp_min <- global(slp, fun = "min", na.rm = TRUE)[1, 1]
-slp_max <- global(slp, fun = "max", na.rm = TRUE)[1, 1]
+slp |> 
+  global(fun = "min", na.rm = TRUE) |> 
+  as.numeric() -> slp_min
+slp |> 
+  global(fun = "max", na.rm = TRUE) |> 
+  as.numeric() -> slp_max
 slp_score <- 1 - ((slp - slp_min)/(slp_max - slp_min))
 names(slp_score) <- "Reclassified"
 slp_s <- tm_shape(slp_score) + tm_raster(style="cont") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Slope")
 
-air_min <- global(airports.dist, fun = "min", na.rm = TRUE)[1, 1]
-air_max <- global(airports.dist, fun = "max", na.rm = TRUE)[1, 1]
+airports.dist |> 
+  global(fun = "min", na.rm = TRUE) |> 
+  as.numeric() -> air_min
+airports.dist |> 
+  global(fun = "max", na.rm = TRUE) |> 
+  as.numeric() -> air_max
 air_score <- 1 - ((airports.dist - air_min)/(air_max - air_min))
 names(air_score) <- "Reclassified"
 airport_s <- tm_shape(air_score) + tm_raster(style="cont") +
   tm_legend(legend.bg.color = "white", legend.bg.alpha = 0.6) +
   tm_layout(main.title="Airports")
 
-inter_min <- global(interstates.dist, fun = "min", na.rm = TRUE)[1, 1]
-inter_max <- global(interstates.dist, fun = "max", na.rm = TRUE)[1, 1]
+interstates.dist |> 
+  global(fun = "min", na.rm = TRUE) |> 
+  as.numeric() -> inter_min
+interstates.dist |> 
+  global(fun = "max", na.rm = TRUE) |> 
+  as.numeric() -> inter_max
 inter_score <- 1- (interstates.dist - inter_min)/(inter_max - inter_min)
 names(inter_score) <- "Reclassified"
 interstate_s <- tm_shape(inter_score) + tm_raster(style="cont") +

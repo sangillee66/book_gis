@@ -49,10 +49,11 @@ library(readxl)
 #| results: hide
 seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp")
 seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
-seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
-seoul_subst <- seoul_subst |> 
-  st_transform(crs = st_crs(seoul)) |> 
-  st_intersection(seoul)
+
+seoul_subst_coords |> 
+  st_as_sf(coords = c("위도", "경도"), crs = 4326) |> 
+  st_transform(crs = 5179) |> 
+  st_intersection(seoul) -> seoul_subst
 ```
 
 라인 레이어로서 서울시 도로망에 대한 셰이프 파일을 불러온다.

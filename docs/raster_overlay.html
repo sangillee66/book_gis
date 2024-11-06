@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">공간모델링과 고급 GIS 분석</span></a>
+ <span class="menu-text">GIS 모델링과 고급 GIS 분석</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -325,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sm_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">공간모델링</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -388,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 29, 2024</p>
+      <p class="date-modified">November 6, 2024</p>
     </div>
   </div>
     
@@ -441,14 +441,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>공항으로부터의 거리를 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports.raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">airports</span>, <span class="va">elev</span>, field <span class="op">=</span> <span class="st">"OBJECTID"</span><span class="op">)</span></span>
-<span><span class="va">airports.dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/distance.html">distance</a></span><span class="op">(</span><span class="va">airports.raster</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">elev</span>, field <span class="op">=</span> <span class="st">"OBJECTID"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">airports.raster</span></span>
+<span><span class="va">airports.raster</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/distance.html">distance</a></span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span> <span class="op">-&gt;</span> <span class="va">airports.dist</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">airports.dist</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Distance"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>주간 고속도로로부터의 거리를 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">interstates.raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">interstates</span>, <span class="va">elev</span>, field <span class="op">=</span> <span class="st">"OBJECTID"</span><span class="op">)</span></span>
-<span><span class="va">interstates.dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/distance.html">distance</a></span><span class="op">(</span><span class="va">interstates.raster</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">interstates</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">elev</span>, field <span class="op">=</span> <span class="st">"OBJECTID"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">interstates.raster</span></span>
+<span><span class="va">interstates.raster</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/distance.html">distance</a></span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span> <span class="op">-&gt;</span> <span class="va">interstates.dist</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">interstates.dist</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Distance"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="이항-모델-보수적-모델" class="level3" data-number="20.2.1"><h3 data-number="20.2.1" class="anchored" data-anchor-id="이항-모델-보수적-모델">
@@ -462,25 +466,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>네 조건에 대한 재분류를 실행한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elev_binary</span> <span class="op">&lt;-</span> <span class="va">elev</span> <span class="op">&gt;</span> <span class="fl">500</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elev</span> <span class="op">&gt;</span> <span class="fl">500</span> <span class="op">-&gt;</span> <span class="va">elev_binary</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">elev_binary</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">ele_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">elev_binary</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cat"</span>, title <span class="op">=</span> <span class="st">"&gt; 500m"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>main.title<span class="op">=</span><span class="st">"Elevation"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">slp_binary</span> <span class="op">&lt;-</span> <span class="va">slp</span> <span class="op">&lt;</span> <span class="fl">15</span></span>
+<span><span class="va">slp</span> <span class="op">&lt;</span> <span class="fl">15</span> <span class="op">-&gt;</span> <span class="va">slp_binary</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">slp_binary</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">slp_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">slp_binary</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cat"</span>, title <span class="op">=</span> <span class="st">"&lt; 15"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>main.title<span class="op">=</span><span class="st">"Slope"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">air_binary</span> <span class="op">&lt;-</span> <span class="va">airports.dist</span> <span class="op">&lt;</span> <span class="fl">7</span></span>
+<span><span class="va">airports.dist</span> <span class="op">&lt;</span> <span class="fl">7</span> <span class="op">-&gt;</span> <span class="va">air_binary</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">air_binary</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">airport_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">air_binary</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cat"</span>, title <span class="op">=</span> <span class="st">"&lt; 7km"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>main.title<span class="op">=</span><span class="st">"Airports"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">inter_binary</span> <span class="op">&lt;-</span> <span class="va">interstates.dist</span> <span class="op">&lt;</span> <span class="fl">5</span></span>
+<span><span class="va">interstates.dist</span> <span class="op">&lt;</span> <span class="fl">5</span> <span class="op">-&gt;</span> <span class="va">inter_binary</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">inter_binary</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">interstate_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">inter_binary</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cat"</span>, title <span class="op">=</span> <span class="st">"&lt; 5km"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
@@ -521,32 +525,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>네 조건에 대한 재분류를 실행한다. <code><a href="https://rspatial.github.io/terra/reference/global.html">global()</a></code> 함수를 통해 최대값과 최소값을 구한 뒤, 범위 표준화를 적용하여 분류 순위부여(classification ranking)을 수행한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elev_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">elev</span>, fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">elev_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">elev</span>, fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elev</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">elev_min</span></span>
+<span><span class="va">elev</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">elev_max</span></span>
 <span><span class="va">elev_score</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="op">(</span><span class="va">elev</span> <span class="op">-</span> <span class="va">elev_min</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">elev_max</span> <span class="op">-</span> <span class="va">elev_min</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">elev_score</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">ele_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">elev_score</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cont"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>main.title<span class="op">=</span><span class="st">"Elevation"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">slp_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">slp</span>, fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">slp_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">slp</span>, fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">slp</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">slp_min</span></span>
+<span><span class="va">slp</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">slp_max</span></span>
 <span><span class="va">slp_score</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="va">slp</span> <span class="op">-</span> <span class="va">slp_min</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">slp_max</span> <span class="op">-</span> <span class="va">slp_min</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">slp_score</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">slp_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">slp_score</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cont"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>main.title<span class="op">=</span><span class="st">"Slope"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">air_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">airports.dist</span>, fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">air_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">airports.dist</span>, fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">airports.dist</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">air_min</span></span>
+<span><span class="va">airports.dist</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">air_max</span></span>
 <span><span class="va">air_score</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="va">airports.dist</span> <span class="op">-</span> <span class="va">air_min</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">air_max</span> <span class="op">-</span> <span class="va">air_min</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">air_score</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">airport_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">air_score</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cont"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.bg.color <span class="op">=</span> <span class="st">"white"</span>, legend.bg.alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>main.title<span class="op">=</span><span class="st">"Airports"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">inter_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">interstates.dist</span>, fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">inter_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span><span class="va">interstates.dist</span>, fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">interstates.dist</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"min"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">inter_min</span></span>
+<span><span class="va">interstates.dist</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html">global</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">inter_max</span></span>
 <span><span class="va">inter_score</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">-</span> <span class="op">(</span><span class="va">interstates.dist</span> <span class="op">-</span> <span class="va">inter_min</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">inter_max</span> <span class="op">-</span> <span class="va">inter_min</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html">names</a></span><span class="op">(</span><span class="va">inter_score</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Reclassified"</span></span>
 <span><span class="va">interstate_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">inter_score</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_raster.html">tm_raster</a></span><span class="op">(</span>style<span class="op">=</span><span class="st">"cont"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -971,13 +991,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./part_6.html" class="pagination-link" aria-label="공간모델링과 고급 GIS 분석">
-        <span class="nav-page-text">공간모델링과 고급 GIS 분석</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./part_6.html" class="pagination-link" aria-label="GIS 모델링과 고급 GIS 분석">
+        <span class="nav-page-text">GIS 모델링과 고급 GIS 분석</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

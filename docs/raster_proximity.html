@@ -397,7 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">November 4, 2024</p>
+      <p class="date-modified">November 6, 2024</p>
     </div>
   </div>
     
@@ -438,9 +438,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">19.3.1</span> 거리</h3>
 <p>소방서로부터의 유클리드 거리를 계산한다. <code><a href="https://rspatial.github.io/terra/reference/distance.html">distance()</a></code> 함수에서 첫 번째 인수가 raster이면 모든 NA셀(소방서가 없는 셀)로부터 비NA 셀(소방서가 위치한 셀) 중 가장 가까이 있는 것까지의 거리를 계산해준다. 첫 번째 인수가 vector이면 모든 피처간의 거리 매트릭스를 산출해 준다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">seoul_sobang</span>, <span class="va">dem_seoul</span>, field <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span>
-<span><span class="va">seoul_sobang_dist_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/distance.html">distance</a></span><span class="op">(</span><span class="va">seoul_sobang_r</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span></span>
-<span><span class="va">seoul_sobang_dist_1_mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html">mask</a></span><span class="op">(</span><span class="va">seoul_sobang_dist_1</span>, <span class="va">seoul</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">dem_seoul</span>, field <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sobang_r</span></span>
+<span><span class="va">seoul_sobang_r</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/distance.html">distance</a></span><span class="op">(</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1000</span> <span class="op">-&gt;</span> <span class="va">seoul_sobang_dist_1</span></span>
+<span><span class="va">seoul_sobang_dist_1</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/mask.html">mask</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sobang_dist_1_mask</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다. 먼저 연속형 컬러 스킴을 사용하여 제작한다.</p>
 <div class="cell">
@@ -482,17 +485,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">19.3.2</span> 할당</h3>
 <p>함수를 만든다. <code>raster</code> 패키지의 <code><a href="https://rdrr.io/pkg/raster/man/rasterToPoints.html">rasterToPoints()</a></code> 함수가 <code>terra</code> 패키지에서는 <code><a href="https://rspatial.github.io/terra/reference/as.points.html">as.points()</a></code> 함수로 바뀌었다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">snu.rasterAlloc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">feature</span>, <span class="va">rastermask</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.points.html">as.points</a></span><span class="op">(</span><span class="va">rastermask</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">p</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">feature</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">p</span><span class="op">$</span><span class="va">indx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_nearest_feature.html">st_nearest_feature</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">feature</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">p</span>, <span class="va">rastermask</span>, field <span class="op">=</span> <span class="st">"indx"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># snu.rasterAlloc &lt;- function(feature, rastermask){</span></span>
+<span><span class="co">#   p &lt;- st_as_sf(as.points(rastermask))</span></span>
+<span><span class="co">#   p &lt;- st_transform(p, crs = st_crs(feature))</span></span>
+<span><span class="co">#   p$indx &lt;- st_nearest_feature(st_geometry(p), st_geometry(feature))</span></span>
+<span><span class="co">#   output &lt;- rasterize(p, rastermask, field = "indx")</span></span>
+<span><span class="co">#   return(output)</span></span>
+<span><span class="co"># }</span></span>
+<span></span>
+<span><span class="va">snu.rasterAlloc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">feature</span>, <span class="va">rastermask</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">rastermask</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.points.html">as.points</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">feature</span><span class="op">)</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">p</span></span>
+<span>  <span class="va">p</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_nearest_feature.html">st_nearest_feature</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">feature</span><span class="op">)</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">p_index</span></span>
+<span>  <span class="va">p</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>      index <span class="op">=</span> <span class="va">p_index</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html">rasterize</a></span><span class="op">(</span><span class="va">rastermask</span>, field <span class="op">=</span> <span class="st">"index"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">output</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>할당면을 생성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang_allo</span> <span class="op">&lt;-</span> <span class="fu">snu.rasterAlloc</span><span class="op">(</span><span class="va">seoul_sobang</span>, <span class="va">dem_seoul_mask</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">snu.rasterAlloc</span><span class="op">(</span><span class="va">dem_seoul_mask</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sobang_allo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -514,17 +534,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>티센 폴리곤을 생성하여 비교해 본다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang_thiessen</span> <span class="op">&lt;-</span> <span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_combine.html">st_union</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_voronoi</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_ops.html">st_intersection</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"POLYGON"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"POLYGON"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sobang_thiessen</span></span>
 <span></span>
-<span><span class="va">seoul_sobang_thiessen</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">seoul_sobang_thiessen</span>, <span class="va">seoul_sobang</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="va">seoul_sobang_thiessen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">seoul_sobang_thiessen</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">seoul_sobang_thiessen</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
-<span><span class="va">seoul_sobang_thiessen</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/is.bool.html">as.factor</a></span><span class="op">(</span><span class="va">seoul_sobang_thiessen</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">seoul_sobang_thiessen</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">sel_index</span></span>
+<span><span class="va">seoul_sobang_thiessen</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">sel_index</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sobang_thiessen</span></span>
+<span></span>
+<span><span class="co"># seoul_sobang_thiessen$ID &lt;- unlist(st_intersects(seoul_sobang_thiessen, seoul_sobang)) </span></span>
+<span><span class="co"># seoul_sobang_thiessen &lt;- aggregate(seoul_sobang_thiessen, by = list(seoul_sobang_thiessen$ID), FUN = sum)</span></span>
+<span><span class="co"># seoul_sobang_thiessen$ID &lt;- as.factor(seoul_sobang_thiessen$ID) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
@@ -640,8 +668,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sobang_topo_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topoDistance/man/topoDist.html">topoDist</a></span><span class="op">(</span><span class="va">dem_seoul_mask_r</span>, <span class="va">seoul_sobang_coords</span><span class="op">)</span></span>
-<span><span class="va">sobang_eucl_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_distance</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">dem_seoul_mask_r</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/topoDistance/man/topoDist.html">topoDist</a></span><span class="op">(</span><span class="va">seoul_sobang_coords</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">sobang_topo_dist</span></span>
+<span><span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_distance</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">sobang_eucl_dist</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>최소 지형 거리의 경로도 계산하고 그것을 지도화할 수도 있다. 그런데 시간이 너무 많이 걸리기 때문에 소방서 3개만 가지고 계산한다. 결과는 전혀 현실적이지 않다.</p>
 <div class="cell">
@@ -652,7 +682,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sobang_topo_dist_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topoDistance/man/topoDist.html">topoDist</a></span><span class="op">(</span><span class="va">dem_seoul_mask_r</span>, <span class="va">seoul_sobang_coords_3</span>, paths <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">dem_seoul_mask_r</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/topoDistance/man/topoDist.html">topoDist</a></span><span class="op">(</span><span class="va">seoul_sobang_coords_3</span>, paths <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">sobang_topo_dist_3</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/topoDistance/man/topoPathMap.html">topoPathMap</a></span><span class="op">(</span><span class="va">dem_seoul_mask_r</span>, <span class="va">seoul_sobang_coords_3</span>, </span>
 <span>            topoPaths <span class="op">=</span> <span class="va">sobang_topo_dist_3</span>, type <span class="op">=</span> <span class="st">"hillshade"</span>,</span>
@@ -1064,7 +1095,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

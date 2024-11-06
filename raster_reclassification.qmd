@@ -54,7 +54,7 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 이항 매스킹을 통해 새로운 래스터를 생성한다.
 
 ```{r}
-dem_seoul_250 <- dem_seoul >= 250
+dem_seoul >= 250 -> dem_seoul_250
 ```
 
 지도를 제작한다.
@@ -93,7 +93,9 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ```{r}
 rclmat <- matrix(c(-Inf, 100, 1, 100, 200, 3, 200, 300, 5, 300, 400, 7, 400, Inf, 9), ncol = 3, byrow = TRUE)
-dem_seoul_rec <- classify(dem_seoul, rclmat, include.lowest = TRUE)
+
+dem_seoul |> 
+  classify(rclmat, include.lowest = TRUE) -> dem_seoul_rec
 ```
 
 지도를 제작한다.

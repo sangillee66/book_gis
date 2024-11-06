@@ -35,14 +35,22 @@ library(readxl)
 
 ```{r}
 #| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
-seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
+```
+
+서울 지하철역 위치 관련 데이터를 불러와 sf 객체를 생성한다. 그것을 디스크에 저장한다.
+
+```{r}
 seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
-seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
-seoul_subst <- seoul_subst |> 
+
+seoul_subst_coords |> 
+  st_as_sf(coords = c("위도", "경도"), crs = 4326) |> 
   st_transform(crs = st_crs(seoul)) |> 
-  st_intersection(seoul)
+  st_intersection(seoul) -> seoul_subst
+
+st_write(seoul_subst, dsn = "D:/My R/Vector Data Manipulation Korea/seoul_subst.shp", driver = "ESRI Shapefile", append = FALSE, layer_options = "ENCODING=CP949")
 ```
 
 지도를 제작한다.
@@ -79,19 +87,71 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ## 주소를 이용한 지오코딩
 
-스타벅스의 실제 위치에 대한 파일을 불러들인다. 이것은 위와 동일한 방식으로 경위도 좌표값에 기반하여 생성된 것이다.
+스타벅스 데이터 속에는 주소 컬럼도 있지만 경위도 좌표값도 포함되어 있다. 우선 위의 지하철역과 동일한 방식으로 지오코딩을 실행하고 `sf` 객체를 생성한 후 디스크에 저장한다.
+
+```{r}
+#| eval: false
+
+starbucks <- read_excel("D:/My R/GIS/스타벅스.xlsx") # 주소 파일 불러오기
+starbucks |> 
+  distinct(
+    Sotre_nm, .keep_all = TRUE
+  ) -> starbucks
+
+starbucks |> 
+  st_as_sf(coords = c("Xcoordinate", "Ycoordinate"), crs = 4326) |> 
+  st_transform(crs = st_crs(seoul)) |> 
+  st_intersection(seoul) -> starbucks_seoul_real
+  
+st_write(starbucks_seoul_real, dsn = "D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", driver = "ESRI Shapefile", append = FALSE, layer_options = "ENCODING=CP949")
+```
+
+위의 방식으로 만들어진 스타벅스의 실제 위치에 대한 파일을 불러들인다.
 
 ```{r}
 #| results: hide
 starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp")
 ```
 
-다음의 스타벅스의 주소를 기반으로 지오코딩하여 얻은 파일을 불러들인다. `ggmap` 패키지의 오픈 API를 이용하여 지오코딩한 것이다.
+다음은 스타벅스의 주소를 기반으로 `ggmap` 패키지의 오픈 API를 이용하여 지오코딩하는 과정을 보여준다. 생성된 `sf` 객체를 디스크에 저장하는 과정까지 포함되어 있다.
+
+```{r}
+#| eval: false
+library(ggmap)
+
+my_google_key = ""
+register_google(key = my_google_key) # 구글 키 등록
+
+starbucks |> pull(Address) |> 
+  as.character() |> 
+  enc2utf8() |> 
+  geocode(
+    key = key, 
+    simplify = TRUE
+  ) |> 
+  filter(
+    !is.na(lon)
+  ) -> starbucks_geocode
+
+starbucks_geocode |> 
+  bind_cols(starbucks) |> 
+  filter(
+    !is.na(lon)
+  ) -> starbucks_geocode_final
+
+starbucks_geocode_final |> 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) |> 
+  st_transform(crs = st_crs(seoul)) |> 
+  st_intersection(seoul) -> starbucks_seoul
+
+st_write(starbucks_seoul, dsn = "D:/My R/Vector Data Manipulation Korea/starbucks_seoul_geocode.shp", driver = "ESRI Shapefile", append = FALSE, layer_options = "ENCODING=CP949")
+```
+
+위에서 생성된 스타벅스의 주소 지오코딩 파일을 불러들인다.
 
 ```{r}
 #| results: hide
 starbucks_seoul_geocoding <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", options = "ENCODING=CP949")
-qtm(starbucks_seoul_geocoding)
 ```
 
 지도를 제작한다.
@@ -126,15 +186,22 @@ my_map
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "벡터_지오코딩_스타벅스", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
-
 ```
 
 ## 센트로이드
 
 ### 컨벡스헐(convex hull)
 
+`st_convex_hull()` 함수를 이용하여 서울시 구에 대한 컨벡스헐을 생성한다.
+
 ```{r}
-seoul_gu_ch <- st_convex_hull(seoul_gu)
+seoul_gu |> 
+  st_convex_hull() -> seoul_gu_ch
+```
+
+지도를 제작한다.
+
+```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
   tm_shape(seoul_gu_ch) + tm_borders(col = "red") +
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04)) + 
@@ -144,14 +211,15 @@ my_map
 
 ### 최소포괄직사각형(minimum bounding rectangle)
 
-서울시 전체에 대한 MBR은 다음과 같이 구할 수 있다.
+st_bbox() 함수를 활용하면 MBR을 생성할 수 있다. 우선 서울시 전체의 MBR을 생성한다.
 
 ```{r}
-seoul_mbr <- st_as_sfc(st_bbox(seoul_gu))
-qtm(seoul_mbr) + qtm(seoul_gu)
+seoul_gu |> 
+  st_bbox() |> 
+  st_as_sfc() -> seoul_mbr
 ```
 
-그런데 구 각각에 대해 MBR을 만드는 것은 쉽지 않다.
+그런데 서울시 구 각각에 대해 MBR을 만드는 것은 쉽지 않다. `map()` 함수를 활용하여 구 각각에 대한 MBR을 생성하고 그것을 모두 합쳐 하나의 `sf` 객체를 생성한다.
 
 ```{r}
 bbox_wrap <- function(x) st_as_sfc(st_bbox(x))
@@ -163,14 +231,13 @@ seoul_gu_mbr <- seoul_gu |>
     bbox = map(data, bbox_wrap)
   ) |> 
   mutate(
-    geometry = st_as_sfc(do.call(rbind, bbox), crs = st_crs(seoul_gu))
+    geometry = st_sfc(unlist(bbox, recursive = FALSE), crs = st_crs(seoul))
   ) |> 
   select(-data, -bbox) |> 
   st_as_sf()
-qtm(seoul_gu_mbr) + qtm(seoul_gu)
 ```
 
-이제 지도를 제작한다.
+지도를 제작한다.
 
 ```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
@@ -203,8 +270,16 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ## 최소포괄직사각형중심점(CMBR)
 
+`st_centroid()` 함수를 이용하여 앞에서 생성한 CMB의 센트로이드를 생성한다.
+
 ```{r}
-seoul_gu_mbr_center <- st_centroid(seoul_gu_mbr)
+seoul_gu_mbr |> 
+  st_centroid() -> seoul_gu_mbr_center
+```
+
+지도를 제작한다.
+
+```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
   tm_shape(seoul_gu_mbr) + tm_borders(col = "red", lty = 2, lwd = 1) +
   tm_shape(seoul_gu_mbr_center) + tm_dots(col = "black", size = 0.15) +
@@ -234,10 +309,16 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 
 ## 질량중심점(CM)
 
-서울시 구의 질량중심점을 표현한다.
+`st_centroid()` 함수를 이용하여 서울시 구의 질량중심점을 생성한다.
 
 ```{r}
-seoul_gu_cm <- st_centroid(seoul_gu)
+seoul_gu |> 
+  st_centroid() -> seoul_gu_cm
+```
+
+지도를 제작한다.
+
+```{r}
 my_map <- tm_shape(seoul_gu) + tm_polygons() +
   tm_shape(seoul_gu_cm) + tm_dots(col = "black", size = 0.15) +
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
@@ -263,10 +344,16 @@ my.file.name <- paste0(my.path.name, "벡터_센트로이드_cm_구", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
-서울시 동의 질량중심점을 표현한다.
+`st_centroid()` 함수를 이용하여 서울시 동의 질량중심점을 생성한다.
 
 ```{r}
-seoul_dong_cm <- st_centroid(seoul_dong)
+seoul_dong |> 
+  st_centroid() -> seoul_dong_cm
+```
+
+지도를 제작한다.
+
+```{r}
 my_map <- tm_shape(seoul_dong) + tm_polygons() +
   tm_shape(seoul_dong_cm) + tm_dots(col = "black", size = 0.15) +
   tm_shape(seoul_gu) + tm_borders(col = "black", lwd = 1) +
@@ -294,10 +381,16 @@ my.file.name <- paste0(my.path.name, "벡터_센트로이드_cm_동", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
-그런데 일부 질량중심점이 폴리곤의 외부에 위치할 수 있다. 이 문제는 다음과 같이 교정할 수 있다.
+그런데 일부 질량중심점이 폴리곤의 외부에 위치할 수 있다. 이 문제는 `st_point_on_surface()` 함수를 사용하여 교정할 수 있다.
 
 ```{r}
-seoul_dong_cm_on <- st_point_on_surface(seoul_dong)
+seoul_dong |> 
+  st_point_on_surface() -> seoul_dong_cm_on
+```
+
+지도를 제작한다.
+
+```{r}
 my_map <- tm_shape(seoul_dong) + tm_polygons() +
   tm_shape(seoul_dong_cm_on) + tm_dots(col = "black", size = 0.15) +
   tm_shape(seoul_gu) + tm_borders(col = "black", lwd = 1) +

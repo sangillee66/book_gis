@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">공간모델링과 고급 GIS 분석</span></a>
+ <span class="menu-text">GIS 모델링과 고급 GIS 분석</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -325,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sm_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">공간모델링</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -359,10 +359,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <a href="#%EA%B3%B5%EA%B0%84%EC%A0%81-%EA%B4%80%EA%B3%84%EC%97%90-%EA%B8%B0%EB%B0%98%ED%95%9C-%EA%B3%B5%EA%B0%84%EC%A0%81-%EC%84%A0%ED%83%9D" id="toc-공간적-관계에-기반한-공간적-선택" class="nav-link active" data-scroll-target="#%EA%B3%B5%EA%B0%84%EC%A0%81-%EA%B4%80%EA%B3%84%EC%97%90-%EA%B8%B0%EB%B0%98%ED%95%9C-%EA%B3%B5%EA%B0%84%EC%A0%81-%EC%84%A0%ED%83%9D"><span class="header-section-number">11.1</span> 공간적 관계에 기반한 공간적 선택</a>
   <ul class="collapse">
-<li><a href="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%ED%88%AC-%ED%8F%AC%EC%9D%B8%ED%8A%B8" id="toc-포인트-투-포인트" class="nav-link" data-scroll-target="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%ED%88%AC-%ED%8F%AC%EC%9D%B8%ED%8A%B8"><span class="header-section-number">11.1.1</span> 포인트-투-포인트</a></li>
-  <li><a href="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%9D%B8-%ED%8F%B4%EB%A6%AC%EA%B3%A4" id="toc-포인트-인-폴리곤" class="nav-link" data-scroll-target="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%9D%B8-%ED%8F%B4%EB%A6%AC%EA%B3%A4"><span class="header-section-number">11.1.2</span> 포인트-인-폴리곤</a></li>
-  <li><a href="#%EB%9D%BC%EC%9D%B8-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4" id="toc-라인-온-폴리곤" class="nav-link" data-scroll-target="#%EB%9D%BC%EC%9D%B8-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4"><span class="header-section-number">11.1.3</span> 라인-온-폴리곤</a></li>
-  <li><a href="#%ED%8F%B4%EB%A6%AC%EA%B3%A4-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4" id="toc-폴리곤-온-폴리곤" class="nav-link" data-scroll-target="#%ED%8F%B4%EB%A6%AC%EA%B3%A4-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4"><span class="header-section-number">11.1.4</span> 폴리곤-온-폴리곤</a></li>
+<li><a href="#%EC%A4%80%EB%B9%84" id="toc-준비" class="nav-link" data-scroll-target="#%EC%A4%80%EB%B9%84"><span class="header-section-number">11.1.1</span> 준비</a></li>
+  <li><a href="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%ED%88%AC-%ED%8F%AC%EC%9D%B8%ED%8A%B8" id="toc-포인트-투-포인트" class="nav-link" data-scroll-target="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%ED%88%AC-%ED%8F%AC%EC%9D%B8%ED%8A%B8"><span class="header-section-number">11.1.2</span> 포인트-투-포인트</a></li>
+  <li><a href="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%9D%B8-%ED%8F%B4%EB%A6%AC%EA%B3%A4" id="toc-포인트-인-폴리곤" class="nav-link" data-scroll-target="#%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%9D%B8-%ED%8F%B4%EB%A6%AC%EA%B3%A4"><span class="header-section-number">11.1.3</span> 포인트-인-폴리곤</a></li>
+  <li><a href="#%EB%9D%BC%EC%9D%B8-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4" id="toc-라인-온-폴리곤" class="nav-link" data-scroll-target="#%EB%9D%BC%EC%9D%B8-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4"><span class="header-section-number">11.1.4</span> 라인-온-폴리곤</a></li>
+  <li><a href="#%ED%8F%B4%EB%A6%AC%EA%B3%A4-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4" id="toc-폴리곤-온-폴리곤" class="nav-link" data-scroll-target="#%ED%8F%B4%EB%A6%AC%EA%B3%A4-%EC%98%A8-%ED%8F%B4%EB%A6%AC%EA%B3%A4"><span class="header-section-number">11.1.5</span> 폴리곤-온-폴리곤</a></li>
   </ul>
 </li>
   </ul></nav>
@@ -389,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 29, 2024</p>
+      <p class="date-modified">November 6, 2024</p>
     </div>
   </div>
     
@@ -399,6 +400,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="공간적-관계에-기반한-공간적-선택" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="공간적-관계에-기반한-공간적-선택">
 <span class="header-section-number">11.1</span> 공간적 관계에 기반한 공간적 선택</h2>
+<section id="준비" class="level3" data-number="11.1.1"><h3 data-number="11.1.1" class="anchored" data-anchor-id="준비">
+<span class="header-section-number">11.1.1</span> 준비</h3>
 <p>필수적인 패키지를 불러온다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
@@ -408,41 +411,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>서울의 관련 데이터를 불러온다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_gu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span>
-<span><span class="va">seoul_dong</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span>
-<span><span class="va">seoul_sido</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span>
+<span><span class="va">seoul_gu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="포인트-투-포인트" class="level3" data-number="11.1.1"><h3 data-number="11.1.1" class="anchored" data-anchor-id="포인트-투-포인트">
-<span class="header-section-number">11.1.1</span> 포인트-투-포인트</h3>
-<p>지하철역에 가장 가까이에 위치한 스타벅스를 선택한다. 우선 지하철역 데이터를 불러온다.</p>
+</section><section id="포인트-투-포인트" class="level3" data-number="11.1.2"><h3 data-number="11.1.2" class="anchored" data-anchor-id="포인트-투-포인트">
+<span class="header-section-number">11.1.2</span> 포인트-투-포인트</h3>
+<p>지하철역에 가장 가까이에 위치한 스타벅스를 선택한다. 우선 9장에서 생성한 지하철역 데이터를 불러온다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_subst_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"D:/My R/GIS/서울시 역사마스터 정보.xlsx"</span><span class="op">)</span> </span>
-<span><span class="va">seoul_subst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">seoul_subst_coords</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"위도"</span>, <span class="st">"경도"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
-<span><span class="va">seoul_subst</span> <span class="op">&lt;-</span> <span class="va">seoul_subst</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul_sido</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_ops.html">st_intersection</a></span><span class="op">(</span><span class="va">seoul_sido</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_subst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Vector Data Manipulation Korea/seoul_subst.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>options:        ENCODING=CP949 
+Reading layer `seoul_subst' from data source 
+  `D:\My R\Vector Data Manipulation Korea\seoul_subst.shp' using driver `ESRI Shapefile'
+Simple feature collection with 401 features and 7 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 938028.4 ymin: 1938762 xmax: 971377.4 ymax: 1965651
+Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
-<p>스타벅스 데이터를 불러온다.</p>
+</div>
+<p>마찬가지로 9장에서 생성한 스타벅스 데이터를 불러온다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">starbucks_seoul_real</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">starbucks_seoul_real</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>options:        ENCODING=CP949 
 Reading layer `starbucks_seoul' from data source 
   `D:\My R\Vector Data Manipulation Korea\starbucks_seoul.shp' 
   using driver `ESRI Shapefile'
-Simple feature collection with 680 features and 11 fields
+Simple feature collection with 520 features and 9 fields
 Geometry type: POINT
 Dimension:     XY
 Bounding box:  xmin: 939637.5 ymin: 1938775 xmax: 971226.8 ymax: 1962474
-Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
+Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">starbucks_seoul_real</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">starbucks_seoul_real</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul_sido</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>공간적 관계에 기반한 공간적 선택을 실행한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">starbucks_closest_station_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_nearest_feature.html">st_nearest_feature</a></span><span class="op">(</span><span class="va">seoul_subst</span>, <span class="va">starbucks_seoul_real</span><span class="op">)</span> </span>
-<span><span class="va">starbucks_closest_station</span> <span class="op">&lt;-</span> <span class="va">starbucks_seoul_real</span><span class="op">[</span><span class="va">starbucks_closest_station_index</span>, <span class="op">]</span></span>
-<span><span class="va">starbucks_closest_station_unique</span> <span class="op">&lt;-</span> <span class="va">starbucks_closest_station</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">starbucks_closest_station</span><span class="op">$</span><span class="va">Sotre_nm</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_subst</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_nearest_feature.html">st_nearest_feature</a></span><span class="op">(</span><span class="va">starbucks_seoul_real</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">starbucks_index</span></span>
+<span><span class="va">starbucks_seoul_real</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">starbucks_index</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span></span>
+<span>    <span class="va">Sotre_nm</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">starbucks_closest_station_unique</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 생성한다.</p>
 <div class="cell">
@@ -451,7 +463,7 @@ Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_subst</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.15</span>, col <span class="op">=</span> <span class="st">"#377eb8"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">starbucks_closest_station_unique</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.15</span>, col <span class="op">=</span> <span class="st">"#e41a1c"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.03</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_add_legend.html">tm_add_legend</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"symbol"</span>, size <span class="op">=</span> <span class="fl">0.50</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#377eb8"</span>, <span class="st">"#e41a1c"</span>, <span class="st">"gray50"</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">16</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Subway Stations (401)"</span>, <span class="st">"Nearest Starbucks (254)"</span>, <span class="st">"Not Selected Starbucks (426)"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_add_legend.html">tm_add_legend</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"symbol"</span>, size <span class="op">=</span> <span class="fl">0.50</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#377eb8"</span>, <span class="st">"#e41a1c"</span>, <span class="st">"gray50"</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">16</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Subway Stations (401)"</span>, <span class="st">"Nearest Starbucks (254)"</span>, <span class="st">"Not Selected Starbucks (266)"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
 <span>            title <span class="op">=</span> <span class="st">"Spatial Selection: Point-to-Point"</span>, title.size <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"LEFT"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -464,8 +476,8 @@ Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
 </div>
 </div>
 </div>
-</section><section id="포인트-인-폴리곤" class="level3" data-number="11.1.2"><h3 data-number="11.1.2" class="anchored" data-anchor-id="포인트-인-폴리곤">
-<span class="header-section-number">11.1.2</span> 포인트-인-폴리곤</h3>
+</section><section id="포인트-인-폴리곤" class="level3" data-number="11.1.3"><h3 data-number="11.1.3" class="anchored" data-anchor-id="포인트-인-폴리곤">
+<span class="header-section-number">11.1.3</span> 포인트-인-폴리곤</h3>
 <p>관악구 내의 스타벅스만 선택한다. 우선 관악구만 선택한다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gwanak_gu</span> <span class="op">&lt;-</span> <span class="va">seoul_gu</span> <span class="op">|&gt;</span> </span>
@@ -475,7 +487,13 @@ Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
 </div>
 <p>관악구 내에 포함되는 스타벅스를 선택한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">starbucks_gwanak</span> <span class="op">&lt;-</span> <span class="va">starbucks_seoul_real</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">starbucks_seoul_real</span>, <span class="va">gwanak_gu</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># starbucks_gwanak &lt;- starbucks_seoul_real[which(lengths(st_intersects(starbucks_seoul_real, gwanak_gu)) &gt; 0), ]</span></span>
+<span></span>
+<span><span class="va">starbucks_seoul_real</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">gwanak_gu</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">-&gt;</span> <span class="va">sel_vec</span></span>
+<span><span class="va">starbucks_seoul_real</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">sel_vec</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">starbucks_gwanak</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도로 나타낸다.</p>
 <div class="cell">
@@ -497,8 +515,8 @@ Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
 </div>
 </div>
 </div>
-</section><section id="라인-온-폴리곤" class="level3" data-number="11.1.3"><h3 data-number="11.1.3" class="anchored" data-anchor-id="라인-온-폴리곤">
-<span class="header-section-number">11.1.3</span> 라인-온-폴리곤</h3>
+</section><section id="라인-온-폴리곤" class="level3" data-number="11.1.4"><h3 data-number="11.1.4" class="anchored" data-anchor-id="라인-온-폴리곤">
+<span class="header-section-number">11.1.4</span> 라인-온-폴리곤</h3>
 <p>서울시 도로망 데이터를 불러온다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -512,7 +530,11 @@ Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
 </div>
 <p>중구와 인터섹터의 관계에 있는 도로만 선택한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jung_gu_sn</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">seoul_sn</span>, <span class="va">jung_gu</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">jung_gu</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">-&gt;</span> <span class="va">sel_index</span></span>
+<span><span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">sel_index</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">jung_gu_sn</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 생성한다.</p>
 <div class="cell">
@@ -547,24 +569,44 @@ Projected CRS: Korea_2000_Korea_Unified_Coordinate_System</code></pre>
 </div>
 </div>
 </div>
-</section><section id="폴리곤-온-폴리곤" class="level3" data-number="11.1.4"><h3 data-number="11.1.4" class="anchored" data-anchor-id="폴리곤-온-폴리곤">
-<span class="header-section-number">11.1.4</span> 폴리곤-온-폴리곤</h3>
+</section><section id="폴리곤-온-폴리곤" class="level3" data-number="11.1.5"><h3 data-number="11.1.5" class="anchored" data-anchor-id="폴리곤-온-폴리곤">
+<span class="header-section-number">11.1.5</span> 폴리곤-온-폴리곤</h3>
 <p>남부순환로로부터 1,000m 이내 지역에 대한 버퍼를 통해 동을 선택한다. 우선 버퍼를 생성한다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nambu_cir</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">ROAD_NAME</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"남부순환로"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">nambu_cir_1000</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_combine.html">st_union</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_buffer</a></span><span class="op">(</span><span class="va">nambu_cir</span>, dist <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">nambu_cir</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_buffer</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_combine.html">st_union</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">nambu_cir_1000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>‘일부 교차’, ‘센트로이드 포함’, ’완전 포함’으로 분류하기 위한 작업을 한다. 우선 동의 센트로이드를 계산한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_dong_centroid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">seoul_dong</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_dong</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_dong_centroid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_dong_1</span> <span class="op">&lt;-</span> <span class="va">seoul_dong</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">seoul_dong</span>, <span class="va">nambu_cir_1000</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">seoul_dong_2</span> <span class="op">&lt;-</span> <span class="va">seoul_dong</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">seoul_dong_centroid</span>, <span class="va">nambu_cir_1000</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">seoul_dong_3</span> <span class="op">&lt;-</span> <span class="va">seoul_dong</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_covered_by</a></span><span class="op">(</span><span class="va">seoul_dong</span>, <span class="va">nambu_cir_1000</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 일부 교차</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">nambu_cir_1000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">-&gt;</span> <span class="va">sel_index_1</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">sel_index_1</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_dong_1</span></span>
+<span></span>
+<span><span class="co"># 센트로이드 포함</span></span>
+<span><span class="va">seoul_dong_centroid</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">nambu_cir_1000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">-&gt;</span> <span class="va">sel_index_2</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">sel_index_2</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_dong_2</span></span>
+<span></span>
+<span><span class="co"># 완전 포함</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_covered_by</a></span><span class="op">(</span><span class="va">nambu_cir_1000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">-&gt;</span> <span class="va">sel_index_3</span></span>
+<span><span class="va">seoul_dong</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">sel_index_3</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_dong_3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>’일부 교차’에 대한 지도를 생성한다.</p>
 <div class="cell">
@@ -1020,7 +1062,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -33,9 +33,9 @@ library(readxl)
 
 ```{r}
 #| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
-seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 ```
 
 ## 종류
@@ -54,15 +54,15 @@ gwanak_gu <- seoul_gu |>
 스타벅스 데이터를 불러온다.
 
 ```{r}
+#| results: hide
 starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", options = "ENCODING=CP949")
-starbucks_seoul_real <- st_transform(starbucks_seoul_real, crs = st_crs(seoul_sido))
 ```
 
 관악구에 포함되는 스타벅스 매장만 골라낸다.
 
 ```{r}
-starbucks_gwanak <- starbucks_seoul_real |> 
-  st_intersection(gwanak_gu)
+starbucks_seoul_real |> 
+  st_intersection(gwanak_gu) -> starbucks_gwanak
 ```
 
 지도를 생성한다. 공간적 선택의 지도와 사실상 동일하다.
@@ -118,7 +118,8 @@ jung_gu <- seoul_gu |>
 중구와 인터섹터의 관계에 있는 도로만 선택한다. 선택이 아니라 클립에 해당한다는 사실에 유의한다.
 
 ```{r}
-jung_gu_sn <- st_intersection(seoul_sn, jung_gu)
+seoul_sn |> 
+  st_intersection(jung_gu) -> jung_gu_sn
 ```
 
 지도를 생성한다.

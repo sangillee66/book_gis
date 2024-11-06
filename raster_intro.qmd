@@ -199,7 +199,7 @@ dem_seoul |>
 minmax(dem_seoul)
 ```
 
-다음과 같은 global() 함수를 이용할 수도 있다.
+다음과 같은 `global()` 함수를 이용할 수도 있다.
 
 ```{r}
 global(dem_seoul, fun = "max", na.rm = TRUE)
@@ -228,13 +228,16 @@ dem_max_xy
 벡터 포인트 객체로 만들 수 있다.
 
 ```{r}
-dem_max_sf <- st_sfc(st_point(dem_max_xy), crs = st_crs(seoul)) |> st_sf()
+dem_max_xy |> 
+  st_point() |> 
+  st_sfc(crs = st_crs(seoul)) |> 
+  st_sf() -> dem_max_sf
 ```
 
 혹은 다른 방식으로 만들 수도 있다.
 
 ```{r}
-dem_max_sf <-  
-  as_tibble(dem_max_xy) |> 
-  st_as_sf(coords = c("x", "y"), crs = st_crs(seoul))
+dem_max_xy |> 
+  as_tibble() |> 
+  st_as_sf(coords = c("x", "y"), crs = st_crs(seoul)) -> dem_max_sf
 ```

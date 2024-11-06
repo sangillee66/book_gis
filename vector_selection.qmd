@@ -20,6 +20,8 @@ editor_options:
 
 ## 공간적 관계에 기반한 공간적 선택
 
+### 준비
+
 필수적인 패키지를 불러온다.
 
 ```{r}
@@ -33,36 +35,35 @@ library(readxl)
 
 ```{r}
 #| results: hide
+seoul <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_gu <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_GU_2023_2Q.shp", options = "ENCODING=CP949")
 seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_EMD_2023_2Q.shp", options = "ENCODING=CP949")
-seoul_sido <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이프 파일/2 Original Cleaning/2023_2Q/SEOUL_SIDO_2023_2Q.shp", options = "ENCODING=CP949")
 ```
 
 ### 포인트-투-포인트
 
-지하철역에 가장 가까이에 위치한 스타벅스를 선택한다. 우선 지하철역 데이터를 불러온다.
+지하철역에 가장 가까이에 위치한 스타벅스를 선택한다. 우선 9장에서 생성한 지하철역 데이터를 불러온다.
 
 ```{r}
-seoul_subst_coords <- read_excel("D:/My R/GIS/서울시 역사마스터 정보.xlsx") 
-seoul_subst <- st_as_sf(seoul_subst_coords, coords = c("위도", "경도"), crs = 4326)
-seoul_subst <- seoul_subst |> 
-  st_transform(crs = st_crs(seoul_sido)) |> 
-  st_intersection(seoul_sido)
+seoul_subst <- st_read("D:/My R/Vector Data Manipulation Korea/seoul_subst.shp", options = "ENCODING=CP949")
 ```
 
-스타벅스 데이터를 불러온다.
+마찬가지로 9장에서 생성한 스타벅스 데이터를 불러온다.
 
 ```{r}
 starbucks_seoul_real <- st_read("D:/My R/Vector Data Manipulation Korea/starbucks_seoul.shp", options = "ENCODING=CP949")
-starbucks_seoul_real <- st_transform(starbucks_seoul_real, crs = st_crs(seoul_sido))
 ```
 
 공간적 관계에 기반한 공간적 선택을 실행한다.
 
 ```{r}
-starbucks_closest_station_index <- st_nearest_feature(seoul_subst, starbucks_seoul_real) 
-starbucks_closest_station <- starbucks_seoul_real[starbucks_closest_station_index, ]
-starbucks_closest_station_unique <- starbucks_closest_station[!duplicated(starbucks_closest_station$Sotre_nm), ]
+seoul_subst |> 
+  st_nearest_feature(starbucks_seoul_real) -> starbucks_index
+starbucks_seoul_real |> 
+  slice(starbucks_index) |> 
+  distinct(
+    Sotre_nm, .keep_all = TRUE
+  ) -> starbucks_closest_station_unique
 ```
 
 지도를 생성한다.
@@ -73,7 +74,7 @@ my.map <- tm_shape(seoul_gu) + tm_polygons(lwd = 2, col = "gray95") +
   tm_shape(seoul_subst) + tm_dots(size = 0.15, col = "#377eb8") +
   tm_shape(starbucks_closest_station_unique) + tm_dots(size = 0.15, col = "#e41a1c") +
   tm_legend(legend.position = c(0.75, 0.03)) +
-  tm_add_legend(type = "symbol", size = 0.50, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Not Selected Starbucks (426)"), title = "") +
+  tm_add_legend(type = "symbol", size = 0.50, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Not Selected Starbucks (266)"), title = "") +
   tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
             title = "Spatial Selection: Point-to-Point", title.size = 1, 
             title.position = c("LEFT", "TOP")) + 
@@ -89,7 +90,7 @@ my_map <- tm_shape(seoul_gu) + tm_polygons(lwd = 2, col = "gray95") +
   tm_shape(seoul_subst) + tm_dots(size = 0.3, col = "#377eb8") +
   tm_shape(starbucks_closest_station_unique) + tm_dots(size = 0.3, col = "#e41a1c") +
   tm_legend(legend.title.size = 1.25, legend.text.size = 1.25, legend.position = c(0.77, 0.05)) +
-  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Not Selected Starbucks (426)"), title = "") + 
+  tm_add_legend(type = "symbol", size = 0.80, col = c("#377eb8", "#e41a1c", "gray50"), shape = 16, labels = c("Subway Stations (401)", "Nearest Starbucks (254)", "Not Selected Starbucks (266)"), title = "") + 
   tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
             title = "Spatial Selection: Point-to-Point", title.size = 2,
             title.position = c(0.02, 0.97)) + 
@@ -115,7 +116,13 @@ gwanak_gu <- seoul_gu |>
 관악구 내에 포함되는 스타벅스를 선택한다.
 
 ```{r}
-starbucks_gwanak <- starbucks_seoul_real[which(lengths(st_intersects(starbucks_seoul_real, gwanak_gu)) > 0), ]
+# starbucks_gwanak <- starbucks_seoul_real[which(lengths(st_intersects(starbucks_seoul_real, gwanak_gu)) > 0), ]
+
+starbucks_seoul_real |> 
+  st_intersects(gwanak_gu) |> 
+  lengths() > 0 -> sel_vec
+starbucks_seoul_real |> 
+  filter(sel_vec) -> starbucks_gwanak
 ```
 
 지도로 나타낸다.
@@ -174,7 +181,11 @@ jung_gu <- seoul_gu |>
 중구와 인터섹터의 관계에 있는 도로만 선택한다.
 
 ```{r}
-jung_gu_sn <- seoul_sn[which(lengths(st_intersects(seoul_sn, jung_gu)) > 0), ]
+seoul_sn |> 
+  st_intersects(jung_gu) |> 
+  lengths() > 0 -> sel_index
+seoul_sn |> 
+  filter(sel_index) -> jung_gu_sn
 ```
 
 지도를 생성한다.
@@ -244,19 +255,39 @@ nambu_cir <- seoul_sn |>
   filter(
     ROAD_NAME %in% c("남부순환로")
   )
-nambu_cir_1000 <- st_union(st_buffer(nambu_cir, dist = 1000))
+nambu_cir |> 
+  st_buffer(dist = 1000) |> 
+  st_union() -> nambu_cir_1000
 ```
 
 '일부 교차', '센트로이드 포함', '완전 포함'으로 분류하기 위한 작업을 한다. 우선 동의 센트로이드를 계산한다.
 
 ```{r}
-seoul_dong_centroid <- st_centroid(seoul_dong)
+seoul_dong |> 
+  st_centroid() -> seoul_dong_centroid
 ```
 
 ```{r}
-seoul_dong_1 <- seoul_dong[which(lengths(st_intersects(seoul_dong, nambu_cir_1000)) > 0), ]
-seoul_dong_2 <- seoul_dong[which(lengths(st_intersects(seoul_dong_centroid, nambu_cir_1000)) > 0), ]
-seoul_dong_3 <- seoul_dong[which(lengths(st_covered_by(seoul_dong, nambu_cir_1000)) > 0), ]
+# 일부 교차
+seoul_dong |> 
+  st_intersects(nambu_cir_1000) |> 
+  lengths() > 0 -> sel_index_1
+seoul_dong |> 
+  filter(sel_index_1) -> seoul_dong_1
+
+# 센트로이드 포함
+seoul_dong_centroid |> 
+  st_intersects(nambu_cir_1000) |> 
+  lengths() > 0 -> sel_index_2
+seoul_dong |> 
+  filter(sel_index_2) -> seoul_dong_2
+
+# 완전 포함
+seoul_dong |> 
+  st_covered_by(nambu_cir_1000) |> 
+  lengths() > 0 -> sel_index_3
+seoul_dong |> 
+  filter(sel_index_3) -> seoul_dong_3
 ```
 
 '일부 교차'에 대한 지도를 생성한다.

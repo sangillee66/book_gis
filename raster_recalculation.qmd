@@ -54,7 +54,8 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 루트값을 계산한다.
 
 ```{r}
-dem_seoul_sqrt <- sqrt(dem_seoul)
+dem_seoul |> 
+  sqrt() -> dem_seoul_sqrt
 ```
 
 지도를 제작한다.
@@ -94,7 +95,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 자연로그값을 산출한다.
 
 ```{r}
-dem_seoul_log <- log(dem_seoul)
+dem_seoul |> 
+  log() -> dem_seoul_log
 ```
 
 지도를 제작한다.
@@ -136,7 +138,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 포컬 평균을 계산한다.
 
 ```{r}
-dem_seoul_focal_mean <- focal(dem_seoul, w = 3, fun = "mean")
+dem_seoul |> 
+  focal(w = 3, fun = "mean") -> dem_seoul_focal_mean
 ```
 
 지도를 제작한다.
@@ -176,7 +179,8 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 포컬 표준편차를 계산한다.
 
 ```{r}
-dem_seoul_focal_sd <- focal(dem_seoul, w = 3, fun = sd)
+dem_seoul |> 
+  focal(w = 3, fun = sd) -> dem_seoul_focal_sd 
 ```
 
 지도를 제작한다.
@@ -216,10 +220,17 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 서울시의 구와 동을 래스터화한다.
 
 ```{r}
-seoul_gu$SGG_ID <- as.numeric(seoul_gu$SGG1_CD)
-seoul_gu_r <- rasterize(seoul_gu, dem_seoul_mask, field = "SGG1_CD")
-seoul_dong$EMD_ID <- as.numeric(seoul_dong$EMD_ID)
-seoul_dong_r <- rasterize(seoul_dong, dem_seoul_mask, field = "EMD_ID")
+seoul_gu |> 
+  mutate(
+    SGG1_CD = as.numeric(SGG1_CD)
+  ) |> 
+  rasterize(dem_seoul_mask, field = "SGG1_CD") -> seoul_gu_r
+
+seoul_dong |> 
+  mutate(
+    EMD_ID = as.numeric(EMD_ID)
+  ) |> 
+  rasterize(dem_seoul_mask, field = "SGG1_CD") -> seoul_dong_r
 ```
 
 ### 평균
@@ -227,8 +238,12 @@ seoul_dong_r <- rasterize(seoul_dong, dem_seoul_mask, field = "EMD_ID")
 서울시 구와 동의 조널 평균을 계산한다. `zonal()` 함수의 `as.raster` 아규먼트가 중요하다.
 
 ```{r}
-dem_seoul_gu_mask_zonal_mean <- zonal(dem_seoul_mask, seoul_gu_r, fun = "mean", na.rm = TRUE, as.raster = TRUE)
-dem_seoul_dong_mask_zonal_mean <- zonal(dem_seoul_mask, seoul_dong_r, fun = "mean", na.rm = TRUE, as.raster = TRUE)
+dem_seoul_mask |> 
+  zonal(seoul_gu_r, fun = "mean", na.rm = TRUE, 
+        as.raster = TRUE) -> dem_seoul_gu_mask_zonal_mean
+dem_seoul_mask |> 
+  zonal(seoul_dong_r, fun = "mean", na.rm = TRUE, 
+        as.raster = TRUE) -> dem_seoul_dong_mask_zonal_mean
 ```
 
 동에 대한 지도를 제작한다.
@@ -266,8 +281,10 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 서울시 구와 동의 조널 표준편차를 계산한다.
 
 ```{r}
-dem_seoul_gu_mask_zonal_sd <- zonal(dem_seoul_mask, seoul_gu_r, fun = "sd", na.rm = TRUE, as.raster = TRUE)
-dem_seoul_dong_mask_zonal_sd <- zonal(dem_seoul_mask, seoul_dong_r, fun = "sd", na.rm = TRUE, as.raster = TRUE)
+dem_seoul_mask |> 
+  zonal(seoul_gu_r, fun = "sd", na.rm = TRUE, as.raster = TRUE) -> dem_seoul_gu_mask_zonal_sd
+dem_seoul_mask |> 
+  zonal(seoul_dong_r, fun = "sd", na.rm = TRUE, as.raster = TRUE) -> dem_seoul_dong_mask_zonal_sd
 ```
 
 동에 대한 지도를 제작한다.
@@ -305,10 +322,12 @@ tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600)
 DEM의 값을 구와 동으로 전이시킨다.
 
 ```{r}
-seoul_dong_elev <- extract(dem_seoul, seoul_dong, fun = "mean")
-seoul_dong$elev <- seoul_dong_elev[[2]]
-seoul_gu_elev <- extract(dem_seoul, seoul_gu, fun = "mean")
-seoul_gu$elev <- seoul_gu_elev[[2]]
+dem_seoul |> 
+  extract(seoul_dong, fun = "mean") |> 
+  pull() -> seoul_dong$elev
+dem_seoul |> 
+  extract(seoul_gu, fun = "mean") |> 
+  pull() -> seoul_gu$elev
 ```
 
 동에 대한 지도를 제작한다.
