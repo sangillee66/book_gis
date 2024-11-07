@@ -100,7 +100,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><link rel="stylesheet" href="styles.css">
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="styles.css">
 </head>
 <body class="nav-sidebar floating">
 
@@ -357,11 +382,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#%EC%A4%80%EB%B9%84" id="toc-준비" class="nav-link active" data-scroll-target="#%EC%A4%80%EB%B9%84"><span class="header-section-number">23.1</span> 준비</a></li>
-  <li><a href="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC-%EB%A7%A4%ED%8A%B8%EB%A6%AD%EC%8A%A4" id="toc-네트워크-거리-매트릭스" class="nav-link" data-scroll-target="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC-%EB%A7%A4%ED%8A%B8%EB%A6%AD%EC%8A%A4"><span class="header-section-number">23.2</span> 네트워크 거리 매트릭스</a></li>
-  <li><a href="#%EC%B5%9C%EB%8B%A8-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B2%BD%EB%A1%9C" id="toc-최단-네트워크-경로" class="nav-link" data-scroll-target="#%EC%B5%9C%EB%8B%A8-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B2%BD%EB%A1%9C"><span class="header-section-number">23.3</span> 최단 네트워크 경로</a></li>
-  <li><a href="#%EC%B5%9C%EC%A0%81%EB%B0%B0%EB%8B%AC%EA%B2%BD%EB%A1%9C%EB%B6%84%EC%84%9D" id="toc-최적배달경로분석" class="nav-link" data-scroll-target="#%EC%B5%9C%EC%A0%81%EB%B0%B0%EB%8B%AC%EA%B2%BD%EB%A1%9C%EB%B6%84%EC%84%9D"><span class="header-section-number">23.4</span> 최적배달경로분석</a></li>
-  <li><a href="#%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%8B%9C%EC%84%A4%EB%AC%BC%EB%B6%84%EC%84%9D" id="toc-최근접시설물분석" class="nav-link" data-scroll-target="#%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%8B%9C%EC%84%A4%EB%AC%BC%EB%B6%84%EC%84%9D"><span class="header-section-number">23.5</span> 최근접시설물분석</a></li>
-  <li><a href="#%EC%84%9C%EB%B9%84%EC%8A%A4%EC%98%81%EC%97%AD%EB%B6%84%EC%84%9D" id="toc-서비스영역분석" class="nav-link" data-scroll-target="#%EC%84%9C%EB%B9%84%EC%8A%A4%EC%98%81%EC%97%AD%EB%B6%84%EC%84%9D"><span class="header-section-number">23.6</span> 서비스영역분석</a></li>
+  <li><a href="#%EB%8F%84%EB%A1%9C%EB%A7%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0" id="toc-도로망-데이터-살펴보기" class="nav-link" data-scroll-target="#%EB%8F%84%EB%A1%9C%EB%A7%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0"><span class="header-section-number">23.2</span> 도로망 데이터 살펴보기</a></li>
+  <li><a href="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC-%EB%A7%A4%ED%8A%B8%EB%A6%AD%EC%8A%A4" id="toc-네트워크-거리-매트릭스" class="nav-link" data-scroll-target="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC-%EB%A7%A4%ED%8A%B8%EB%A6%AD%EC%8A%A4"><span class="header-section-number">23.3</span> 네트워크 거리 매트릭스</a></li>
+  <li>
+<a href="#%EC%B5%9C%EB%8B%A8-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B2%BD%EB%A1%9C" id="toc-최단-네트워크-경로" class="nav-link" data-scroll-target="#%EC%B5%9C%EB%8B%A8-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B2%BD%EB%A1%9C"><span class="header-section-number">23.4</span> 최단 네트워크 경로</a>
+  <ul class="collapse">
+<li><a href="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0" id="toc-네트워크-거리의-경우" class="nav-link" data-scroll-target="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0"><span class="header-section-number">23.4.1</span> 네트워크 거리의 경우</a></li>
+  <li><a href="#%EC%8B%9C%EA%B0%84-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0" id="toc-시간-거리의-경우" class="nav-link" data-scroll-target="#%EC%8B%9C%EA%B0%84-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0"><span class="header-section-number">23.4.2</span> 시간 거리의 경우</a></li>
+  </ul>
+</li>
+  <li><a href="#%EC%B5%9C%EC%A0%81%EB%B0%B0%EB%8B%AC%EA%B2%BD%EB%A1%9C%EB%B6%84%EC%84%9D" id="toc-최적배달경로분석" class="nav-link" data-scroll-target="#%EC%B5%9C%EC%A0%81%EB%B0%B0%EB%8B%AC%EA%B2%BD%EB%A1%9C%EB%B6%84%EC%84%9D"><span class="header-section-number">23.5</span> 최적배달경로분석</a></li>
+  <li><a href="#%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%8B%9C%EC%84%A4%EB%AC%BC%EB%B6%84%EC%84%9D" id="toc-최근접시설물분석" class="nav-link" data-scroll-target="#%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%8B%9C%EC%84%A4%EB%AC%BC%EB%B6%84%EC%84%9D"><span class="header-section-number">23.6</span> 최근접시설물분석</a></li>
+  <li>
+<a href="#%EC%84%9C%EB%B9%84%EC%8A%A4%EC%98%81%EC%97%AD%EB%B6%84%EC%84%9D" id="toc-서비스영역분석" class="nav-link" data-scroll-target="#%EC%84%9C%EB%B9%84%EC%8A%A4%EC%98%81%EC%97%AD%EB%B6%84%EC%84%9D"><span class="header-section-number">23.7</span> 서비스영역분석</a>
+  <ul class="collapse">
+<li><a href="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0-1" id="toc-네트워크-거리의-경우-1" class="nav-link" data-scroll-target="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0-1"><span class="header-section-number">23.7.1</span> 네트워크 거리의 경우</a></li>
+  <li><a href="#%EC%8B%9C%EA%B0%84-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0-1" id="toc-시간-거리의-경우-1" class="nav-link" data-scroll-target="#%EC%8B%9C%EA%B0%84-%EA%B1%B0%EB%A6%AC%EC%9D%98-%EA%B2%BD%EC%9A%B0-1"><span class="header-section-number">23.7.2</span> 시간 거리의 경우</a></li>
+  </ul>
+</li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -386,7 +424,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">November 6, 2024</p>
+      <p class="date-modified">November 7, 2024</p>
     </div>
   </div>
     
@@ -413,6 +451,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sobang</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Vector Data Manipulation Korea/Seoul_Data_Plaza/sobang_station_seoul.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section><section id="도로망-데이터-살펴보기" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="도로망-데이터-살펴보기">
+<span class="header-section-number">23.2</span> 도로망 데이터 살펴보기</h2>
 <p>서울시 도로망 데이터를 불러온다.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"D:/My R/Vector Data Manipulation Korea/Korea_Transport_Database/seoul_link.shp"</span>, options <span class="op">=</span> <span class="st">"ENCODING=CP949"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -430,30 +470,89 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"LINESTRING"</span><span class="op">)</span> <span class="co"># 반드시 수행해야 함. 차이가 뭘까? 위는 MULTILINESTRING임.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>속성 데이터를 살펴본다. 길이를 다시 계산한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    NEW_LENGTH <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_length</a></span><span class="op">(</span><span class="va">geometry</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sn</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>MAX_SPD</code>(제한 속도) 변수와 라인 세그먼트이 길이(<code>NEW_LENGTH</code>)를 사용하여 시간거리 계산을 위한 새로운 변수를 생성하고자 한다. 각 라인 세그먼트를 통과하는데 몇 분(min)이 걸리는지를 계산하여 새로운 컬럼(<code>COST_DIST</code>)을 생성하고 그것을 나중에 가중치로 사용하고자 한다. 각 라인 세그먼트를 통과하는데 몇 분(min)이 걸리는지를 계산하기 위해서는 <code>MAX_SPD</code>를 이용하여 해당 라인 세그먼트의 1m를 통과하는데 몇 분(min)이 걸리는지(<code>min_per_m</code>)를 계산한다. 그리고 나서 그 값에 라인 세그먼트의 길이(m)를 곱하면 된다. 여기에 평상시 MAX_SPD의 70만 달릴 수 있는 것으로 가정한다. 다음의 공식이 성립한다.</p>
+<p><span class="math display">\[
+\text {COST_DIST}=\text {min_per_m} \times \text{NEW_LENGTH} = \frac{6}{\text {MAX_SPD} \times 0.7 \times 100} \times \text {NEW_LENGTH}
+\]</span></p>
+<p>우선 MAX_SPD의 분포를 살펴본다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">MAX_SPD</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 12 features and 2 fields
+Geometry type: MULTILINESTRING
+Dimension:     XY
+Bounding box:  xmin: 935297 ymin: 1936908 xmax: 971990.4 ymax: 1966117
+Projected CRS: KGD2002 / Unified CS
+First 10 features:
+   MAX_SPD     n                       geometry
+1        0 10001 MULTILINESTRING ((969846.8 ...
+2       10     6 MULTILINESTRING ((955635.8 ...
+3      100   120 MULTILINESTRING ((970456.8 ...
+4      110     3 MULTILINESTRING ((959743.7 ...
+5       20    38 MULTILINESTRING ((944882.1 ...
+6       30  6139 MULTILINESTRING ((967826.8 ...
+7       40  1945 MULTILINESTRING ((947812.7 ...
+8       50   558 MULTILINESTRING ((935381 19...
+9       60 13216 MULTILINESTRING ((968139.5 ...
+10      70   961 MULTILINESTRING ((948405 19...</code></pre>
+</div>
+</div>
+<p>총 33,715개 중 10,001개의 라인 세그먼트의 제한 속도가 0으로 되어 있다. 10인 경우도 6개, 20인 경우도 38개 이다. 제한 속도가 0, 10, 20인 경우를 모두 30으로 바꾼다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    NEW_MAX_SPD <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span></span>
+<span>      <span class="va">MAX_SPD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"10"</span>, <span class="st">"20"</span><span class="op">)</span>, <span class="st">"30"</span>, <span class="va">MAX_SPD</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sn</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이제 COST_DIST를 계산한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    COST_DIST <span class="op">=</span> <span class="fl">6</span> <span class="op">/</span> <span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">NEW_MAX_SPD</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.7</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">NEW_LENGTH</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">seoul_sn</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>서울시 도로망을 sfn 객체로 만든다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sfn</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sfn</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://luukvdmeer.github.io/sfnetworks/reference/as_sfnetwork.html">as_sfnetwork</a></span><span class="op">(</span>directed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="네트워크-거리-매트릭스" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="네트워크-거리-매트릭스">
-<span class="header-section-number">23.2</span> 네트워크 거리 매트릭스</h2>
-<section id="유클리드-거리-매트릭스" class="level4" data-number="23.2.0.1"><h4 data-number="23.2.0.1" class="anchored" data-anchor-id="유클리드-거리-매트릭스">
-<span class="header-section-number">23.2.0.1</span> 유클리드 거리 매트릭스</h4>
+</section><section id="네트워크-거리-매트릭스" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="네트워크-거리-매트릭스">
+<span class="header-section-number">23.3</span> 네트워크 거리 매트릭스</h2>
+<section id="유클리드-거리-매트릭스" class="level4" data-number="23.3.0.1"><h4 data-number="23.3.0.1" class="anchored" data-anchor-id="유클리드-거리-매트릭스">
+<span class="header-section-number">23.3.0.1</span> 유클리드 거리 매트릭스</h4>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_matrix_eucl</span> <span class="op">&lt;-</span> <span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_matrix_eucl</span> <span class="op">&lt;-</span> <span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_distance</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="네트워크-거리-매트릭스-1" class="level4" data-number="23.2.0.2"><h4 data-number="23.2.0.2" class="anchored" data-anchor-id="네트워크-거리-매트릭스-1">
-<span class="header-section-number">23.2.0.2</span> 네트워크 거리 매트릭스</h4>
+</section><section id="네트워크-거리-매트릭스-1" class="level4" data-number="23.3.0.2"><h4 data-number="23.3.0.2" class="anchored" data-anchor-id="네트워크-거리-매트릭스-1">
+<span class="header-section-number">23.3.0.2</span> 네트워크 거리 매트릭스</h4>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_matrix_network</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_matrix_network</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://luukvdmeer.github.io/sfnetworks/reference/st_network_cost.html">st_network_cost</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">seoul_sobang</span>, to <span class="op">=</span> <span class="va">seoul_sobang</span>, direction <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section></section><section id="최단-네트워크-경로" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="최단-네트워크-경로">
-<span class="header-section-number">23.3</span> 최단 네트워크 경로</h2>
+</section><section id="시간-거리-매트릭스" class="level4" data-number="23.3.0.3"><h4 data-number="23.3.0.3" class="anchored" data-anchor-id="시간-거리-매트릭스">
+<span class="header-section-number">23.3.0.3</span> 시간 거리 매트릭스</h4>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_matrix_time</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://luukvdmeer.github.io/sfnetworks/reference/st_network_cost.html">st_network_cost</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">seoul_sobang</span>, to <span class="op">=</span> <span class="va">seoul_sobang</span>, direction <span class="op">=</span> <span class="st">"all"</span>, weights <span class="op">=</span> <span class="st">"COST_DIST"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="최단-네트워크-경로" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="최단-네트워크-경로">
+<span class="header-section-number">23.4</span> 최단 네트워크 경로</h2>
+<section id="네트워크-거리의-경우" class="level3" data-number="23.4.1"><h3 data-number="23.4.1" class="anchored" data-anchor-id="네트워크-거리의-경우">
+<span class="header-section-number">23.4.1</span> 네트워크 거리의 경우</h3>
 <p>각 소방서에서 종로소방서로 가는 최단 네트워크 경로를 구한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jongro_st</span> <span class="op">&lt;-</span> <span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jongro_st</span> <span class="op">&lt;-</span> <span class="va">seoul_sobang</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">Name</span> <span class="op">==</span> <span class="st">"종로소방서"</span></span>
 <span>  <span class="op">)</span></span>
@@ -462,7 +561,7 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>경로를 라인으로 표현하기 위해서는 <code>sobang_network_paths_sfn</code> 객체를 해부해야 한다. 함수를 작성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># snu_paths_generator &lt;- function(net, paths_sfn, dest.point, id.var){</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># snu_paths_generator &lt;- function(net, paths_sfn, dest.point, id.var){</span></span>
 <span><span class="co">#   line.list &lt;- list()</span></span>
 <span><span class="co">#   destID &lt;- vector()</span></span>
 <span><span class="co">#   n &lt;- nrow(paths_sfn)</span></span>
@@ -490,12 +589,12 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>이 함수를 활용하여 최단 경로에 대한 라인을 추출한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sobang_network_paths_sfn_lines</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span>  </span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sobang_network_paths_sfn_lines</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span>  </span>
 <span>  <span class="fu">snu_paths_generator</span><span class="op">(</span><span class="va">sobang_network_paths_sfn</span>, <span class="va">seoul_sobang</span>, <span class="st">"Name"</span><span class="op">)</span> <span class="co">#여기서는 seoul_sn 사용</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray70"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">sobang_network_paths_sfn_lines</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"Name"</span>, size <span class="op">=</span> <span class="fl">1</span>, legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -507,16 +606,47 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="sm_network_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-16-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="sm_network_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="최적배달경로분석" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="최적배달경로분석">
-<span class="header-section-number">23.4</span> 최적배달경로분석</h2>
+</section><section id="시간-거리의-경우" class="level3" data-number="23.4.2"><h3 data-number="23.4.2" class="anchored" data-anchor-id="시간-거리의-경우">
+<span class="header-section-number">23.4.2</span> 시간 거리의 경우</h3>
+<p>각 소방서에서 종로소방서로 가는 최단 시간 경로를 구한다. 가중치로 <code>COST_DIST</code>를 사용한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sobang_network_paths_sfn_t</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://luukvdmeer.github.io/sfnetworks/reference/st_network_paths.html">st_network_paths</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">jongro_st</span>, to <span class="op">=</span> <span class="va">seoul_sobang</span>, weights <span class="op">=</span> <span class="st">"COST_DIST"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>위와 동일한 방법으로 <code>sobang_network_paths_sfn_t</code> 객체를 해부한다</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sobang_network_paths_sfn_lines_t</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">snu_paths_generator</span><span class="op">(</span><span class="va">sobang_network_paths_sfn_t</span>, <span class="va">seoul_sobang</span>, <span class="st">"Name"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>지도를 제작한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray70"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">sobang_network_paths_sfn_lines_t</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"Name"</span>, size <span class="op">=</span> <span class="fl">1</span>, legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">jongro_st</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
+<span>            title <span class="op">=</span> <span class="st">"Shortest Network Paths to Jongro Station"</span>, title.size <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"LEFT"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span>, color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-20-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="sm_network_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="최적배달경로분석" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="최적배달경로분석">
+<span class="header-section-number">23.5</span> 최적배달경로분석</h2>
 <p>여기서는 <code>TSP</code> 패키지를 사용한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/TSP">TSP</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/TSP">TSP</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dist_matrix_network</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://luukvdmeer.github.io/sfnetworks/reference/st_network_cost.html">st_network_cost</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">seoul_sobang</span>, to <span class="op">=</span> <span class="va">seoul_sobang</span><span class="op">)</span></span>
@@ -539,9 +669,9 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/TSP/man/tour_length.html">tour_length</a></span><span class="op">(</span><span class="va">TSP_tour</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span> <span class="co"># 전체 길이를 계산해준다. 128.851m</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 129939</code></pre>
+<pre><code>[1] 128605</code></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">from_index</span> <span class="op">&lt;-</span> <span class="va">TSP_tour_index</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">from_index</span> <span class="op">&lt;-</span> <span class="va">TSP_tour_index</span></span>
 <span><span class="va">to_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">TSP_tour_index</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">TSP_tour_index</span><span class="op">)</span><span class="op">]</span>, <span class="va">TSP_tour_index</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># TSP_paths &lt;- mapply(st_network_paths, from = from_index, to = to_index, MoreArgs = list(x = seoul_sfn))["edge_paths", ] |&gt; unlist(recursive = FALSE)</span></span>
@@ -551,7 +681,7 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>경로를 라인으로 표현하기 위해서는 TSP_paths 객체를 해부해야 한다. 함수를 작성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">snu_TSP_generator</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">net</span>, <span class="va">tsp_paths</span>, <span class="va">dest.point</span>, <span class="va">id.var</span><span class="op">)</span><span class="op">{</span></span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">snu_TSP_generator</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">net</span>, <span class="va">tsp_paths</span>, <span class="va">dest.point</span>, <span class="va">id.var</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">line.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">destID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">vector</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">tsp_paths</span><span class="op">)</span></span>
@@ -567,11 +697,11 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>이 함수를 활용하여 TSP 경로를 추출한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">TSP_paths_line</span> <span class="op">&lt;-</span> <span class="fu">snu_TSP_generator</span><span class="op">(</span><span class="va">seoul_sn</span>, <span class="va">TSP_paths</span>, <span class="va">seoul_sobang</span>, <span class="st">"Name"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">TSP_paths_line</span> <span class="op">&lt;-</span> <span class="fu">snu_TSP_generator</span><span class="op">(</span><span class="va">seoul_sn</span>, <span class="va">TSP_paths</span>, <span class="va">seoul_sobang</span>, <span class="st">"Name"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 작성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray70"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">TSP_paths_line</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"Name"</span>, size <span class="op">=</span> <span class="fl">1</span>, legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -582,18 +712,18 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-16-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="sm_network_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-25-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="sm_network_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="최근접시설물분석" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="최근접시설물분석">
-<span class="header-section-number">23.5</span> 최근접시설물분석</h2>
-<section id="네트워크-할당-line-to-facility" class="level4" data-number="23.5.0.1"><h4 data-number="23.5.0.1" class="anchored" data-anchor-id="네트워크-할당-line-to-facility">
-<span class="header-section-number">23.5.0.1</span> 네트워크 할당: line-to-facility</h4>
+</section><section id="최근접시설물분석" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="최근접시설물분석">
+<span class="header-section-number">23.6</span> 최근접시설물분석</h2>
+<section id="네트워크-할당-line-to-facility" class="level4" data-number="23.6.0.1"><h4 data-number="23.6.0.1" class="anchored" data-anchor-id="네트워크-할당-line-to-facility">
+<span class="header-section-number">23.6.0.1</span> 네트워크 할당: line-to-facility</h4>
 <p>도로 세그먼트에 최근린 소방서의 ID를 할당하고자 한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn_cent</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seoul_sn_cent</span> <span class="op">&lt;-</span> <span class="va">seoul_sn</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># 모든 도로 세그먼트의 센트로이드 생성</span></span>
 <span></span>
 <span><span class="va">dist_cent_sobang</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span> </span>
@@ -610,7 +740,7 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"closest"</span>, lwd <span class="op">=</span> <span class="fl">1</span>, legend.col.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"Name"</span>, shape <span class="op">=</span> <span class="fl">21</span>, border.col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span>, legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
@@ -620,23 +750,23 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="sm_network_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-28-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="sm_network_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="포인트-할당-point-to-facility" class="level4" data-number="23.5.0.2"><h4 data-number="23.5.0.2" class="anchored" data-anchor-id="포인트-할당-point-to-facility">
-<span class="header-section-number">23.5.0.2</span> 포인트 할당: point-to-facility</h4>
+</section><section id="포인트-할당-point-to-facility" class="level4" data-number="23.6.0.2"><h4 data-number="23.6.0.2" class="anchored" data-anchor-id="포인트-할당-point-to-facility">
+<span class="header-section-number">23.6.0.2</span> 포인트 할당: point-to-facility</h4>
 <p>임의의 지점을 선정하고 최근린 소방서를 연결하는 일종의 스파이더 지도(spider map) 혹은 디자이어 라인 지도(desire line map) 지도를 생성한다. 우선 도로 네트워크의 센트로이드 중 임의의 지점 500개를 추출한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">network_sample</span> <span class="op">&lt;-</span> <span class="va">seoul_sn_cent</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">network_sample</span> <span class="op">&lt;-</span> <span class="va">seoul_sn_cent</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_sample.html">st_sample</a></span><span class="op">(</span><span class="fl">500</span>, type <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">5179</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"POINT"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>500개 지점에서 최근린 소방서를 확인한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_sample_sobang</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span>  </span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dist_sample_sobang</span> <span class="op">&lt;-</span> <span class="va">seoul_sfn</span> <span class="op">|&gt;</span>  </span>
 <span>  <span class="fu"><a href="https://luukvdmeer.github.io/sfnetworks/reference/st_network_cost.html">st_network_cost</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">network_sample</span>, to <span class="op">=</span> <span class="va">seoul_sobang</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># closest_sample &lt;- seoul_sobang[apply(dist_sample_sobang, 1, function(x) which(x == min(x))[1]), ]</span></span>
@@ -650,26 +780,36 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>이 정보를 이용해 샘플링 포인트와 최근린 소방서를 연결하는 라인을 생성하기 위한 함수를 작성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">snu_make_linestring_from_2points</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">source.point</span>, <span class="va">target.point</span>, <span class="va">target.id.var</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">source.point</span><span class="op">)</span></span>
-<span>  <span class="va">line.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># snu_make_linestring_from_2points &lt;- function(source.point, target.point, target.id.var){</span></span>
+<span><span class="co">#   n &lt;- nrow(source.point)</span></span>
+<span><span class="co">#   line.list &lt;- list()</span></span>
+<span><span class="co">#   source_coord &lt;- st_coordinates(source.point)</span></span>
+<span><span class="co">#   target_coord &lt;- st_coordinates(target.point)</span></span>
+<span><span class="co">#   for (i in 1:n){</span></span>
+<span><span class="co">#     line.list[[i]] &lt;- st_sfc(st_linestring(rbind(source_coord[i, ], target_coord[i, ]))) # st_sfc를 씌우지 않으면 에러가 남!!!</span></span>
+<span><span class="co">#   }</span></span>
+<span><span class="co">#   final.line &lt;- do.call(rbind, line.list)</span></span>
+<span><span class="co">#   final.line &lt;- st_as_sf(st_sfc(final.line, crs = st_crs(seoul))) # 매우 중요</span></span>
+<span><span class="co">#   final.line &lt;- cbind(Name = target.point[[target.id.var]], final.line)</span></span>
+<span><span class="co"># } </span></span>
+<span></span>
+<span><span class="va">snu_make_linestring_from_2points</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">source.point</span>, <span class="va">target.point</span>, <span class="va">target.id.var</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">source_coord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">source.point</span><span class="op">)</span></span>
 <span>  <span class="va">target_coord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">target.point</span><span class="op">)</span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="va">line.list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_linestring</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">source_coord</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span>, <span class="va">target_coord</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># st_sfc를 씌우지 않으면 에러가 남!!!</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="va">final.line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">line.list</span><span class="op">)</span></span>
-<span>  <span class="va">final.line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="va">final.line</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># 매우 중요</span></span>
+<span>  <span class="va">line.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">source.point</span><span class="op">)</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_linestring</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">source_coord</span><span class="op">[</span><span class="va">.x</span>, <span class="op">]</span>, <span class="va">target_coord</span><span class="op">[</span><span class="va">.x</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">final.line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">c</span>, <span class="va">line.list</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">seoul</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="va">final.line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>Name <span class="op">=</span> <span class="va">target.point</span><span class="op">[[</span><span class="va">target.id.var</span><span class="op">]</span><span class="op">]</span>, <span class="va">final.line</span><span class="op">)</span></span>
-<span><span class="op">}</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">final.line</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>이 함수를 이용해 라인을 생성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">closest_sample_lines</span> <span class="op">&lt;-</span> <span class="fu">snu_make_linestring_from_2points</span><span class="op">(</span><span class="va">network_sample</span>, <span class="va">closest_sample</span>, <span class="st">"Name"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">closest_sample_lines</span> <span class="op">&lt;-</span> <span class="fu">snu_make_linestring_from_2points</span><span class="op">(</span><span class="va">network_sample</span>, <span class="va">closest_sample</span>, <span class="st">"Name"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray80"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">closest_sample_lines</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"Name"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, legend.col.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sobang</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"Name"</span>, shape <span class="op">=</span> <span class="fl">21</span>, border.col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span>, legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -681,24 +821,26 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-25-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="sm_network_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-34-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="sm_network_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-</section></section><section id="서비스영역분석" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="서비스영역분석">
-<span class="header-section-number">23.6</span> 서비스영역분석</h2>
+</section></section><section id="서비스영역분석" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="서비스영역분석">
+<span class="header-section-number">23.7</span> 서비스영역분석</h2>
 <p>종로 소방서의 서비스영역을 분석한다. 서비스영역(isochrone)을 생성하기 위해 <a href="https://jeremygelb.github.io/spNetwork/"><code>snNetwork</code></a> 패키지를 활용한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"JeremyGelb/spNetwork"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"JeremyGelb/spNetwork"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeremygelb.github.io/spNetwork/">spNetwork</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="네트워크-거리의-경우-1" class="level3" data-number="23.7.1"><h3 data-number="23.7.1" class="anchored" data-anchor-id="네트워크-거리의-경우-1">
+<span class="header-section-number">23.7.1</span> 네트워크 거리의 경우</h3>
 <p><code>calc_isochrones</code> 함수를 이용하여 2km, 5km, 10km 네트워크에 해당하는 서비스 영역을 생성한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iso_jongro</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jeremygelb.github.io/spNetwork/reference/calc_isochrones.html">calc_isochrones</a></span><span class="op">(</span></span>
-<span>  lines <span class="op">=</span> <span class="va">seoul_sn</span>, start_points <span class="op">=</span> <span class="va">jongro_st</span>, dists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>, weight <span class="op">=</span> <span class="st">"LENGTH"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iso_jongro</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jeremygelb.github.io/spNetwork/reference/calc_isochrones.html">calc_isochrones</a></span><span class="op">(</span></span>
+<span>  lines <span class="op">=</span> <span class="va">seoul_sn</span>, start_points <span class="op">=</span> <span class="va">jongro_st</span>, dists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">5000</span>, <span class="fl">10000</span><span class="op">)</span>, weight <span class="op">=</span> <span class="st">"NEW_LENGTH"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    fct_dist <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct.html">fct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span></span>
+<span>    fct_dist <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct.html">fct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span></span>
@@ -706,7 +848,7 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">iso_jongro</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"fct_dist"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, title.col <span class="op">=</span> <span class="st">"Distance (km)"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"#005f73"</span>, <span class="st">"5"</span> <span class="op">=</span> <span class="st">"#ca6702"</span>, <span class="st">"10"</span> <span class="op">=</span> <span class="st">"#9b2226"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">jongro_st</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -718,14 +860,14 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-29-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="sm_network_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-38-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="sm_network_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 <p>서비스 영역에 대한 폴리곤을 생성한다. 여기서는 또 다른 패키지인 <code>concaveman</code>을 활용한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://joelgombin.github.io/concaveman/">concaveman</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://joelgombin.github.io/concaveman/">concaveman</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">iso_jongro</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
@@ -767,7 +909,7 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 </div>
 <p>지도를 제작한다.</p>
 <div class="cell">
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">iso_sp</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"fct_dist"</span>, title <span class="op">=</span> <span class="st">"Distance (km)"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"#005f73"</span>, <span class="st">"5"</span> <span class="op">=</span> <span class="st">"#ca6702"</span>, <span class="st">"10"</span> <span class="op">=</span> <span class="st">"#9b2226"</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, border.col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">jongro_st</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -779,14 +921,92 @@ Projected CRS: KGD2002 / Unified CS</code></pre>
 <span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-32-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="sm_network_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></a></p>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-41-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="sm_network_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="시간-거리의-경우-1" class="level3" data-number="23.7.2"><h3 data-number="23.7.2" class="anchored" data-anchor-id="시간-거리의-경우-1">
+<span class="header-section-number">23.7.2</span> 시간 거리의 경우</h3>
+<p><code>calc_isochrones</code> 함수를 이용하여 15분, 30분, 60분 네트워크에 해당하는 서비스 영역을 생성한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">iso_jongro_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jeremygelb.github.io/spNetwork/reference/calc_isochrones.html">calc_isochrones</a></span><span class="op">(</span></span>
+<span>  lines <span class="op">=</span> <span class="va">seoul_sn</span>, start_points <span class="op">=</span> <span class="va">jongro_st</span>, dists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>, weight <span class="op">=</span> <span class="st">"COST_DIST"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    fct_dist <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct.html">fct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>지도를 제작한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">iso_jongro_t</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"fct_dist"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, title.col <span class="op">=</span> <span class="st">"Time (min)"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"#005f73"</span>, <span class="st">"5"</span> <span class="op">=</span> <span class="st">"#ca6702"</span>, <span class="st">"10"</span> <span class="op">=</span> <span class="st">"#9b2226"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">jongro_st</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.80</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
+<span>            title <span class="op">=</span> <span class="st">"Service Areas: Lines"</span>, title.size <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"LEFT"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span>, color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-44-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="sm_network_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>서비스 영역에 대한 폴리곤을 생성한다. 여기서는 또 다른 패키지인 <code>concaveman</code>을 활용한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://joelgombin.github.io/concaveman/">concaveman</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">iso_jongro_t</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    iso_oid <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">point_id</span>, <span class="va">distance</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">iso_jongro_t</span></span>
+<span></span>
+<span><span class="va">polygons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">iso_jongro_t</span><span class="op">$</span><span class="va">iso_oid</span><span class="op">)</span>, <span class="op">~</span><span class="op">{</span></span>
+<span>  <span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">iso_jongro_t</span>, <span class="va">iso_jongro_t</span><span class="op">$</span><span class="va">iso_oid</span> <span class="op">==</span> <span class="va">.x</span><span class="op">)</span></span>
+<span>  <span class="va">coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
+<span>  <span class="va">poly_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://joelgombin.github.io/concaveman/reference/concaveman.html">concaveman</a></span><span class="op">(</span>points <span class="op">=</span> <span class="va">coords</span>, concavity <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="va">poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">poly_coords</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">poly</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">iso_sp_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>iso_oid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">iso_jongro_t</span><span class="op">$</span><span class="va">iso_oid</span><span class="op">)</span>, distance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">iso_jongro_t</span><span class="op">$</span><span class="va">distance</span><span class="op">)</span>, geometry <span class="op">=</span> <span class="va">polygons</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">iso_jongro_t</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">iso_sp_t</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    fct_dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">iso_sp_t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>지도를 제작한다.</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul</span>, is.master <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray98"</span>, border.col <span class="op">=</span> <span class="st">"gray10"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">seoul_sn</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_lines.html">tm_lines</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">iso_sp_t</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"fct_dist"</span>, title <span class="op">=</span> <span class="st">"Time (min)"</span>, palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"#005f73"</span>, <span class="st">"5"</span> <span class="op">=</span> <span class="st">"#ca6702"</span>, <span class="st">"10"</span> <span class="op">=</span> <span class="st">"#9b2226"</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, border.col <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">jongro_st</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_symbols.html">tm_dots</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_legend</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.80</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html">tm_layout</a></span><span class="op">(</span>inner.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.04</span><span class="op">)</span>, </span>
+<span>            title <span class="op">=</span> <span class="st">"Service Areas: Polygons"</span>, title.size <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"LEFT"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span>, color.dark <span class="op">=</span> <span class="st">"gray60"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_map</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sm_network_files/figure-html/unnamed-chunk-47-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="sm_network_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1184,7 +1404,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","selector":".lightbox","loop":false,"closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

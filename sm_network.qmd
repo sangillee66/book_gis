@@ -45,6 +45,8 @@ seoul_dong <- st_read("D:/My R/Korean Administrative Areas/행정구역 셰이�
 seoul_sobang <- st_read("D:/My R/Vector Data Manipulation Korea/Seoul_Data_Plaza/sobang_station_seoul.shp", options = "ENCODING=CP949")
 ```
 
+## 도로망 데이터 살펴보기
+
 서울시 도로망 데이터를 불러온다.
 
 ```{r}
@@ -52,6 +54,48 @@ seoul_sn <- st_read("D:/My R/Vector Data Manipulation Korea/Korea_Transport_Data
 
 seoul_sn <- seoul_sn |> 
   st_cast("LINESTRING") # 반드시 수행해야 함. 차이가 뭘까? 위는 MULTILINESTRING임.
+```
+
+속성 데이터를 살펴본다. 길이를 다시 계산한다.
+
+```{r}
+seoul_sn |> 
+  mutate(
+    NEW_LENGTH = st_length(geometry)
+  ) -> seoul_sn
+```
+
+`MAX_SPD`(제한 속도) 변수와 라인 세그먼트이 길이(`NEW_LENGTH`)를 사용하여 시간거리 계산을 위한 새로운 변수를 생성하고자 한다. 각 라인 세그먼트를 통과하는데 몇 분(min)이 걸리는지를 계산하여 새로운 컬럼(`COST_DIST`)을 생성하고 그것을 나중에 가중치로 사용하고자 한다. 각 라인 세그먼트를 통과하는데 몇 분(min)이 걸리는지를 계산하기 위해서는 `MAX_SPD`를 이용하여 해당 라인 세그먼트의 1m를 통과하는데 몇 분(min)이 걸리는지(`min_per_m`)를 계산한다. 그리고 나서 그 값에 라인 세그먼트의 길이(m)를 곱하면 된다. 여기에 평상시 MAX_SPD의 70만 달릴 수 있는 것으로 가정한다. 다음의 공식이 성립한다.
+
+$$
+\text {COST_DIST}=\text {min_per_m} \times \text{NEW_LENGTH} = \frac{6}{\text {MAX_SPD} \times 0.7 \times 100} \times \text {NEW_LENGTH}
+$$
+
+우선 MAX_SPD의 분포를 살펴본다.
+
+```{r}
+seoul_sn |> 
+  count(MAX_SPD)
+```
+
+총 33,715개 중 10,001개의 라인 세그먼트의 제한 속도가 0으로 되어 있다. 10인 경우도 6개, 20인 경우도 38개 이다. 제한 속도가 0, 10, 20인 경우를 모두 30으로 바꾼다.
+
+```{r}
+seoul_sn |> 
+  mutate(
+    NEW_MAX_SPD = if_else(
+      MAX_SPD %in% c("0", "10", "20"), "30", MAX_SPD
+    )
+  ) -> seoul_sn
+```
+
+이제 COST_DIST를 계산한다.
+
+```{r}
+seoul_sn |> 
+  mutate(
+    COST_DIST = 6 / ((as.numeric(NEW_MAX_SPD)) * 0.7 * 100) * as.numeric(NEW_LENGTH)
+  ) -> seoul_sn
 ```
 
 서울시 도로망을 sfn 객체로 만든다.
@@ -77,7 +121,16 @@ dist_matrix_network <- seoul_sfn |>
   st_network_cost(from = seoul_sobang, to = seoul_sobang, direction = "all")
 ```
 
+#### 시간 거리 매트릭스
+
+```{r}
+dist_matrix_time <- seoul_sfn |> 
+  st_network_cost(from = seoul_sobang, to = seoul_sobang, direction = "all", weights = "COST_DIST")
+```
+
 ## 최단 네트워크 경로
+
+### 네트워크 거리의 경우
 
 각 소방서에서 종로소방서로 가는 최단 네트워크 경로를 구한다.
 
@@ -158,6 +211,56 @@ my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border
 my_map 
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "네트워크_최단경로_1", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+### 시간 거리의 경우
+
+각 소방서에서 종로소방서로 가는 최단 시간 경로를 구한다. 가중치로 `COST_DIST`를 사용한다.
+
+```{r}
+sobang_network_paths_sfn_t <- seoul_sfn |> 
+  st_network_paths(from = jongro_st, to = seoul_sobang, weights = "COST_DIST")
+```
+
+위와 동일한 방법으로 `sobang_network_paths_sfn_t` 객체를 해부한다
+
+```{r}
+sobang_network_paths_sfn_lines_t <- seoul_sn |>  
+  snu_paths_generator(sobang_network_paths_sfn_t, seoul_sobang, "Name")
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(sobang_network_paths_sfn_lines_t) + tm_lines(lwd = 4)+
+  tm_shape(seoul_sobang) + tm_dots(col = "Name", size = 1, legend.show = FALSE) + 
+  tm_shape(jongro_st) + tm_dots(col = "black", size = 1) + 
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Shortest Network Paths to Jongro Station", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray70") +
+  tm_shape(sobang_network_paths_sfn_lines_t) + tm_lines(lwd = 4)+
+  tm_shape(seoul_sobang) + tm_dots(col = "Name", size = 2, legend.show = FALSE) + 
+  tm_shape(jongro_st) + tm_dots(col = "black", size = 2) + 
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Fastest Network Paths to Jongro Station", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "네트워크_최단경로_2", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
 
@@ -337,18 +440,28 @@ closest_sample <- seoul_sobang |>
 이 정보를 이용해 샘플링 포인트와 최근린 소방서를 연결하는 라인을 생성하기 위한 함수를 작성한다.
 
 ```{r}
-snu_make_linestring_from_2points <- function(source.point, target.point, target.id.var){
-  n <- nrow(source.point)
-  line.list <- list()
+# snu_make_linestring_from_2points <- function(source.point, target.point, target.id.var){
+#   n <- nrow(source.point)
+#   line.list <- list()
+#   source_coord <- st_coordinates(source.point)
+#   target_coord <- st_coordinates(target.point)
+#   for (i in 1:n){
+#     line.list[[i]] <- st_sfc(st_linestring(rbind(source_coord[i, ], target_coord[i, ]))) # st_sfc를 씌우지 않으면 에러가 남!!!
+#   }
+#   final.line <- do.call(rbind, line.list)
+#   final.line <- st_as_sf(st_sfc(final.line, crs = st_crs(seoul))) # 매우 중요
+#   final.line <- cbind(Name = target.point[[target.id.var]], final.line)
+# } 
+
+snu_make_linestring_from_2points <- function(source.point, target.point, target.id.var) {
   source_coord <- st_coordinates(source.point)
   target_coord <- st_coordinates(target.point)
-  for (i in 1:n){
-    line.list[[i]] <- st_sfc(st_linestring(rbind(source_coord[i, ], target_coord[i, ]))) # st_sfc를 씌우지 않으면 에러가 남!!!
-  }
-  final.line <- do.call(rbind, line.list)
-  final.line <- st_as_sf(st_sfc(final.line, crs = st_crs(seoul))) # 매우 중요
+  line.list <- map(seq_len(nrow(source.point)), ~ st_sfc(st_linestring(rbind(source_coord[.x, ], target_coord[.x, ]))))
+  
+  final.line <- st_as_sf(do.call(c, line.list), crs = st_crs(seoul))
   final.line <- cbind(Name = target.point[[target.id.var]], final.line)
-} 
+  return(final.line)
+}
 ```
 
 이 함수를 이용해 라인을 생성한다.
@@ -400,13 +513,15 @@ devtools::install_github("JeremyGelb/spNetwork")
 library(spNetwork)
 ```
 
+### 네트워크 거리의 경우
+
 `calc_isochrones` 함수를 이용하여 2km, 5km, 10km 네트워크에 해당하는 서비스 영역을 생성한다.
 
 ```{r}
 iso_jongro <- calc_isochrones(
-  lines = seoul_sn, start_points = jongro_st, dists = c(2, 5, 10), weight = "LENGTH") |> 
+  lines = seoul_sn, start_points = jongro_st, dists = c(2000, 5000, 10000), weight = "NEW_LENGTH") |> 
   mutate(
-    fct_dist = fct(as.character(distance))
+    fct_dist = fct(as.character(distance / 1000))
   ) |> 
   arrange(
     desc(distance)
@@ -522,5 +637,117 @@ my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border
 my_map 
 my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
 my.file.name <- paste0(my.path.name, "네트워크_서비스영역_2", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+### 시간 거리의 경우
+
+`calc_isochrones` 함수를 이용하여 15분, 30분, 60분 네트워크에 해당하는 서비스 영역을 생성한다.
+
+```{r}
+iso_jongro_t <- calc_isochrones(
+  lines = seoul_sn, start_points = jongro_st, dists = c(2, 5, 10), weight = "COST_DIST") |> 
+  mutate(
+    fct_dist = fct(as.character(distance))
+  ) |> 
+  arrange(
+    desc(distance)
+  )
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray") +
+  tm_shape(iso_jongro_t) + tm_lines(col = "fct_dist", lwd = 2, title.col = "Time (min)", palette = c("1" = "#005f73", "5" = "#ca6702", "10" = "#9b2226"))+
+  tm_shape(jongro_st) + tm_dots(col = "black", size = 1) + 
+  tm_legend(legend.position = c(0.80, 0.05)) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Service Areas: Lines", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray80") +
+  tm_shape(iso_jongro_t) + tm_lines(col = "fct_dist", lwd = 2, title.col = "Time (min)", palette = c("1" = "#005f73", "5" = "#ca6702", "10" = "#9b2226"))+
+  tm_shape(jongro_st) + tm_dots(col = "black", size = 2) + 
+  tm_legend(legend.title.size = 1.5, legend.text.size = 1.2, legend.position = c(0.85, 0.05)) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Service Areas: Lines", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "네트워크_서비스영역_3", ".jpg")
+tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
+```
+
+서비스 영역에 대한 폴리곤을 생성한다. 여기서는 또 다른 패키지인 `concaveman`을 활용한다.
+
+```{r}
+library(concaveman)
+
+iso_jongro_t |> 
+  mutate(
+    iso_oid = str_c(point_id, distance, sep = "_")
+  ) -> iso_jongro_t
+
+polygons <- map(unique(iso_jongro_t$iso_oid), ~{
+  lines <- subset(iso_jongro_t, iso_jongro_t$iso_oid == .x)
+  coords <- st_coordinates(lines)
+  poly_coords <- concaveman(points = coords, concavity = 3)
+  poly <- st_polygon(list(poly_coords[, 1:2]))
+  return(poly)
+})
+
+iso_sp_t <- st_sf(iso_oid = unique(iso_jongro_t$iso_oid), distance = unique(iso_jongro_t$distance), geometry = polygons, crs = st_crs(iso_jongro_t)) 
+
+iso_sp_t |> 
+  mutate(
+    fct_dist = as.factor(distance)
+  ) |> 
+  arrange(
+    desc(distance)
+  ) -> iso_sp_t
+```
+
+지도를 제작한다.
+
+```{r}
+my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 1) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray") +
+  tm_shape(iso_sp_t) + tm_polygons(col = "fct_dist", title = "Time (min)", palette = c("1" = "#005f73", "5" = "#ca6702", "10" = "#9b2226"), alpha = 0.5, border.col = "white") +
+  tm_shape(jongro_st) + tm_dots(col = "black", size = 1) + 
+  tm_legend(legend.position = c(0.80, 0.05)) +
+  tm_layout(inner.margins = c(0.06, 0.04, 0.04, 0.04), 
+            title = "Service Areas: Polygons", title.size = 1, 
+            title.position = c("LEFT", "TOP")) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), color.dark = "gray60", position = c(0.03, 0.01))
+my_map
+```
+
+```{r}
+#| echo: false
+#| output: false
+my_map <- tm_shape(seoul, is.master = TRUE) + tm_polygons(col = "gray98", border.col = "gray10", lwd = 2) +
+  tm_shape(seoul_sn) + tm_lines(col = "gray80") +
+  tm_shape(iso_sp_t) + tm_polygons(col = "fct_dist", title = "Time (min)", palette = c("1" = "#005f73", "5" = "#ca6702", "10" = "#9b2226"), alpha = 0.5, border.col = "white") +
+  tm_shape(jongro_st) + tm_dots(col = "black", size = 2) + 
+  tm_legend(legend.title.size = 1.5, legend.text.size = 1.2, legend.position = c(0.85, 0.05)) +
+  tm_layout(inner.margins = c(0.05, 0.04, 0.04, 0.04), 
+            title = "Service Areas: Polygons", title.size = 2,
+            title.position = c(0.02, 0.97)) + 
+  tm_scale_bar(breaks = seq(0, 20, 5), text.size = 0.6, color.dark = "gray60", position = c(0.03, 0.01)) +
+  tm_credits(text = "SANG-IL LEE, Geography Education at SNU, 2024", size = 0.8, position = c(0.76, 0.01))
+my_map 
+my.path.name <- "D:/My Classes/2024년 2학기/지리정보체계와 지리교육/이미지/"
+my.file.name <- paste0(my.path.name, "네트워크_서비스영역_4", ".jpg")
 tmap_save(my_map, filename = my.file.name, height = 12.1, dpi = 600) 
 ```
