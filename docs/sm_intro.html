@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.549">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Sang-Il Lee">
-
 <title>GIS - 21&nbsp; GIS 모델링</title>
 <style>
 code{white-space: pre-wrap;}
@@ -21,8 +18,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -41,8 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -68,35 +97,27 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="styles.css">
+}</script><link rel="stylesheet" href="styles.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span></h1>
+          <h1 class="quarto-secondary-nav-title">
+<span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span>
+</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">GIS</a> 
     </div>
@@ -108,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
@@ -122,8 +143,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./first_concepts.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">GIS의 개념</span></span></a>
@@ -136,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_2.html" class="sidebar-item-text sidebar-link">
@@ -145,8 +166,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./second_sources.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">GIS 데이터의 원천</span></span></a>
@@ -159,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_3.html" class="sidebar-item-text sidebar-link">
@@ -168,8 +189,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./third_sdm.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">공간데이터모델</span></span></a>
@@ -182,7 +203,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_4.html" class="sidebar-item-text sidebar-link">
@@ -191,8 +212,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vector_generalization.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">일반화</span></span></a>
@@ -235,7 +256,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_5.html" class="sidebar-item-text sidebar-link">
@@ -244,8 +265,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./raster_intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">개요</span></span></a>
@@ -288,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./part_6.html" class="sidebar-item-text sidebar-link">
@@ -297,8 +318,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sm_intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span></span></a>
@@ -317,7 +338,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -325,33 +346,33 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#개요" id="toc-개요" class="nav-link active" data-scroll-target="#개요"><span class="header-section-number">21.1</span> 개요</a>
+<li>
+<a href="#%EA%B0%9C%EC%9A%94" id="toc-개요" class="nav-link active" data-scroll-target="#%EA%B0%9C%EC%9A%94"><span class="header-section-number">21.1</span> 개요</a>
   <ul class="collapse">
-  <li><a href="#gis-기반-공간모델링" id="toc-gis-기반-공간모델링" class="nav-link" data-scroll-target="#gis-기반-공간모델링"><span class="header-section-number">21.1.1</span> GIS-기반 공간모델링</a></li>
-  </ul></li>
-  <li><a href="#적합성-모델링" id="toc-적합성-모델링" class="nav-link" data-scroll-target="#적합성-모델링"><span class="header-section-number">21.2</span> 적합성 모델링</a>
-  <ul class="collapse">
-  <li><a href="#가중치-부여와-결합" id="toc-가중치-부여와-결합" class="nav-link" data-scroll-target="#가중치-부여와-결합"><span class="header-section-number">21.2.1</span> 가중치 부여와 결합</a></li>
-  <li><a href="#ahp-방법" id="toc-ahp-방법" class="nav-link" data-scroll-target="#ahp-방법"><span class="header-section-number">21.2.2</span> AHP 방법</a></li>
-  </ul></li>
+<li><a href="#gis-%EA%B8%B0%EB%B0%98-%EA%B3%B5%EA%B0%84%EB%AA%A8%EB%8D%B8%EB%A7%81" id="toc-gis-기반-공간모델링" class="nav-link" data-scroll-target="#gis-%EA%B8%B0%EB%B0%98-%EA%B3%B5%EA%B0%84%EB%AA%A8%EB%8D%B8%EB%A7%81"><span class="header-section-number">21.1.1</span> GIS-기반 공간모델링</a></li>
   </ul>
-</nav>
+</li>
+  <li>
+<a href="#%EC%A0%81%ED%95%A9%EC%84%B1-%EB%AA%A8%EB%8D%B8%EB%A7%81" id="toc-적합성-모델링" class="nav-link" data-scroll-target="#%EC%A0%81%ED%95%A9%EC%84%B1-%EB%AA%A8%EB%8D%B8%EB%A7%81"><span class="header-section-number">21.2</span> 적합성 모델링</a>
+  <ul class="collapse">
+<li><a href="#%EA%B0%80%EC%A4%91%EC%B9%98-%EB%B6%80%EC%97%AC%EC%99%80-%EA%B2%B0%ED%95%A9" id="toc-가중치-부여와-결합" class="nav-link" data-scroll-target="#%EA%B0%80%EC%A4%91%EC%B9%98-%EB%B6%80%EC%97%AC%EC%99%80-%EA%B2%B0%ED%95%A9"><span class="header-section-number">21.2.1</span> 가중치 부여와 결합</a></li>
+  <li><a href="#ahp-%EB%B0%A9%EB%B2%95" id="toc-ahp-방법" class="nav-link" data-scroll-target="#ahp-%EB%B0%A9%EB%B2%95"><span class="header-section-number">21.2.2</span> AHP 방법</a></li>
+  </ul>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">
+<span class="chapter-number">21</span>&nbsp; <span class="chapter-title">GIS 모델링</span>
+</h1>
 </div>
 
 
@@ -369,7 +390,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 29, 2024</p>
+      <p class="date-modified">November 9, 2024</p>
     </div>
   </div>
     
@@ -377,29 +398,108 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
+</header><section id="개요" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="개요">
+<span class="header-section-number">21.1</span> 개요</h2>
+<section id="gis-기반-공간모델링" class="level3" data-number="21.1.1"><h3 data-number="21.1.1" class="anchored" data-anchor-id="gis-기반-공간모델링">
+<span class="header-section-number">21.1.1</span> GIS-기반 공간모델링</h3>
+</section></section><section id="적합성-모델링" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="적합성-모델링">
+<span class="header-section-number">21.2</span> 적합성 모델링</h2>
+<section id="가중치-부여와-결합" class="level3" data-number="21.2.1"><h3 data-number="21.2.1" class="anchored" data-anchor-id="가중치-부여와-결합">
+<span class="header-section-number">21.2.1</span> 가중치 부여와 결합</h3>
+</section><section id="ahp-방법" class="level3" data-number="21.2.2"><h3 data-number="21.2.2" class="anchored" data-anchor-id="ahp-방법">
+<span class="header-section-number">21.2.2</span> AHP 방법</h3>
+<section id="개요-1" class="level4" data-number="21.2.2.1"><h4 data-number="21.2.2.1" class="anchored" data-anchor-id="개요-1">
+<span class="header-section-number">21.2.2.1</span> 개요</h4>
+<p>AHP(analytic hierarchy process)는 보통 ’분석적 계층화 방법’으로 번역된다. AHP는 복잡한 의사결정 문제를 수학과 심리학에 기반하여 분석하는 구조화된 기법을 말한다. AHP 의사결정에 개입되는 여러가지 인자 혹은 규준들을 위계적으로 정의하고, 그러한 서로 다른 결정 규준들의 상대적 중요도(priority)를 가중치의 형태로 정량화한다. AHP는 소위 전문가를 대상으로 한 설문조사에 전적으로 의존하는데, 개별 전문가는 의사 결정 규준들 간의 모든 가능한 쌍에 대해 상대적 중요도 평가를 수행하게 된다. 이 데이터를 AHP기법을 통해 분석함으로써 규준 간의 상대적 중요성에 대한 최종적인 가중치의 세트를 갖게 된다. AHP에서 H가 의미하는 바에 주목할 필요가 있다. H는 AHP가 보통 위계적으로 정의된 의사결정 문제를 다룬다는 것을 의미한다. 물론 가장 단순한 형태의 의사결정 문제는 단일 위계이며, AHP의 특수한 형태라고 볼 수 있다.</p>
+</section><section id="위계적-의사결정의-두-모델" class="level4" data-number="21.2.2.2"><h4 data-number="21.2.2.2" class="anchored" data-anchor-id="위계적-의사결정의-두-모델">
+<span class="header-section-number">21.2.2.2</span> 위계적 의사결정의 두 모델</h4>
+<p>AHP의 첫 번째 단계는 이러한 위계적 의사결정 문제를 정의하는 것이다. 이는 두 가지 범주로 구분된다. 하나는 목표(goal)-규준(criteria)-대안(alternative) 모델이라고 부를 수 있는 것이다. 아래의 그림은 의사결정 과정의 위계성이 간명하게 표현되어 있다. 수립된 의사결정 목표에 따라 다수의 의사결정 규준이 설정되고, 개별 규준은 다시 몇 개의 대안으로 구분된다. 최상위 수준인 목표의 중요도는 당연히 1이며, 두 번째 수준인 규준의 상대적 중요도의 합산값은 1이고, 개별 규준 아래의 최하위 수준인 대안의 상대적 중요도의 합산값도 1이다. 결국 AHP를 통해 네 개의 규준 가중치 및 12개의 대안 가중치를 구해내고, 이것을 재계산함으로써 최종적인 대안별 상대적 중요도 값을 산출한다.</p>
+<div class="cell" data-fig-format="jpg" data-fig-path="D:/R_Books/GIS/diagram1.jpg" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"></figure><p></p>
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 294.00 167.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 163)"><title>D</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-163 290,-163 290,4 -4,4"></polygon><!-- Goal --><g id="node1" class="node"><title>Goal</title>
+<polygon fill="#b3e2cd" stroke="black" stroke-width="0.8" points="172,-159 114,-159 114,-130 172,-130 172,-159"></polygon><text text-anchor="middle" x="143" y="-142.1" font-family="Arial" font-size="8.00">Goal</text></g><!-- Cri1 --><g id="node2" class="node"><title>Cri1</title>
+<polygon fill="#fff2ae" stroke="black" stroke-width="0.8" points="58,-94 0,-94 0,-65 58,-65 58,-94"></polygon><text text-anchor="middle" x="29" y="-77.1" font-family="Arial" font-size="8.00">Criterion 1</text></g><!-- Goal&#45;&gt;Cri1 --><g id="edge4" class="edge"><title>Goal-&gt;Cri1</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M118.54,-129.98C99.44,-119.43 73,-104.82 53.81,-94.21"></path></g><!-- Cri2 --><g id="node3" class="node"><title>Cri2</title>
+<polygon fill="#fff2ae" stroke="black" stroke-width="0.8" points="134,-94 76,-94 76,-65 134,-65 134,-94"></polygon><text text-anchor="middle" x="105" y="-77.1" font-family="Arial" font-size="8.00">Criterion 2</text></g><!-- Goal&#45;&gt;Cri2 --><g id="edge5" class="edge"><title>Goal-&gt;Cri2</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M134.75,-129.83C128.38,-119.26 119.6,-104.7 113.23,-94.14"></path></g><!-- Cri3 --><g id="node4" class="node"><title>Cri3</title>
+<polygon fill="#fff2ae" stroke="black" stroke-width="0.8" points="210,-94 152,-94 152,-65 210,-65 210,-94"></polygon><text text-anchor="middle" x="181" y="-77.1" font-family="Arial" font-size="8.00">Criterion 3</text></g><!-- Goal&#45;&gt;Cri3 --><g id="edge6" class="edge"><title>Goal-&gt;Cri3</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M151.25,-129.83C157.62,-119.26 166.4,-104.7 172.77,-94.14"></path></g><!-- Cri4 --><g id="node5" class="node"><title>Cri4</title>
+<polygon fill="#fff2ae" stroke="black" stroke-width="0.8" points="286,-94 228,-94 228,-65 286,-65 286,-94"></polygon><text text-anchor="middle" x="257" y="-77.1" font-family="Arial" font-size="8.00">Criterion 4</text></g><!-- Goal&#45;&gt;Cri4 --><g id="edge7" class="edge"><title>Goal-&gt;Cri4</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M167.46,-129.98C186.56,-119.43 213,-104.82 232.19,-94.21"></path></g><!-- Cri1&#45;&gt;Cri2 --><!-- Alt1 --><g id="node6" class="node"><title>Alt1</title>
+<polygon fill="#f4cae4" stroke="black" stroke-width="0.8" points="96,-29 38,-29 38,0 96,0 96,-29"></polygon><text text-anchor="middle" x="67" y="-12.1" font-family="Arial" font-size="8.00">Alternative 1</text></g><!-- Cri1&#45;&gt;Alt1 --><g id="edge8" class="edge"><title>Cri1-&gt;Alt1</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M37.25,-64.83C43.62,-54.26 52.4,-39.7 58.77,-29.14"></path></g><!-- Alt2 --><g id="node7" class="node"><title>Alt2</title>
+<polygon fill="#f4cae4" stroke="black" stroke-width="0.8" points="172,-29 114,-29 114,0 172,0 172,-29"></polygon><text text-anchor="middle" x="143" y="-12.1" font-family="Arial" font-size="8.00">Alternative 2</text></g><!-- Cri1&#45;&gt;Alt2 --><g id="edge9" class="edge"><title>Cri1-&gt;Alt2</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M53.46,-64.98C72.56,-54.43 99,-39.82 118.19,-29.21"></path></g><!-- Alt3 --><g id="node8" class="node"><title>Alt3</title>
+<polygon fill="#f4cae4" stroke="black" stroke-width="0.8" points="248,-29 190,-29 190,0 248,0 248,-29"></polygon><text text-anchor="middle" x="219" y="-12.1" font-family="Arial" font-size="8.00">Alternative 3</text></g><!-- Cri1&#45;&gt;Alt3 --><g id="edge10" class="edge"><title>Cri1-&gt;Alt3</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M58.01,-68.07C61.04,-67.02 64.08,-65.98 67,-65 117.37,-48.1 130.63,-45.9 181,-29 183.92,-28.02 186.96,-26.98 189.99,-25.93"></path></g><!-- Cri2&#45;&gt;Cri3 --><!-- Cri2&#45;&gt;Alt1 --><g id="edge11" class="edge"><title>Cri2-&gt;Alt1</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M96.75,-64.83C90.38,-54.26 81.6,-39.7 75.23,-29.14"></path></g><!-- Cri2&#45;&gt;Alt2 --><g id="edge12" class="edge"><title>Cri2-&gt;Alt2</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M113.25,-64.83C119.62,-54.26 128.4,-39.7 134.77,-29.14"></path></g><!-- Cri2&#45;&gt;Alt3 --><g id="edge13" class="edge"><title>Cri2-&gt;Alt3</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M129.46,-64.98C148.56,-54.43 175,-39.82 194.19,-29.21"></path></g><!-- Cri3&#45;&gt;Cri4 --><!-- Cri3&#45;&gt;Alt1 --><g id="edge14" class="edge"><title>Cri3-&gt;Alt1</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M156.54,-64.98C137.44,-54.43 111,-39.82 91.81,-29.21"></path></g><!-- Cri3&#45;&gt;Alt2 --><g id="edge15" class="edge"><title>Cri3-&gt;Alt2</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M172.75,-64.83C166.38,-54.26 157.6,-39.7 151.23,-29.14"></path></g><!-- Cri3&#45;&gt;Alt3 --><g id="edge16" class="edge"><title>Cri3-&gt;Alt3</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M189.25,-64.83C195.62,-54.26 204.4,-39.7 210.77,-29.14"></path></g><!-- Cri4&#45;&gt;Alt1 --><g id="edge17" class="edge"><title>Cri4-&gt;Alt1</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M227.99,-68.07C224.96,-67.02 221.92,-65.98 219,-65 168.63,-48.1 155.37,-45.9 105,-29 102.08,-28.02 99.04,-26.98 96.01,-25.93"></path></g><!-- Cri4&#45;&gt;Alt2 --><g id="edge18" class="edge"><title>Cri4-&gt;Alt2</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M232.54,-64.98C213.44,-54.43 187,-39.82 167.81,-29.21"></path></g><!-- Cri4&#45;&gt;Alt3 --><g id="edge19" class="edge"><title>Cri4-&gt;Alt3</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M248.75,-64.83C242.38,-54.26 233.6,-39.7 227.23,-29.14"></path></g></g></svg>
+</div>
+<p></p><figcaption> 위계적 의사결정 모델 1: 목표-규준-대안 모델</figcaption><p></p>
+</div>
+</div>
+</div>
+<p>두 번째 방식은 목표-규준-하위규준의 형태를 띠는 것이다. 아래의 그림은 이러한 의사결정 위계를 모식적으로 보여준다. 위와 마찬가지로 최상위 수준인 목표의 중요도는 1이고, 두 번째 수준인 규준의 상대적 중요도의 합산값은 1이고, 개별 규준 아래의 최하위 수준인 하위-규준의 상대적 중요도의 합산값도 1이다. 결국 AHP를 통해 두 개의 규준과 6개의 하위-규준의 가중치를 구하면 된다. 두 번째 수준과 세 번째 수준의 관계를 규정하는 방식이 이 두 가지 모델의 가장 중요한 차이점이다. 위의 목표-규준-대안 모델의 경우, 세 번째 수준이 두 번째 수준 모두와 관련되어 있는 반면, 목표-규준-하위규준 모델은 그 관계가 포섭적이다. 즉, 하위규준은 오로지 특정 규준과만 관련될 뿐이다. 이런 의미에서 전자를 위계교차 모델, 후자는 위계포섭 모델이라 부를 수 있을 것이다.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"></figure><p></p>
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 294.00 167.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 163)"><title>D</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-163 290,-163 290,4 -4,4"></polygon><!-- Goal --><g id="node1" class="node"><title>Goal</title>
+<polygon fill="#b3e2cd" stroke="black" stroke-width="0.8" points="172,-159 114,-159 114,-130 172,-130 172,-159"></polygon><text text-anchor="middle" x="143" y="-142.1" font-family="Arial" font-size="8.00">Goal</text></g><!-- Cri1 --><g id="node2" class="node"><title>Cri1</title>
+<polygon fill="#fff2ae" stroke="black" stroke-width="0.8" points="134,-94 76,-94 76,-65 134,-65 134,-94"></polygon><text text-anchor="middle" x="105" y="-77.1" font-family="Arial" font-size="8.00">Criterion 1</text></g><!-- Goal&#45;&gt;Cri1 --><g id="edge2" class="edge"><title>Goal-&gt;Cri1</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M134.75,-129.83C128.38,-119.26 119.6,-104.7 113.23,-94.14"></path></g><!-- Cri2 --><g id="node3" class="node"><title>Cri2</title>
+<polygon fill="#fff2ae" stroke="black" stroke-width="0.8" points="210,-94 152,-94 152,-65 210,-65 210,-94"></polygon><text text-anchor="middle" x="181" y="-77.1" font-family="Arial" font-size="8.00">Criterion 2</text></g><!-- Goal&#45;&gt;Cri2 --><g id="edge3" class="edge"><title>Goal-&gt;Cri2</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M151.25,-129.83C157.62,-119.26 166.4,-104.7 172.77,-94.14"></path></g><!-- Cri1&#45;&gt;Cri2 --><!-- Subcri11 --><g id="node4" class="node"><title>Subcri11</title>
+<polygon fill="#fdcdac" stroke="black" stroke-width="0.8" points="58,-29 0,-29 0,0 58,0 58,-29"></polygon><text text-anchor="middle" x="29" y="-16.9" font-family="Arial" font-size="8.00">Subcriterion </text><text text-anchor="middle" x="29" y="-7.3" font-family="Arial" font-size="8.00"> 1-1</text></g><!-- Cri1&#45;&gt;Subcri11 --><g id="edge4" class="edge"><title>Cri1-&gt;Subcri11</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M88.51,-64.83C75.76,-54.26 58.2,-39.7 45.46,-29.14"></path></g><!-- Subcri12 --><g id="node5" class="node"><title>Subcri12</title>
+<polygon fill="#fdcdac" stroke="black" stroke-width="0.8" points="134,-29 76,-29 76,0 134,0 134,-29"></polygon><text text-anchor="middle" x="105" y="-16.9" font-family="Arial" font-size="8.00">Subcriterion </text><text text-anchor="middle" x="105" y="-7.3" font-family="Arial" font-size="8.00"> 1-2</text></g><!-- Cri1&#45;&gt;Subcri12 --><g id="edge5" class="edge"><title>Cri1-&gt;Subcri12</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M105,-64.83C105,-54.26 105,-39.7 105,-29.14"></path></g><!-- Subcri21 --><g id="node6" class="node"><title>Subcri21</title>
+<polygon fill="#cbd5e8" stroke="black" stroke-width="0.8" points="210,-29 152,-29 152,0 210,0 210,-29"></polygon><text text-anchor="middle" x="181" y="-16.9" font-family="Arial" font-size="8.00">Subcriterion </text><text text-anchor="middle" x="181" y="-7.3" font-family="Arial" font-size="8.00"> 2-1</text></g><!-- Cri2&#45;&gt;Subcri21 --><g id="edge6" class="edge"><title>Cri2-&gt;Subcri21</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M181,-64.83C181,-54.26 181,-39.7 181,-29.14"></path></g><!-- Subcri22 --><g id="node7" class="node"><title>Subcri22</title>
+<polygon fill="#cbd5e8" stroke="black" stroke-width="0.8" points="286,-29 228,-29 228,0 286,0 286,-29"></polygon><text text-anchor="middle" x="257" y="-16.9" font-family="Arial" font-size="8.00">Subcriterion </text><text text-anchor="middle" x="257" y="-7.3" font-family="Arial" font-size="8.00"> 2-2</text></g><!-- Cri2&#45;&gt;Subcri22 --><g id="edge7" class="edge"><title>Cri2-&gt;Subcri22</title>
+<path fill="none" stroke="black" stroke-width="0.8" d="M197.49,-64.83C210.24,-54.26 227.8,-39.7 240.54,-29.14"></path></g></g></svg>
+</div>
+<p></p><figcaption> 위계적 의사결정 모델 2: 목표-규준-하위규준 모델</figcaption><p></p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">7</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span><span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">A</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2] [,3] [,4]
+[1,] 1.0000000 5.0000000 6.00    7
+[2,] 0.2000000 1.0000000 4.00    6
+[3,] 0.1666667 0.2500000 1.00    4
+[4,] 0.1428571 0.1666667 0.25    1</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6136</span>, <span class="fl">0.2386</span>, <span class="fl">0.1030</span>, <span class="fl">0.0448</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">A</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span><span class="va">w</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span><span class="op">(</span><span class="va">w</span><span class="op">^</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]
+[1,] 4.390258</code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 37.17619</code></pre>
+</div>
+</div>
 
 
-<section id="개요" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="개요"><span class="header-section-number">21.1</span> 개요</h2>
-<section id="gis-기반-공간모델링" class="level3" data-number="21.1.1">
-<h3 data-number="21.1.1" class="anchored" data-anchor-id="gis-기반-공간모델링"><span class="header-section-number">21.1.1</span> GIS-기반 공간모델링</h3>
-</section>
-</section>
-<section id="적합성-모델링" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="적합성-모델링"><span class="header-section-number">21.2</span> 적합성 모델링</h2>
-<section id="가중치-부여와-결합" class="level3" data-number="21.2.1">
-<h3 data-number="21.2.1" class="anchored" data-anchor-id="가중치-부여와-결합"><span class="header-section-number">21.2.1</span> 가중치 부여와 결합</h3>
-</section>
-<section id="ahp-방법" class="level3" data-number="21.2.2">
-<h3 data-number="21.2.2" class="anchored" data-anchor-id="ahp-방법"><span class="header-section-number">21.2.2</span> AHP 방법</h3>
-
-
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -785,10 +885,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./part_6.html" class="pagination-link  aria-label=" gis="" 모델링과="" 고급="" 분석"="">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./part_6.html" class="pagination-link  aria-label=" gis="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">GIS 모델링과 고급 GIS 분석</span>
       </a>          
   </div>
@@ -799,7 +897,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-
 
 
 

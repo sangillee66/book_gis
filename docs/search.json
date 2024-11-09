@@ -633,7 +633,7 @@
   {
     "objectID": "sm_intro.html",
     "href": "sm_intro.html",
-    "title": "21  GIS 모델링",
+    "title": "\n21  GIS 모델링\n",
     "section": "",
     "text": "21.1 개요",
     "crumbs": [
@@ -644,9 +644,9 @@
   {
     "objectID": "sm_intro.html#적합성-모델링",
     "href": "sm_intro.html#적합성-모델링",
-    "title": "21  GIS 모델링",
-    "section": "21.2 적합성 모델링",
-    "text": "21.2 적합성 모델링\n\n21.2.1 가중치 부여와 결합\n\n\n21.2.2 AHP 방법",
+    "title": "\n21  GIS 모델링\n",
+    "section": "\n21.2 적합성 모델링",
+    "text": "21.2 적합성 모델링\n\n21.2.1 가중치 부여와 결합\n\n21.2.2 AHP 방법\n\n21.2.2.1 개요\nAHP(analytic hierarchy process)는 보통 ’분석적 계층화 방법’으로 번역된다. AHP는 복잡한 의사결정 문제를 수학과 심리학에 기반하여 분석하는 구조화된 기법을 말한다. AHP 의사결정에 개입되는 여러가지 인자 혹은 규준들을 위계적으로 정의하고, 그러한 서로 다른 결정 규준들의 상대적 중요도(priority)를 가중치의 형태로 정량화한다. AHP는 소위 전문가를 대상으로 한 설문조사에 전적으로 의존하는데, 개별 전문가는 의사 결정 규준들 간의 모든 가능한 쌍에 대해 상대적 중요도 평가를 수행하게 된다. 이 데이터를 AHP기법을 통해 분석함으로써 규준 간의 상대적 중요성에 대한 최종적인 가중치의 세트를 갖게 된다. AHP에서 H가 의미하는 바에 주목할 필요가 있다. H는 AHP가 보통 위계적으로 정의된 의사결정 문제를 다룬다는 것을 의미한다. 물론 가장 단순한 형태의 의사결정 문제는 단일 위계이며, AHP의 특수한 형태라고 볼 수 있다.\n\n21.2.2.2 위계적 의사결정의 두 모델\nAHP의 첫 번째 단계는 이러한 위계적 의사결정 문제를 정의하는 것이다. 이는 두 가지 범주로 구분된다. 하나는 목표(goal)-규준(criteria)-대안(alternative) 모델이라고 부를 수 있는 것이다. 아래의 그림은 의사결정 과정의 위계성이 간명하게 표현되어 있다. 수립된 의사결정 목표에 따라 다수의 의사결정 규준이 설정되고, 개별 규준은 다시 몇 개의 대안으로 구분된다. 최상위 수준인 목표의 중요도는 당연히 1이며, 두 번째 수준인 규준의 상대적 중요도의 합산값은 1이고, 개별 규준 아래의 최하위 수준인 대안의 상대적 중요도의 합산값도 1이다. 결국 AHP를 통해 네 개의 규준 가중치 및 12개의 대안 가중치를 구해내고, 이것을 재계산함으로써 최종적인 대안별 상대적 중요도 값을 산출한다.\n\n\n\n\n\nD\nGoal\nGoalCri1\nCriterion 1Goal-&gt;Cri1\nCri2\nCriterion 2Goal-&gt;Cri2\nCri3\nCriterion 3Goal-&gt;Cri3\nCri4\nCriterion 4Goal-&gt;Cri4\nAlt1\nAlternative 1Cri1-&gt;Alt1\nAlt2\nAlternative 2Cri1-&gt;Alt2\nAlt3\nAlternative 3Cri1-&gt;Alt3\nCri2-&gt;Alt1\nCri2-&gt;Alt2\nCri2-&gt;Alt3\nCri3-&gt;Alt1\nCri3-&gt;Alt2\nCri3-&gt;Alt3\nCri4-&gt;Alt1\nCri4-&gt;Alt2\nCri4-&gt;Alt3\n\n\n 위계적 의사결정 모델 1: 목표-규준-대안 모델\n\n\n\n두 번째 방식은 목표-규준-하위규준의 형태를 띠는 것이다. 아래의 그림은 이러한 의사결정 위계를 모식적으로 보여준다. 위와 마찬가지로 최상위 수준인 목표의 중요도는 1이고, 두 번째 수준인 규준의 상대적 중요도의 합산값은 1이고, 개별 규준 아래의 최하위 수준인 하위-규준의 상대적 중요도의 합산값도 1이다. 결국 AHP를 통해 두 개의 규준과 6개의 하위-규준의 가중치를 구하면 된다. 두 번째 수준과 세 번째 수준의 관계를 규정하는 방식이 이 두 가지 모델의 가장 중요한 차이점이다. 위의 목표-규준-대안 모델의 경우, 세 번째 수준이 두 번째 수준 모두와 관련되어 있는 반면, 목표-규준-하위규준 모델은 그 관계가 포섭적이다. 즉, 하위규준은 오로지 특정 규준과만 관련될 뿐이다. 이런 의미에서 전자를 위계교차 모델, 후자는 위계포섭 모델이라 부를 수 있을 것이다.\n\n\n\n\n\nD\nGoal\nGoalCri1\nCriterion 1Goal-&gt;Cri1\nCri2\nCriterion 2Goal-&gt;Cri2\nSubcri11\nSubcriterion  1-1Cri1-&gt;Subcri11\nSubcri12\nSubcriterion  1-2Cri1-&gt;Subcri12\nSubcri21\nSubcriterion  2-1Cri2-&gt;Subcri21\nSubcri22\nSubcriterion  2-2Cri2-&gt;Subcri22\n\n\n 위계적 의사결정 모델 2: 목표-규준-하위규준 모델\n\n\n\n\nA &lt;- matrix(c(1, 5, 6, 7, 1/5, 1, 4, 6, 1/6, 1/4, 1, 4, 1/7, 1/6, 1/4, 1), ncol =4, byrow = TRUE)\nA\n\n          [,1]      [,2] [,3] [,4]\n[1,] 1.0000000 5.0000000 6.00    7\n[2,] 0.2000000 1.0000000 4.00    6\n[3,] 0.1666667 0.2500000 1.00    4\n[4,] 0.1428571 0.1666667 0.25    1\n\nw &lt;- c(0.6136, 0.2386, 0.1030, 0.0448)\nt(A%*%w)%*%(w^-1)/4\n\n         [,1]\n[1,] 4.390258\n\nsum(t(A))\n\n[1] 37.17619",
     "crumbs": [
       "GIS 모델링과 고급 GIS 분석",
       "<span class='chapter-number'>21</span>  <span class='chapter-title'>GIS 모델링</span>"
@@ -655,7 +655,7 @@
   {
     "objectID": "sm_intro.html#개요",
     "href": "sm_intro.html#개요",
-    "title": "21  GIS 모델링",
+    "title": "\n21  GIS 모델링\n",
     "section": "",
     "text": "21.1.1 GIS-기반 공간모델링",
     "crumbs": [
